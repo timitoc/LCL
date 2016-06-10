@@ -1,0 +1,62 @@
+LCL - Crossplatform UI framework for libGDX using Overlap2D and Spine
+
+Conventions:
+
+Variables:
+    -variables use camel case, unless they are final, in which case they must be in ALL CAPS.
+    ex: int number
+        final int PADDING
+
+    -protected variables always start with the prefix "p_".
+    ex: protected int p_Number
+        protected final int p_NUMBER
+
+    -private variables always start with the prefix "m_".
+    ex: private int m_Number;
+        private final int m_NUMBER;
+
+Getters:
+    -always add the prefix "get" or "is" to getters depending on how it is grammatically correct, if those prefixes are not grammatically correct then use the correct ones.
+    ex: getColor()
+        isLooping()
+
+Setters:
+    -always add the prefix "set" to setters.
+    ex: setColor(Color newColor)
+        setLooping(boolean loop)
+
+    -void should be replaced with a <This> generic that return a reference to the object. This is used for method chaining.
+    -if grammatically correct arguments should have the word "new" as a prefix, otherwise let the argument be called something else.
+    ex: setColor(Color newColor) //Do this
+        setLooping(boolean newLooping) //Don't do this, instead...
+        setLooping(boolean loop) //Do this
+
+Interfaces:
+    -if grammatically correct interfaces should have the suffix "able".
+    ex: IRenderable
+        IUpdatable
+
+    -if an interface contains getters and setters always put the getters first and then the setters.
+    -start with a capital 'I' prefix, this includes functional ones.
+    ex: IBehaviour (functional)
+        IRenderable
+        IUpdate
+
+Classes:
+    -start with the "LCL" prefix.
+    ex: LCLSprite
+        LCLStateManager
+
+UI elements:
+    -start with the "UI" prefix.
+    ex: UILabel
+        UITextArea
+        UIButton
+        UITextBox
+
+Input events:
+    -start with the "IE" prefix.
+    ex: IETouchDown
+        IETouchUp
+        IEKeyDown
+
