@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * This class contains a list of {@link IStateHandler} and a state of type {@link State}.
- * Each time {@link #manageState()} is called it alerts all the handlers in it's {@link #m_States list} about the current state.
+ * Each time {@link #manage()} is called it alerts all the handlers in it's {@link #m_States list} about the current state.
  * @param <State>
  */
 public class LCLStateManager<State> extends LCLManager<IStateHandler<State>>
