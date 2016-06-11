@@ -1,4 +1,4 @@
-package com.sasluca.lcl.applogic;
+package com.sasluca.lcl.applogic.managers.statemanager;
 
 /**
  * Created by Sas Luca on 10-Jun-16.
@@ -10,7 +10,7 @@ package com.sasluca.lcl.applogic;
  * The handler reacts to changes in state and does a specific job depending on the current state.
  * @param <State> The type of state used.
  */
-public interface LCLStateHandler<State>
+public interface IStateHandler<State>
 {
     /**
      * This method is called each frame.
