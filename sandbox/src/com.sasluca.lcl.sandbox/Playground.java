@@ -13,7 +13,8 @@ public class Playground extends Game
 {
     enum State
     {
-        TEST1, TEST2
+        TEST1,
+        TEST2
     }
 
     private LCLDefaultAppSystem<State> m_AppSystem;
@@ -23,8 +24,11 @@ public class Playground extends Game
         LCL.LCL_INIT();
 
         m_AppSystem = new LCLDefaultAppSystem<State>();
-        m_AppSystem.changeState(State.TEST2);
+        for(State state : State.values()) m_AppSystem.addState(state);
+        m_AppSystem.changeState(State.TEST1);
         m_AppSystem.addHandler(new TestHandler());
+        LCL.AppSystem = m_AppSystem;
+
         setScreen(m_AppSystem);
     }
 }

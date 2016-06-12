@@ -18,7 +18,13 @@ public class LCLThread implements IReusable<LCLThread>, IDisposable
     public LCLThread(ITask task)
     {
         m_Task = new LCLAsyncTask(task);
-        m_Thread = new Thread(() -> { while (m_Running) m_Task.executeTask(); });
+        m_Thread = new Thread(() ->
+        {
+            while (m_Running)
+            {
+                if(!m_Task.finished()) m_Task.executeTask();
+            }
+        });
     }
 
     public final LCLThread reset()

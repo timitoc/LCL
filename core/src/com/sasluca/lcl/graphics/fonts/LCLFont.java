@@ -27,7 +27,7 @@ public abstract class LCLFont implements IDisposable
     public void drawText(String text, float x, float y, Color color)
     {
         p_Font.setColor(color);
-        p_Font.draw(LCL.SPRITE_BATCH, text, x, y + getTextHeight(text, p_Font.getScaleY()));
+        p_Font.draw(LCL.SpriteBatch, text, x, y + getTextHeight(text, p_Font.getScaleY()));
     }
 
     public void drawText(String text, float x, float y, Color color, LCLColoredTextPart[] coloredParts)
@@ -37,7 +37,7 @@ public abstract class LCLFont implements IDisposable
 
         for(int i = 0; i < coloredParts.length; i++) p_Cache.setColors(coloredParts[i].color, coloredParts[i].begin, coloredParts[i].end);
 
-        p_Cache.draw(LCL.SPRITE_BATCH);
+        p_Cache.draw(LCL.SpriteBatch);
     }
 
     public final float getTextWidth(String text, float widthScale)

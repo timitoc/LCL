@@ -15,6 +15,11 @@ Variables:
     ex: private int m_Number;
         private final int m_NUMBER;
 
+Static:
+    -public static non-final variables start with a capital letter
+    ex: SpriteBatch
+        ResourceManager
+
 Getters:
     -always add the prefix "get" or "is" to getters depending on how it is grammatically correct, if those prefixes are not grammatically correct then use the correct ones.
     ex: getColor()

@@ -12,14 +12,15 @@ import com.sasluca.lcl.utils.threads.LCLAsyncTaskExecutor;
 
 public class LCL
 {
+    public static float Delta;
     public static LCLAppSystem AppSystem;
-    public static SpriteBatch SPRITE_BATCH;
+    public static SpriteBatch SpriteBatch;
     public static LCLResourceManager ResourceManger;
     public static LCLAsyncTaskExecutor AsyncTaskExecutor;
 
     public static void LCL_INIT()
     {
-        SPRITE_BATCH = new SpriteBatch();
+        SpriteBatch = new SpriteBatch();
         ResourceManger = new LCLResourceManager();
         AsyncTaskExecutor = new LCLAsyncTaskExecutor();
     }

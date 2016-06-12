@@ -49,27 +49,24 @@ public class LCLDistanceFieldFont extends LCLFont
 
     public void drawText(String text, float x, float y, Color color)
     {
-        SPRITE_BATCH.setShader(fontShader);
+        SpriteBatch.setShader(fontShader);
 
         fontShader.setUniformf("spread", m_Spread);
         fontShader.setUniformf("scale", p_Font.getScaleX() * p_Font.getScaleY());
 
         super.drawText(text, x, y, color);
 
-        SPRITE_BATCH.setShader(null);
+        SpriteBatch.setShader(null);
     }
 
     public void drawText(String text, float x, float y, Color color, LCLColoredTextPart[] coloredParts)
     {
-        SPRITE_BATCH.setShader(fontShader);
+        SpriteBatch.setShader(fontShader);
 
         super.drawText(text, x, y, color, coloredParts);
 
-        SPRITE_BATCH.setShader(null);
+        SpriteBatch.setShader(null);
     }
 
-    @Override public void dispose()
-    {
-        super.dispose();
-    }
+    @Override public void dispose() { super.dispose(); }
 }
