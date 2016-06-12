@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
  */
 
 public class LCLTrueTypeFont extends LCLFont
+
 {
     public LCLTrueTypeFont(String fontName, int size)
     {
         super(fontName);
-
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/truetypefonts/" + fontName + "/" + fontName + ".ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 

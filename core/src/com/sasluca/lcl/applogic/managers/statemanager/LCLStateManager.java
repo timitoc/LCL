@@ -6,7 +6,6 @@ package com.sasluca.lcl.applogic.managers.statemanager;
  */
 
 import com.sasluca.lcl.applogic.managers.LCLManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,12 +28,12 @@ public class LCLStateManager<State> extends LCLManager<IStateHandler<State>>
 
     /**
      * Use this method to add a state. If the state already exists in the {@link #m_States list} it won't be added.
-     * @param state The new state.
+     * @param newState The new state.
      */
     public final void addState(State newState) { m_States.add(newState); }
 
     /**
-     * Use this method to change the state. The {@link #m_CurrentState current state} won't be update until the next time {@link #manageState()} is called.
+     * Use this method to change the state. The {@link #m_CurrentState current state} won't be update until the next time {@link #manage()} is called.
      * @param newState The new state. If the state does not exist in the {@link #m_States list} the state won't be changed.
      */
     public final void changeState(State newState) { if(m_States.contains(newState) && m_CurrentState != newState) m_NewState = newState; }
