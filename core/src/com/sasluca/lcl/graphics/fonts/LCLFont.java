@@ -24,13 +24,13 @@ public abstract class LCLFont implements IDisposable
         p_Name = name;
     }
 
-    public void render(String text, float x, float y, Color color)
+    public void drawText(String text, float x, float y, Color color)
     {
         p_Font.setColor(color);
         p_Font.draw(LCL.SPRITE_BATCH, text, x, y + getTextHeight(text, p_Font.getScaleY()));
     }
 
-    public void render(String text, float x, float y, Color color, LCLColoredTextPart[] coloredParts)
+    public void drawText(String text, float x, float y, Color color, LCLColoredTextPart[] coloredParts)
     {
         p_Cache.setColor(color);
         p_Cache.setText(text, x, y);
@@ -65,6 +65,5 @@ public abstract class LCLFont implements IDisposable
     @Override public void dispose()
     {
         p_Font.dispose();
-        TsunFontSystem.removeFont(p_Name);
     }
 }

@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
+import static com.sasluca.lcl.LCL.*;
+
 /**
  * Created by Sas Luca on 11-Jun-16.
  * Copyright (C) 2016 - LCL
@@ -15,7 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class LCLDistanceFieldFont extends LCLFont
 {
-    /** The shader used to render the font. */
+    /** The shader used to drawText the font. */
     public static ShaderProgram fontShader = new ShaderProgram(Gdx.files.internal("shaders/distancefieldfonts/font.vert"), Gdx.files.internal("shaders/distancefieldfonts/font.frag"));
     private final float m_Spread;
 
@@ -25,32 +27,49 @@ public class LCLDistanceFieldFont extends LCLFont
 
         m_Spread = spread;
 
-        TsunTexturePool.addTexture(fontName, new Texture(Gdx.files.internal("ui/fonts/distancefieldfonts/" + fontName + "/" + fontName + ".png")));
-        TsunTexturePool.getTexture(fontName).setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear); //Don't forget that TsunTexturePool does not set the filter of the texture
+        ResourceManger.addTextureLL(fontName, "fonts/distancefieldfonts/" + fontName + "/" + fontName + ".png");
 
-        p_Font = new BitmapFont(Gdx.files.internal("ui/fonts/distancefieldfonts/" + fontName + "/" + fontName + ".fnt"), new TextureRegion(TsunTexturePool.getTexture(fontName)), false);
+        p_Font = new BitmapFont(Gdx.files.internal("ui/fonts/distancefieldfonts/" + fontName + "/" + fontName + ".fnt"), new TextureRegion(ResourceManger.<Texture>getResource(fontName)), false);
         p_Font.setColor(Color.BLACK);
         p_Cache = new BitmapFontCache(p_Font);
     }
 
-    public void render(String text, float x, float y, Color color)
+    public LCLDistanceFieldFont(String fontName, float spread, String pngPath, String fntPath)
     {
-        TsunTsun.getBatch().setShader(fontShader);
+        super(fontName);
+
+        m_Spread = spread;
+
+        ResourceManger.addTextureLL(fontName, pngPath);
+
+        p_Font = new BitmapFont(Gdx.files.internal(fntPath), new TextureRegion(ResourceManger.<Texture>getResource(fontName)), false);
+        p_Font.setColor(Color.BLACK);
+        p_Cache = new BitmapFontCache(p_Font);
+    }
+
+    public void drawText(String text, float x, float y, Color color)
+    {
+        SPRITE_BATCH.setShader(fontShader);
 
         fontShader.setUniformf("spread", m_Spread);
         fontShader.setUniformf("scale", p_Font.getScaleX() * p_Font.getScaleY());
 
-        super.render(text, x, y, color);
+        super.drawText(text, x, y, color);
 
-        TsunTsun.getBatch().setShader(null);
+        SPRITE_BATCH.setShader(null);
     }
 
-    public void render(String text, float x, float y, Color color, TsunColoredPart[] coloredParts)
+    public void drawText(String text, float x, float y, Color color, LCLColoredTextPart[] coloredParts)
     {
-        TsunTsun.getBatch().setShader(fontShader);
+        SPRITE_BATCH.setShader(fontShader);
 
-        super.render(text, x, y, color, coloredParts);
+        super.drawText(text, x, y, color, coloredParts);
 
-        TsunTsun.getBatch().setShader(null);
+        SPRITE_BATCH.setShader(null);
+    }
+
+    @Override public void dispose()
+    {
+        super.dispose();
     }
 }
