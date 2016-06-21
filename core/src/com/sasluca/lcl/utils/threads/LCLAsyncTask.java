@@ -12,8 +12,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class LCLAsyncTask
 {
     private ITask m_Task;
-    private AtomicBoolean m_Started;
-    private AtomicBoolean m_Finished;
+    private final AtomicBoolean m_Started;
+    private final AtomicBoolean m_Finished;
 
     public LCLAsyncTask(ITask task)
     {
@@ -25,13 +25,13 @@ public class LCLAsyncTask
     public void setTask(ITask task)
     {
         m_Started.getAndSet(false);
-        m_Started.getAndSet(false);
+        m_Finished.getAndSet(false);
         m_Task = task;
     }
 
     public final void executeTask()
     {
-        if(m_Task == null) return;
+        if(m_Task == null || m_Finished.get()) return;
 
         m_Started.getAndSet(true);
         m_Task.task();

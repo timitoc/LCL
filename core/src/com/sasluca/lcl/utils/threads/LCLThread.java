@@ -21,18 +21,11 @@ public class LCLThread implements IReusable<LCLThread>, IDisposable
     {
         m_Task = new LCLAsyncTask(task);
         m_IsAlive = new AtomicBoolean();
-        m_Thread = new Thread(() -> {
-            while (m_IsAlive.get())
-            {
-                m_Task.executeTask();
-                if (m_Task.finished() && m_Task.started()) m_Task.setTask(null);
-            }
-        });
+        m_Thread = new Thread(() -> { while(m_IsAlive.get()) m_Task.executeTask(); });
     }
 
-    public final LCLThread reset()
+    @Override public final LCLThread reset()
     {
-        if ((m_Task.started() && m_Task.finished()) || !m_Task.started()) m_Task.setTask(null);
         return this;
     }
 
@@ -81,7 +74,7 @@ public class LCLThread implements IReusable<LCLThread>, IDisposable
 
                 return;
             }
-            //Thread can not be stopped until the task ended
+            //TODO: ERROR -> Thread can not be stopped until the task ended
 
             return;
         }

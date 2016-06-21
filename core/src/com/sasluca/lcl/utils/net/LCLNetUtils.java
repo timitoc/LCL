@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
 
 public class LCLNetUtils
 {
-    public static boolean getInternetConnectivity()
+    public static synchronized boolean checkInternetConnectivity()
     {
         Socket sock = new Socket();
         InetSocketAddress addr = new InetSocketAddress("google.com", 80);
@@ -23,7 +23,16 @@ public class LCLNetUtils
         finally { try { sock.close(); } catch (IOException e) { return false;} }
     }
 
-    public static String callURL(String myAction)
+    public static synchronized boolean callURL(String url)
+    {
+        Socket sock = new Socket();
+        InetSocketAddress addr = new InetSocketAddress(url, 80);
+        try { sock.connect(addr, 3000); return true; }
+        catch (IOException e) { return false; }
+        finally { try { sock.close(); } catch (IOException e) { return false;} }
+    }
+
+    public static synchronized String getStringFromURL(String urlString)
     {
         StringBuilder sb = new StringBuilder();
         URLConnection urlConn = null;
@@ -31,7 +40,7 @@ public class LCLNetUtils
 
         try
         {
-            URL url = new URL("http", "doctoribuniwebservice.azurewebsites.net", myAction);
+            URL url = new URL(urlString);
             urlConn = url.openConnection();
             if (urlConn != null) urlConn.setReadTimeout(60 * 1000);
             if (urlConn != null && urlConn.getInputStream() != null)
@@ -48,7 +57,7 @@ public class LCLNetUtils
             }
             in.close();
         }
-        catch (Exception e) { System.out.println("Exception while calling URL:"+ myAction + "\n" + e); }
+        catch (Exception e) { System.out.println("Exception while calling URL: "+ urlString + "\n" + e); }
 
         return sb.toString();
     }

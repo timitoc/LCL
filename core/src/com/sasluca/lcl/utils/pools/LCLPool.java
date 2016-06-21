@@ -2,69 +2,92 @@ package com.sasluca.lcl.utils.pools;
 
 import com.sasluca.lcl.abstractions.IDisposable;
 import com.sasluca.lcl.abstractions.IReusable;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Sas Luca on 11-Jun-16.
+ * Copyright (C) 2016 - LCL
  */
 
-public abstract class LCLPool<Object extends IReusable> implements IDisposable
+public class LCLPool<Object extends IReusable> implements IDisposable
 {
-    private final Map<Object, Boolean> m_Objects;
+    private List<Object> m_FreeObjects;
+    private List<Object> m_InUseObjects;
+    private IInstanceFactory<Object> m_InstanceFactory;
 
-    public LCLPool() { m_Objects = new HashMap<>(); }
-
-    public abstract Object newInstance();
-
-    public int getNumberOfObjects() { return m_Objects.size(); }
-
-    public Object get()
+    public LCLPool(IInstanceFactory<Object> instanceFactory)
     {
-        if(!m_Objects.isEmpty())
-        {
-            Iterator iterator = m_Objects.keySet().iterator();
-            for(int i = 0; i++ < m_Objects.values().size();)
-            {
-                Object o = (Object) iterator.next();
-                if(m_Objects.get(o))
-                {
-                    m_Objects.remove(o);
-                    m_Objects.put(o, false);
+        m_FreeObjects = new ArrayList<>();
+        m_InUseObjects = new ArrayList<>();
+        m_InstanceFactory = instanceFactory;
+    }
 
-                    return o;
-                }
-            }
+    public synchronized Object get()
+    {
+        if(!m_FreeObjects.isEmpty())
+        {
+            Object freeObject = m_FreeObjects.get(m_FreeObjects.size() - 1);
+
+            m_FreeObjects.remove(m_FreeObjects.size() - 1);
+            m_InUseObjects.add(freeObject);
+
+            return freeObject;
         }
 
-        Object o = newInstance();
-        m_Objects.put(o, false);
+        Object o = m_InstanceFactory.newInstance();
+        m_InUseObjects.add(o);
 
         return o;
     }
 
-    public void free(Object o)
+    public synchronized LCLPool<Object> free(Object object)
     {
-        if(!m_Objects.containsKey(o)) return;
+        if(m_InUseObjects.contains(object))
+        {
+            object.reset();
+            m_InUseObjects.remove(object);
+            m_FreeObjects.add(object);
+        }
 
-        o.reset();
-        m_Objects.remove(o);
-        m_Objects.put(o, true);
+        return this;
     }
 
-    public void remove(Object o)
+    public synchronized LCLPool<Object> remove(Object object)
     {
-        if(o instanceof IDisposable) ((IDisposable) o).dispose();
-        m_Objects.remove(o);
+        if(!m_FreeObjects.contains(object))
+        {
+            //TODO:ERROR
+            return this;
+        }
+
+        if(object instanceof IDisposable) ((IDisposable) object).dispose();
+        m_FreeObjects.remove(object);
+
+        return this;
     }
 
-    public void addObject(Object o) { m_Objects.put(o, true); }
+    public LCLPool<Object> setInstanceFactory(IInstanceFactory<Object> instanceFactory) { m_InstanceFactory = instanceFactory; return this; }
+
+    public synchronized LCLPool<Object> addObject(Object object) { m_FreeObjects.add(object); return this; }
+    public synchronized LCLPool<Object> addObject() { m_FreeObjects.add(m_InstanceFactory.newInstance()); return this; }
+
+    public synchronized int getNumberOfFreeObjects() { return m_FreeObjects.size(); }
+    public synchronized int getNumberOfObjectsInUse() { return m_InUseObjects.size(); }
+    public synchronized int getNumberOfObjects() { return getNumberOfFreeObjects() + getNumberOfObjectsInUse(); }
 
     @Override public void dispose()
     {
-        for(Object object : m_Objects.keySet()) if(object instanceof IDisposable) ((IDisposable) object).dispose();
-        m_Objects.clear();
+        if(getNumberOfObjectsInUse() != 0)
+        {
+            //TODO: ERROR
+            return;
+        }
+
+        for(Object object : m_FreeObjects) if(object instanceof IDisposable) ((IDisposable) object).dispose();
+        m_FreeObjects.clear();
+
+        m_FreeObjects = null;
+        m_InUseObjects = null;
+        m_InstanceFactory = null;
     }
 }

@@ -14,7 +14,7 @@ import static com.sasluca.lcl.sandbox.Playground.State.TEST1;
 import static com.sasluca.lcl.sandbox.Playground.State.TEST2;
 import static com.sasluca.lcl.sandbox.Playground.State.TEST3;
 import static com.sasluca.lcl.utils.net.LCLNetUtils.callURL;
-import static com.sasluca.lcl.utils.net.LCLNetUtils.encodeParameter;
+import static com.sasluca.lcl.utils.net.LCLNetUtils.getStringFromURL;
 
 /**
  *  This is an example of using the {@link com.sasluca.lcl.utils.threads.LCLAsyncTaskExecutor} to call a url and retrieve a string.
@@ -31,36 +31,42 @@ public class EXAsyncTasks implements IStateHandler<Playground.State>
     {
         if(currentState == TEST1)
         {
-            if(observer == null) observer = LCL.MASTER().AsyncTaskExecutor.executeTaskAsync(() ->
-            {
-                System.out.println(callURL("/api/Default/VerifyAccount/" + encodeParameter("SasLuca") + "/" + encodeParameter("WrongPassword:)")));
-            });
-
             if(observer.finished()) LCL.MASTER().AppSystem.changeState(TEST2);
         }
 
         if(currentState == TEST2)
         {
-            System.out.println(LCL.MASTER().AsyncTaskExecutor.getNumberOfThreads());
-
-            if(observer != null)
-            {
-                LCL.MASTER().AsyncTaskExecutor.executeTaskAsync(() ->
-                {
-                    System.out.println(callURL("/api/Default/VerifyAccount/" + encodeParameter("SasLuca") + "/" + encodeParameter("WrongPassword:)")));
-                });
-
-                observer = null;
-            }
-
-            System.out.println(LCL.MASTER().AsyncTaskExecutor.getNumberOfThreads());
-            LCL.MASTER().AppSystem.changeState(TEST3);
+            if (observer.finished()) LCL.MASTER().AppSystem.changeState(TEST3);
         }
     }
 
 
     @Override public void onChangeState(Playground.State currentState, Playground.State newState)
     {
+        if(newState == TEST1)
+        {
+            observer = LCL.MASTER().AsyncTaskExecutor.executeTaskAsync(() -> callURL("http://www.google.com"));
 
+            /** Print the number of threads created by the executor. In the beggining there were no threads but now it created 1. */
+            System.out.println("Task 1 created, number of threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfThreads());
+        }
+
+        if(newState == TEST2)
+        {
+            System.out.println("Task 1 finished, number of free threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfFreeThreads());
+            observer = LCL.MASTER().AsyncTaskExecutor.executeTaskAsync(() -> callURL("http://www.youtube.com"));
+
+            /** Prints the number of threads in use. You can see there is still just one thread in use since it reuses the previously created one. */
+            System.out.println("Task 2 created, number of threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfThreads());
+        }
+
+        if(newState == TEST3)
+        {
+            System.out.println("Task 2 finished, number of free threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfFreeThreads());
+
+            LCL.MASTER().AsyncTaskExecutor.removeThread();
+
+            System.out.println("One free thread removed, number of remaining threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfThreads());
+        }
     }
 }
