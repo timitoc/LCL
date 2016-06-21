@@ -5,7 +5,7 @@ package com.sasluca.lcl.abstractions;
  * Copyright (C) 2016 - LCL
  */
 
-public interface IScalable<This> extends IOrigin<This>
+public interface IScalable<This>
 {
     /** 
      * If a class implements both {@link ITransformable} and {@link IScalable}
@@ -24,6 +24,6 @@ public interface IScalable<This> extends IOrigin<This>
     float   getOriginalHeight();
     float   getWidthScale();
     float   getHeightScale();
-    This    setWidthScale();
-    This    setHeightScale();
+    This    setWidthScale(float newWidthScale);
+    This    setHeightScale(float newHeightScale);
 }

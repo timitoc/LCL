@@ -1,5 +1,6 @@
 package com.sasluca.lcl.utils.pools;
 
+import com.sasluca.lcl.abstractions.IDisposable;
 import com.sasluca.lcl.abstractions.IReusable;
 
 import java.util.HashMap;
@@ -10,16 +11,15 @@ import java.util.Map;
  * Created by Sas Luca on 11-Jun-16.
  */
 
-public abstract class LCLPool<Object extends IReusable>
+public abstract class LCLPool<Object extends IReusable> implements IDisposable
 {
     private final Map<Object, Boolean> m_Objects;
 
-    public LCLPool()
-    {
-        m_Objects = new HashMap<>();
-    }
+    public LCLPool() { m_Objects = new HashMap<>(); }
 
     public abstract Object newInstance();
+
+    public int getNumberOfObjects() { return m_Objects.size(); }
 
     public Object get()
     {
@@ -54,8 +54,17 @@ public abstract class LCLPool<Object extends IReusable>
         m_Objects.put(o, true);
     }
 
-    public void addObject(Object o)
+    public void remove(Object o)
     {
-        m_Objects.put(o, true);
+        if(o instanceof IDisposable) ((IDisposable) o).dispose();
+        m_Objects.remove(o);
+    }
+
+    public void addObject(Object o) { m_Objects.put(o, true); }
+
+    @Override public void dispose()
+    {
+        for(Object object : m_Objects.keySet()) if(object instanceof IDisposable) ((IDisposable) object).dispose();
+        m_Objects.clear();
     }
 }

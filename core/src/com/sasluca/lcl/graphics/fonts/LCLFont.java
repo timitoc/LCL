@@ -24,20 +24,22 @@ public abstract class LCLFont implements IDisposable
         p_Name = name;
     }
 
-    public void drawText(String text, float x, float y, Color color)
+    public void drawText(String text, float x, float y, float widthScale, float heightScale, Color color)
     {
+        p_Font.getData().setScale(widthScale, heightScale);
         p_Font.setColor(color);
-        p_Font.draw(LCL.SpriteBatch, text, x, y + getTextHeight(text, p_Font.getScaleY()));
+        p_Font.draw(LCL.MASTER().SpriteBatch, text, x, y + getTextHeight(text, p_Font.getScaleY()));
     }
 
-    public void drawText(String text, float x, float y, Color color, LCLColoredTextPart[] coloredParts)
+    public void drawText(String text, float x, float y, Color color, float widthScale, float heightScale, LCLColoredTextPart[] coloredParts)
     {
+        p_Font.getData().setScale(widthScale, heightScale);
         p_Cache.setColor(color);
         p_Cache.setText(text, x, y);
 
         for(int i = 0; i < coloredParts.length; i++) p_Cache.setColors(coloredParts[i].color, coloredParts[i].begin, coloredParts[i].end);
 
-        p_Cache.draw(LCL.SpriteBatch);
+        p_Cache.draw(LCL.MASTER().SpriteBatch);
     }
 
     public final float getTextWidth(String text, float widthScale)

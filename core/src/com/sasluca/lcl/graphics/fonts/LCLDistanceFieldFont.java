@@ -7,8 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-
-import static com.sasluca.lcl.LCL.*;
+import com.sasluca.lcl.LCL;
 
 /**
  * Created by Sas Luca on 11-Jun-16.
@@ -27,9 +26,9 @@ public class LCLDistanceFieldFont extends LCLFont
 
         m_Spread = spread;
 
-        ResourceManger.addTextureLL(fontName, "fonts/distancefieldfonts/" + fontName + "/" + fontName + ".png");
+        LCL.MASTER().ResourceManger.addTextureLL(fontName, "fonts/distancefieldfonts/" + fontName + "/" + fontName + ".png");
 
-        p_Font = new BitmapFont(Gdx.files.internal("ui/fonts/distancefieldfonts/" + fontName + "/" + fontName + ".fnt"), new TextureRegion(ResourceManger.<Texture>getResource(fontName)), false);
+        p_Font = new BitmapFont(Gdx.files.internal("fonts/distancefieldfonts/" + fontName + "/" + fontName + ".fnt"), new TextureRegion(LCL.MASTER().ResourceManger.<Texture>getResource(fontName)), false);
         p_Font.setColor(Color.BLACK);
         p_Cache = new BitmapFontCache(p_Font);
     }
@@ -40,32 +39,32 @@ public class LCLDistanceFieldFont extends LCLFont
 
         m_Spread = spread;
 
-        ResourceManger.addTextureLL(fontName, pngPath);
+        LCL.MASTER().ResourceManger.addTextureLL(fontName, pngPath);
 
-        p_Font = new BitmapFont(Gdx.files.internal(fntPath), new TextureRegion(ResourceManger.<Texture>getResource(fontName)), false);
+        p_Font = new BitmapFont(Gdx.files.internal(fntPath), new TextureRegion(LCL.MASTER().ResourceManger.<Texture>getResource(fontName)), false);
         p_Font.setColor(Color.BLACK);
         p_Cache = new BitmapFontCache(p_Font);
     }
 
-    public void drawText(String text, float x, float y, Color color)
+    public void drawText(String text, float x, float y, float widthScale, float heightScale, Color color)
     {
-        SpriteBatch.setShader(fontShader);
+        LCL.MASTER().SpriteBatch.setShader(fontShader);
 
         fontShader.setUniformf("spread", m_Spread);
         fontShader.setUniformf("scale", p_Font.getScaleX() * p_Font.getScaleY());
 
-        super.drawText(text, x, y, color);
+        super.drawText(text, x, y, widthScale, heightScale, color);
 
-        SpriteBatch.setShader(null);
+        LCL.MASTER().SpriteBatch.setShader(null);
     }
 
-    public void drawText(String text, float x, float y, Color color, LCLColoredTextPart[] coloredParts)
+    public void drawText(String text, float x, float y, float widthScale, float heightScale, Color color, LCLColoredTextPart[] coloredParts)
     {
-        SpriteBatch.setShader(fontShader);
+        LCL.MASTER().SpriteBatch.setShader(fontShader);
 
-        super.drawText(text, x, y, color, coloredParts);
+        super.drawText(text, x, y, color, widthScale, heightScale, coloredParts);
 
-        SpriteBatch.setShader(null);
+        LCL.MASTER().SpriteBatch.setShader(null);
     }
 
     @Override public void dispose() { super.dispose(); }

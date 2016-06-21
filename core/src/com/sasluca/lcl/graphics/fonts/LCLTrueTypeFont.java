@@ -1,6 +1,7 @@
 package com.sasluca.lcl.graphics.fonts;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 /**
@@ -14,10 +15,13 @@ public class LCLTrueTypeFont extends LCLFont
     public LCLTrueTypeFont(String fontName, int size)
     {
         super(fontName);
+
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/truetypefonts/" + fontName + "/" + fontName + ".ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         parameter.size = size;
+        parameter.minFilter = Texture.TextureFilter.Linear;
+        parameter.magFilter = Texture.TextureFilter.Linear;
         p_Font = generator.generateFont(parameter);
 
         generator.dispose(); // don't forget to dispose to avoid memory leaks!

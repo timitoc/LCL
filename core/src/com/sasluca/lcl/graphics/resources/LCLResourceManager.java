@@ -1,9 +1,12 @@
 package com.sasluca.lcl.graphics.resources;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.sasluca.lcl.abstractions.IDisposable;
+import com.sasluca.lcl.abstractions.IUpdateable;
+import com.sasluca.lcl.utils.threads.IAsyncTaskObserver;
 
 import java.util.HashMap;
 
@@ -12,13 +15,15 @@ import java.util.HashMap;
  * Copyright (C) 2016 - LCL
  */
 
-public class LCLResourceManager implements IDisposable
+public class LCLResourceManager implements IUpdateable, IDisposable
 {
     private HashMap<String, Object> m_Resources;
+    private AssetManager m_AssetManager;
 
     public LCLResourceManager()
     {
         m_Resources = new HashMap<>();
+        m_AssetManager = new AssetManager();
     }
 
     public final LCLResourceManager addResource(String name, Object resource)
@@ -68,6 +73,11 @@ public class LCLResourceManager implements IDisposable
     }
     //</editor-fold>
 
+    public final IAsyncTaskObserver executeLoadAsync()
+    {
+        return () -> { return true; };
+    }
+
     public <Resource> Resource getResource(String name)
     {
         if(!m_Resources.containsKey(name))
@@ -76,6 +86,11 @@ public class LCLResourceManager implements IDisposable
         }
 
         return ((Resource) m_Resources.get(name));
+    }
+
+    @Override public void update()
+    {
+        m_AssetManager.update();
     }
 
     @Override public void dispose()

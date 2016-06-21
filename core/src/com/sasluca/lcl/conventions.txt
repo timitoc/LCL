@@ -2,6 +2,10 @@ LCL - Crossplatform UI framework for libGDX using Overlap2D and Spine
 
 Conventions:
 
+Code made by someone else:
+    -classes made by other people have the EXT prefix
+    ex: EXTBitmapFontWriter
+
 Variables:
     -variables use camel case, unless they are final, in which case they must be in ALL CAPS.
     ex: int number

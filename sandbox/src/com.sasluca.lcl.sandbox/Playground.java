@@ -3,6 +3,7 @@ package com.sasluca.lcl.sandbox;
 import com.badlogic.gdx.Game;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.applogic.appsystems.impl.LCLDefaultAppSystem;
+import com.sasluca.lcl.sandbox.examples.EXFonts;
 
 /**
  * Created by Sas Luca on 09-Jun-16.
@@ -11,23 +12,24 @@ import com.sasluca.lcl.applogic.appsystems.impl.LCLDefaultAppSystem;
 
 public class Playground extends Game
 {
-    enum State
+    public enum State
     {
         TEST1,
-        TEST2
+        TEST2,
+        TEST3
     }
 
     private LCLDefaultAppSystem<State> m_AppSystem;
 
     @Override public void create()
     {
-        LCL.LCL_INIT();
+        LCL.MASTER().LCL_INIT();
 
-        m_AppSystem = new LCLDefaultAppSystem<State>();
+        m_AppSystem = new LCLDefaultAppSystem<State>(720, 1280);
         for(State state : State.values()) m_AppSystem.addState(state);
+        m_AppSystem.addHandler(new EXFonts());
         m_AppSystem.changeState(State.TEST1);
-        m_AppSystem.addHandler(new TestHandler());
-        LCL.AppSystem = m_AppSystem;
+        LCL.MASTER().AppSystem = m_AppSystem;
 
         setScreen(m_AppSystem);
     }

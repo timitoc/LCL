@@ -1,6 +1,7 @@
 package com.sasluca.lcl.graphics.fonts;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Sas Luca on 12-Jun-16.
@@ -9,18 +10,17 @@ import java.util.HashMap;
 
 public class LCLFontManager
 {
-    private HashMap<String, LCLFont> m_Fonts;
+    private List<LCLFont> m_Fonts;
 
     public LCLFontManager()
     {
-        m_Fonts = new HashMap<>();
-        addDistanceFieldFont("DEFAULT_FONT", 4);
+        m_Fonts = new ArrayList<>();
     }
 
-    public void removeFont(String name) { m_Fonts.get(name).dispose(); m_Fonts.remove(name); }
-    public <Font extends LCLFont> Font getFont(String name) { return (Font) m_Fonts.get(name); }
-    public void addTrueTypeFont(String name, int size) { m_Fonts.put(name, new LCLTrueTypeFont(name, size)); }
-    public void addTrueTypeFont(String name, String path, int size) { m_Fonts.put(name, new LCLTrueTypeFont(name, size, path)); }
-    public void addDistanceFieldFont(String name, float spread) { m_Fonts.put(name, new LCLDistanceFieldFont(name, spread)); }
-    public void addDistanceFieldFont(String name, String pngPath, String fntPath, float spread) { m_Fonts.put(name, new LCLDistanceFieldFont(name, spread, pngPath, fntPath)); }
+    public void addTrueTypeFont(String name, int size) { m_Fonts.add(new LCLTrueTypeFont(name, size)); }
+    public void addDistanceFieldFont(String name, float spread) { m_Fonts.add(new LCLDistanceFieldFont(name, spread)); }
+    public void addTrueTypeFont(String name, String path, int size) { m_Fonts.add(new LCLTrueTypeFont(name, size, path)); }
+    public void removeFont(String name) { for(LCLFont font : m_Fonts) if(font.getName().matches(name)) { m_Fonts.remove(font); font.dispose(); } }
+    public <Font extends LCLFont> Font getFont(String name) { for(LCLFont font : m_Fonts) if(font.getName().matches(name)) return (Font) font; return null; }
+    public void addDistanceFieldFont(String name, String pngPath, String fntPath, float spread) { m_Fonts.add(new LCLDistanceFieldFont(name, spread, pngPath, fntPath)); }
 }

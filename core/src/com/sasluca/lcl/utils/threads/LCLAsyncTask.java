@@ -2,6 +2,8 @@ package com.sasluca.lcl.utils.threads;
 
 import com.sasluca.lcl.abstractions.functional.ITask;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Created by Sas Luca on 11-Jun-16.
  * Copyright (C) 2016 - LCL
@@ -10,26 +12,33 @@ import com.sasluca.lcl.abstractions.functional.ITask;
 public class LCLAsyncTask
 {
     private ITask m_Task;
-    private boolean m_Started = false;
-    private boolean m_Finished = false;
+    private AtomicBoolean m_Started;
+    private AtomicBoolean m_Finished;
 
     public LCLAsyncTask(ITask task)
     {
         m_Task = task;
+        m_Started = new AtomicBoolean(false);
+        m_Finished = new AtomicBoolean(false);
     }
 
     public void setTask(ITask task)
     {
+        m_Started.getAndSet(false);
+        m_Started.getAndSet(false);
         m_Task = task;
     }
 
-    public synchronized final void executeTask()
+    public final void executeTask()
     {
-        m_Started = true;
+        if(m_Task == null) return;
+
+        m_Started.getAndSet(true);
         m_Task.task();
-        m_Finished = true;
+        m_Finished.getAndSet(true);
     }
 
-    public final synchronized boolean started() { return m_Started; }
-    public final synchronized boolean finished() { return m_Finished; }
+    public final synchronized ITask getTask() { return m_Task; }
+    public final synchronized boolean started() { return m_Started.get(); }
+    public final synchronized boolean finished() { return m_Finished.get(); }
 }
