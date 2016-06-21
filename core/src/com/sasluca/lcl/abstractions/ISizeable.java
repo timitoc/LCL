@@ -9,4 +9,5 @@ public interface ISizeable<This>
 {
     This    setWidth(float newWidth);
     This    setHeight(float newHeight);
+    This    setSize(float newWidth, float newHeight);
 }

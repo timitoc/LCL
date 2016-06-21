@@ -3,8 +3,7 @@ package com.sasluca.lcl.sandbox;
 import com.badlogic.gdx.Game;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.applogic.appsystems.impl.LCLDefaultAppSystem;
-import com.sasluca.lcl.sandbox.examples.EXAsyncTasks;
-import com.sasluca.lcl.sandbox.examples.EXFonts;
+import com.sasluca.lcl.sandbox.examples.EXSprite;
 
 /**
  * Created by Sas Luca on 09-Jun-16.
@@ -28,7 +27,7 @@ public class Playground extends Game
 
         m_AppSystem = new LCLDefaultAppSystem<State>(720, 1280);
         for(State state : State.values()) m_AppSystem.addState(state);
-        m_AppSystem.addHandler(new EXAsyncTasks());
+        m_AppSystem.addHandler(new EXSprite());
         m_AppSystem.changeState(State.TEST1);
         LCL.MASTER().AppSystem = m_AppSystem;
 

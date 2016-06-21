@@ -12,12 +12,12 @@ import com.sasluca.lcl.utils.text.LCLString;
 
 public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, ITransformable<LCLLabel>, IScalable<LCLLabel>, IColorable<LCLLabel>, IText<LCLLabel>, IDisposable
 {
+    protected float p_Y;
+    protected float p_X;
     protected Color p_Color;
     protected LCLFont p_Font;
-    protected float p_X;
-    protected float p_Y;
-    public float p_WidthScale;
-    public float p_HeightScale;
+    protected float p_WidthScale;
+    protected float p_HeightScale;
     protected LCLString p_String;
 
     public LCLLabel(String font, String text, Color color)
@@ -48,6 +48,8 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
     @Override public float getOriginalHeight() { return p_Font.getTextHeight(p_String.getText(), 1); }
     @Override public LCLLabel setWidthScale(float widthScale) { p_WidthScale = widthScale; return this; }
     @Override public LCLLabel setHeightScale(float heightScale) { p_HeightScale = heightScale; return this; }
+    @Override public LCLLabel setScale(float newScale) { p_WidthScale = p_HeightScale = newScale; return this; }
+    @Override public LCLLabel setScale(float newWidthScale, float newHeightScale) { p_WidthScale = newWidthScale; p_HeightScale = newHeightScale; return this; }
 
     //Text
     @Override public int getLength() { return p_String.getLength(); }

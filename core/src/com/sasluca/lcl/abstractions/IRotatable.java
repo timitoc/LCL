@@ -5,7 +5,7 @@ package com.sasluca.lcl.abstractions;
  * Copyright (C) 2016 - LCL
  */
 
-public interface IRotatable<This> extends IOrigin<This>
+public interface IRotatable<This>
 {
     float   getRotation();
     This    setRotation(float degrees);

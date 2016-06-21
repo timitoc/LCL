@@ -14,7 +14,6 @@ import static com.sasluca.lcl.sandbox.Playground.State.TEST1;
 import static com.sasluca.lcl.sandbox.Playground.State.TEST2;
 import static com.sasluca.lcl.sandbox.Playground.State.TEST3;
 import static com.sasluca.lcl.utils.net.LCLNetUtils.callURL;
-import static com.sasluca.lcl.utils.net.LCLNetUtils.getStringFromURL;
 
 /**
  *  This is an example of using the {@link com.sasluca.lcl.utils.threads.LCLAsyncTaskExecutor} to call a url and retrieve a string.
