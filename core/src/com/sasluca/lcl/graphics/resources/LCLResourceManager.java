@@ -1,8 +1,10 @@
 package com.sasluca.lcl.graphics.resources;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.sasluca.lcl.abstractions.IDisposable;
 import com.sasluca.lcl.abstractions.IUpdateable;
@@ -72,6 +74,15 @@ public class LCLResourceManager implements IUpdateable, IDisposable
         return this;
     }
     //</editor-fold>
+
+    public void addNinepatch(String name, String path)
+    {
+        if(!m_Resources.containsKey(name))
+        {
+            TextureAtlas atlas = new TextureAtlas(Gdx.files.getFileHandle(path, Files.FileType.Internal));
+            m_Resources.put(name, atlas.createPatch(name));
+        }
+    }
 
     public final IAsyncTaskObserver executeLoadAsync()
     {
