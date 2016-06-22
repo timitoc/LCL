@@ -35,5 +35,5 @@ public abstract class LCLManager<Handler>
         }
     }
 
-    protected abstract void manage();
+    protected abstract void manage(Object... args);
 }

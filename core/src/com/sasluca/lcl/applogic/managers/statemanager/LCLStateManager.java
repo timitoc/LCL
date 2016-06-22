@@ -41,7 +41,7 @@ public class LCLStateManager<State> extends LCLManager<IStateHandler<State>>
     /**
      * When this method is called it will call the all of it's handlers with the current state.
      */
-    @Override protected final void manage()
+    @Override protected final void manage(Object... args)
     {
         //Check if state changed
         if(m_NewState != m_CurrentState)
