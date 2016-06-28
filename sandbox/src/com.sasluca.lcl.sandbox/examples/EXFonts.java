@@ -28,7 +28,7 @@ public class EXFonts implements IStateHandler<State>
     {
         if(newState == State.TEST1)
         {
-            LCL.MASTER().FontManager.addTrueTypeFont("Roboto", 95);
+            LCL.SYS.FontManager.addTrueTypeFont("Roboto", 95);
             label = new LCLLabel("Roboto", "Hello World", Color.BLACK);
             System.out.println(label.getHeight() * 1.4f);
         }

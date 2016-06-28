@@ -1,7 +1,6 @@
 package com.sasluca.lcl.graphics.fonts;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.sasluca.lcl.utils.collections.LCLArray;
 
 /**
  * Created by Sas Luca on 12-Jun-16.
@@ -10,11 +9,11 @@ import java.util.List;
 
 public class LCLFontManager
 {
-    private List<LCLFont> m_Fonts;
+    private LCLArray<LCLFont> m_Fonts;
 
     public LCLFontManager()
     {
-        m_Fonts = new ArrayList<>();
+        m_Fonts = new LCLArray<>();
     }
 
     public void addTrueTypeFont(String name, int size) { m_Fonts.add(new LCLTrueTypeFont(name, size)); }

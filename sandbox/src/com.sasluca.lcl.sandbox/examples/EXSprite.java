@@ -1,6 +1,7 @@
 package com.sasluca.lcl.sandbox.examples;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
@@ -29,6 +30,8 @@ public class EXSprite implements IStateHandler<State>
         if(newState == State.TEST1)
         {
             sprite = new LCLSprite(new Texture(Gdx.files.local("badlogic.jpg")));
+            sprite.setColor(Color.BLACK).setScale(2).flipX(true);
+
         }
     }
 }

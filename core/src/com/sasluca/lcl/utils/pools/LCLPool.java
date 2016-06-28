@@ -2,23 +2,25 @@ package com.sasluca.lcl.utils.pools;
 
 import com.sasluca.lcl.abstractions.IDisposable;
 import com.sasluca.lcl.abstractions.IReusable;
-import java.util.*;
+import com.sasluca.lcl.utils.collections.LCLArray;
 
 /**
  * Created by Sas Luca on 11-Jun-16.
  * Copyright (C) 2016 - LCL
  */
 
-public class LCLPool<Object extends IReusable> implements IDisposable
+public class LCLPool<Object> implements IDisposable
 {
-    private List<Object> m_FreeObjects;
-    private List<Object> m_InUseObjects;
+    private LCLArray<Object> m_FreeObjects;
+    private LCLArray<Object> m_InUseObjects;
+    private IOnReset<Object> m_OnReset;
     private IInstanceFactory<Object> m_InstanceFactory;
 
-    public LCLPool(IInstanceFactory<Object> instanceFactory)
+    public LCLPool(IInstanceFactory<Object> instanceFactory, IOnReset<Object> onReset)
     {
-        m_FreeObjects = new ArrayList<>();
-        m_InUseObjects = new ArrayList<>();
+        m_OnReset = onReset;
+        m_FreeObjects = new LCLArray<>();
+        m_InUseObjects = new LCLArray<>();
         m_InstanceFactory = instanceFactory;
     }
 
@@ -26,9 +28,9 @@ public class LCLPool<Object extends IReusable> implements IDisposable
     {
         if(!m_FreeObjects.isEmpty())
         {
-            Object freeObject = m_FreeObjects.get(m_FreeObjects.size() - 1);
+            Object freeObject = m_FreeObjects.get(m_FreeObjects.getSize() - 1);
 
-            m_FreeObjects.remove(m_FreeObjects.size() - 1);
+            m_FreeObjects.remove(m_FreeObjects.getSize() - 1);
             m_InUseObjects.add(freeObject);
 
             return freeObject;
@@ -44,7 +46,7 @@ public class LCLPool<Object extends IReusable> implements IDisposable
     {
         if(m_InUseObjects.contains(object))
         {
-            object.reset();
+            m_OnReset.onReset(object);
             m_InUseObjects.remove(object);
             m_FreeObjects.add(object);
         }
@@ -71,8 +73,8 @@ public class LCLPool<Object extends IReusable> implements IDisposable
     public synchronized LCLPool<Object> addObject(Object object) { m_FreeObjects.add(object); return this; }
     public synchronized LCLPool<Object> addObject() { m_FreeObjects.add(m_InstanceFactory.newInstance()); return this; }
 
-    public synchronized int getNumberOfFreeObjects() { return m_FreeObjects.size(); }
-    public synchronized int getNumberOfObjectsInUse() { return m_InUseObjects.size(); }
+    public synchronized int getNumberOfFreeObjects() { return m_FreeObjects.getSize(); }
+    public synchronized int getNumberOfObjectsInUse() { return m_InUseObjects.getSize(); }
     public synchronized int getNumberOfObjects() { return getNumberOfFreeObjects() + getNumberOfObjectsInUse(); }
 
     @Override public void dispose()
@@ -86,6 +88,7 @@ public class LCLPool<Object extends IReusable> implements IDisposable
         for(Object object : m_FreeObjects) if(object instanceof IDisposable) ((IDisposable) object).dispose();
         m_FreeObjects.clear();
 
+        m_OnReset = null;
         m_FreeObjects = null;
         m_InUseObjects = null;
         m_InstanceFactory = null;

@@ -5,7 +5,9 @@ package com.sasluca.lcl.abstractions;
  * Copyright (C) 2016 - LCL
  */
 
-public interface IRenderable<This>
+public interface IRenderable<This> extends IRender<This>
 {
-    This render();
+    boolean isRendering();
+
+    This setRenderingState(boolean renderingState);
 }

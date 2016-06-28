@@ -7,24 +7,24 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.sasluca.lcl.abstractions.IDisposable;
-import com.sasluca.lcl.abstractions.IUpdateable;
+import com.sasluca.lcl.abstractions.IUpdatable;
+import com.sasluca.lcl.abstractions.IUpdate;
+import com.sasluca.lcl.utils.collections.LCLObjectMap;
 import com.sasluca.lcl.utils.threads.IAsyncTaskObserver;
-
-import java.util.HashMap;
 
 /**
  * Created by Sas Luca on 11-Jun-16.
  * Copyright (C) 2016 - LCL
  */
 
-public class LCLResourceManager implements IUpdateable, IDisposable
+public class LCLResourceManager implements IUpdate<LCLResourceManager>, IDisposable
 {
-    private HashMap<String, Object> m_Resources;
+    private LCLObjectMap<String, Object> m_Resources;
     private AssetManager m_AssetManager;
 
     public LCLResourceManager()
     {
-        m_Resources = new HashMap<>();
+        m_Resources = new LCLObjectMap<>();
         m_AssetManager = new AssetManager();
     }
 
@@ -99,10 +99,7 @@ public class LCLResourceManager implements IUpdateable, IDisposable
         return ((Resource) m_Resources.get(name));
     }
 
-    @Override public void update()
-    {
-        m_AssetManager.update();
-    }
+    @Override public LCLResourceManager update() { m_AssetManager.update(); return this; }
 
     @Override public void dispose()
     {

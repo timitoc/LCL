@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
+import com.sasluca.lcl.graphics.fonts.LCLLabel;
 
 /**
  * Created by Sas Luca on 21-Jun-16.
@@ -18,33 +19,39 @@ public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, ICol
     protected Color p_Color;
     protected float p_Width;
     protected float p_Height;
-    protected boolean p_FlipX;
-    protected boolean p_FlipY;
     protected float p_WidthScale;
     protected float p_HeightScale;
     protected NinePatch p_NinePatch;
+    protected boolean p_IsRendering;
     protected Texture.TextureFilter p_MinFilter;
     protected Texture.TextureFilter p_MagFilter;
 
     public LCLNinepatchSprite(String ninepatch, Texture.TextureFilter minFilter, Texture.TextureFilter magFilter)
     {
-        p_NinePatch = LCL.MASTER().ResourceManger.<NinePatch>getResource(ninepatch);
+        p_NinePatch = LCL.SYS.ResourceManger.<NinePatch>getResource(ninepatch);
         p_MinFilter = minFilter;
         p_MagFilter = magFilter;
         p_WidthScale = 1;
         p_HeightScale = 1;
+        p_IsRendering = true;
     }
 
     //Render
     @Override public LCLNinepatchSprite render()
     {
+        if(!p_IsRendering) return this;
+
         p_NinePatch.setColor(p_Color);
         p_NinePatch.scale(p_WidthScale, p_HeightScale);
         p_NinePatch.getTexture().setFilter(p_MinFilter, p_MagFilter);
-        p_NinePatch.draw(LCL.MASTER().SpriteBatch, p_X, p_Y, p_Width, p_Height);
+        p_NinePatch.draw(LCL.SYS.SpriteBatch, p_X, p_Y, p_Width, p_Height);
 
         return this;
     }
+
+    @Override public boolean isRendering() { return p_IsRendering; }
+    @Override public LCLNinepatchSprite setRenderingState(boolean renderingState) { p_IsRendering = renderingState; return this; }
+
 
     //Color
     @Override public Color getColor() { return p_Color; }

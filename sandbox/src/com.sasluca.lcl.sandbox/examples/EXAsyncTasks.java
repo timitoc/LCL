@@ -30,12 +30,12 @@ public class EXAsyncTasks implements IStateHandler<Playground.State>
     {
         if(currentState == TEST1)
         {
-            if(observer.finished()) LCL.MASTER().AppSystem.changeState(TEST2);
+            if(observer.finished()) LCL.SYS.AppSystem.changeState(TEST2);
         }
 
         if(currentState == TEST2)
         {
-            if (observer.finished()) LCL.MASTER().AppSystem.changeState(TEST3);
+            if (observer.finished()) LCL.SYS.AppSystem.changeState(TEST3);
         }
     }
 
@@ -44,28 +44,28 @@ public class EXAsyncTasks implements IStateHandler<Playground.State>
     {
         if(newState == TEST1)
         {
-            observer = LCL.MASTER().AsyncTaskExecutor.executeTaskAsync(() -> callURL("http://www.google.com"));
+            observer = LCL.SYS.AsyncTaskExecutor.executeTaskAsync(() -> callURL("http://www.google.com"));
 
             /** Print the number of threads created by the executor. In the beggining there were no threads but now it created 1. */
-            System.out.println("Task 1 created, number of threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfThreads());
+            System.out.println("Task 1 created, number of threads: " + LCL.SYS.AsyncTaskExecutor.getNumberOfThreads());
         }
 
         if(newState == TEST2)
         {
-            System.out.println("Task 1 finished, number of free threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfFreeThreads());
-            observer = LCL.MASTER().AsyncTaskExecutor.executeTaskAsync(() -> callURL("http://www.youtube.com"));
+            System.out.println("Task 1 finished, number of free threads: " + LCL.SYS.AsyncTaskExecutor.getNumberOfFreeThreads());
+            observer = LCL.SYS.AsyncTaskExecutor.executeTaskAsync(() -> callURL("http://www.youtube.com"));
 
             /** Prints the number of threads in use. You can see there is still just one thread in use since it reuses the previously created one. */
-            System.out.println("Task 2 created, number of threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfThreads());
+            System.out.println("Task 2 created, number of threads: " + LCL.SYS.AsyncTaskExecutor.getNumberOfThreads());
         }
 
         if(newState == TEST3)
         {
-            System.out.println("Task 2 finished, number of free threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfFreeThreads());
+            System.out.println("Task 2 finished, number of free threads: " + LCL.SYS.AsyncTaskExecutor.getNumberOfFreeThreads());
 
-            LCL.MASTER().AsyncTaskExecutor.removeThread();
+            LCL.SYS.AsyncTaskExecutor.removeThread();
 
-            System.out.println("One free thread removed, number of remaining threads: " + LCL.MASTER().AsyncTaskExecutor.getNumberOfThreads());
+            System.out.println("One free thread removed, number of remaining threads: " + LCL.SYS.AsyncTaskExecutor.getNumberOfThreads());
         }
     }
 }

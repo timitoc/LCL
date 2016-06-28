@@ -46,7 +46,6 @@ public class LCLString implements IText<LCLString>
                 return s;
             }
         }
-
         return null;
     }
 
@@ -133,4 +132,5 @@ public class LCLString implements IText<LCLString>
 
         return this;
     }
+
 }

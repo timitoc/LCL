@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.sasluca.lcl.graphics.fonts.LCLLabel;
 
 /**
  * Created by Sas Luca on 21-Jun-16.
@@ -18,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class LCLSprite implements IRenderable<LCLSprite>, ITransformable<LCLSprite>, IColorable<LCLSprite>, IFlippable<LCLSprite>, ISizeable<LCLSprite>, IScalable<LCLSprite>, IRotatable<LCLSprite>, IOrigin<LCLSprite>
 {
     protected Sprite p_Sprite;
+    protected boolean p_IsRendering = true;
 
     public LCLSprite(Texture texture)
     {
@@ -29,7 +31,18 @@ public class LCLSprite implements IRenderable<LCLSprite>, ITransformable<LCLSpri
         p_Sprite = new Sprite(region);
     }
 
-    @Override public LCLSprite render() { p_Sprite.draw(LCL.MASTER().SpriteBatch); return this; }
+    //Render
+    @Override public LCLSprite render()
+    {
+        if(!p_IsRendering) return this;
+
+        p_Sprite.draw(LCL.SYS.SpriteBatch);
+        return this;
+    }
+
+    @Override public boolean isRendering() { return p_IsRendering; }
+    @Override public LCLSprite setRenderingState(boolean renderingState) { p_IsRendering = renderingState; return this; }
+
 
     //Transform
     @Override public float getX() { return p_Sprite.getX(); }

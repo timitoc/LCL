@@ -26,9 +26,9 @@ public class LCLDistanceFieldFont extends LCLFont
 
         m_Spread = spread;
 
-        LCL.MASTER().ResourceManger.addTextureLL(fontName, "fonts/distancefieldfonts/" + fontName + "/" + fontName + ".png");
+        LCL.SYS.ResourceManger.addTextureLL(fontName, "fonts/distancefieldfonts/" + fontName + "/" + fontName + ".png");
 
-        p_Font = new BitmapFont(Gdx.files.internal("fonts/distancefieldfonts/" + fontName + "/" + fontName + ".fnt"), new TextureRegion(LCL.MASTER().ResourceManger.<Texture>getResource(fontName)), false);
+        p_Font = new BitmapFont(Gdx.files.internal("fonts/distancefieldfonts/" + fontName + "/" + fontName + ".fnt"), new TextureRegion(LCL.SYS.ResourceManger.<Texture>getResource(fontName)), false);
         p_Font.setColor(Color.BLACK);
         p_Cache = new BitmapFontCache(p_Font);
     }
@@ -39,32 +39,32 @@ public class LCLDistanceFieldFont extends LCLFont
 
         m_Spread = spread;
 
-        LCL.MASTER().ResourceManger.addTextureLL(fontName, pngPath);
+        LCL.SYS.ResourceManger.addTextureLL(fontName, pngPath);
 
-        p_Font = new BitmapFont(Gdx.files.internal(fntPath), new TextureRegion(LCL.MASTER().ResourceManger.<Texture>getResource(fontName)), false);
+        p_Font = new BitmapFont(Gdx.files.internal(fntPath), new TextureRegion(LCL.SYS.ResourceManger.<Texture>getResource(fontName)), false);
         p_Font.setColor(Color.BLACK);
         p_Cache = new BitmapFontCache(p_Font);
     }
 
     public void drawText(String text, float x, float y, float widthScale, float heightScale, Color color)
     {
-        LCL.MASTER().SpriteBatch.setShader(fontShader);
+        LCL.SYS.SpriteBatch.setShader(fontShader);
 
         fontShader.setUniformf("spread", m_Spread);
         fontShader.setUniformf("scale", p_Font.getScaleX() * p_Font.getScaleY());
 
         super.drawText(text, x, y, widthScale, heightScale, color);
 
-        LCL.MASTER().SpriteBatch.setShader(null);
+        LCL.SYS.SpriteBatch.setShader(null);
     }
 
     public void drawText(String text, float x, float y, float widthScale, float heightScale, Color color, LCLColoredTextPart[] coloredParts)
     {
-        LCL.MASTER().SpriteBatch.setShader(fontShader);
+        LCL.SYS.SpriteBatch.setShader(fontShader);
 
         super.drawText(text, x, y, color, widthScale, heightScale, coloredParts);
 
-        LCL.MASTER().SpriteBatch.setShader(null);
+        LCL.SYS.SpriteBatch.setShader(null);
     }
 
     @Override public void dispose() { super.dispose(); }

@@ -1,12 +1,34 @@
 package com.sasluca.lcl.input;
 
+import com.sasluca.lcl.LCL;
+
 /**
  * Created by Sas Luca on 21/06/16.
  * Copyright (C) 2016 - LCL
  */
 
-public abstract class LCLInputHandler<Sender>
+public abstract class LCLInputHandler
 {
+    private int m_InputLayer = -1;
+
+    public final void subscribeToInputLayer(int inputLayer)
+    {
+        //TODO: ERROR
+        if(inputLayer == m_InputLayer || LCL.SYS.InputSystem.numberOfInputLayers() < inputLayer) return;
+
+        m_InputLayer = inputLayer;
+        LCL.SYS.InputSystem.getInputLayer(inputLayer);
+    }
+
+    public final void unsubscribeFromInputLayer()
+    {
+        if(m_InputLayer != -1)
+        {
+            m_InputLayer = -1;
+            LCL.SYS.InputSystem.getInputLayer(m_InputLayer).removeInputHandler(this);
+        }
+    }
+
     public boolean keyUp(int keycode) { return false; }
     public boolean keyDown(int keycode) { return false; }
     public boolean scrolled(int amount) { return false; }

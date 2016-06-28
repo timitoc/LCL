@@ -38,7 +38,7 @@ public class LCLMask implements ISizeable<LCLMask>, IScalable<LCLMask>
     /** All objects rendered after {@link #start()} will be inside the mask */
     public void start()
     {
-        LCL.MASTER().SpriteBatch.flush();
+        LCL.SYS.SpriteBatch.flush();
 
         Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
         Gdx.gl.glScissor((int)p_X, (int)p_Y, (int)(p_Width * p_WidthScale), (int)(p_Height * p_HeightScale));
@@ -47,13 +47,13 @@ public class LCLMask implements ISizeable<LCLMask>, IScalable<LCLMask>
     /** Objects rendered after {@link #end()} will not be inside the mask. Remember you must call {@link #end()} before you call {@link #start()} again*/
     public void end()
     {
-        LCL.MASTER().SpriteBatch.flush();
+        LCL.SYS.SpriteBatch.flush();
         Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
     }
 
     public static void startMask(float x, float y, float width, float height)
     {
-        LCL.MASTER().SpriteBatch.flush();
+        LCL.SYS.SpriteBatch.flush();
 
         Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
         Gdx.gl.glScissor((int)x, (int)y, (int)width, (int)height);
@@ -62,7 +62,7 @@ public class LCLMask implements ISizeable<LCLMask>, IScalable<LCLMask>
     /** Has the same effect as {@link #end()} */
     public static void endMask()
     {
-        LCL.MASTER().SpriteBatch.flush();
+        LCL.SYS.SpriteBatch.flush();
         Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
     }
 

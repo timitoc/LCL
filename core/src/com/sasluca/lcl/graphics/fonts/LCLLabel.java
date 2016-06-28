@@ -16,26 +16,33 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
     protected float p_X;
     protected Color p_Color;
     protected LCLFont p_Font;
+    protected LCLString p_String;
+    protected boolean p_IsRendering;
     protected float p_WidthScale;
     protected float p_HeightScale;
-    protected LCLString p_String;
 
     public LCLLabel(String font, String text, Color color)
     {
-        p_Font = LCL.MASTER().FontManager.getFont(font);
+        p_Font = LCL.SYS.FontManager.getFont(font);
         p_Color = new Color(color);
         p_String = new LCLString(text);
         p_WidthScale = 1;
         p_HeightScale = 1;
+        p_IsRendering = true;
     }
 
     //Render
     @Override public LCLLabel render()
     {
+        if(!p_IsRendering) return this;
+
         p_Font.drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color);
 
         return this;
     }
+
+    @Override public boolean isRendering() { return p_IsRendering; }
+    @Override public LCLLabel setRenderingState(boolean renderingState) { p_IsRendering = renderingState; return this; }
 
     //Color
     @Override public Color getColor() { return p_Color; }

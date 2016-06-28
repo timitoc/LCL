@@ -2,10 +2,8 @@ package com.sasluca.lcl.utils.threads;
 
 import com.sasluca.lcl.abstractions.IDisposable;
 import com.sasluca.lcl.abstractions.functional.ITask;
+import com.sasluca.lcl.utils.collections.LCLArray;
 import com.sasluca.lcl.utils.pools.LCLPool;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Sas Luca on 11-Jun-16.
@@ -15,12 +13,12 @@ import java.util.List;
 public class LCLAsyncTaskExecutor implements IDisposable
 {
     private LCLPool<LCLThread> m_Threads;
-    private List<LCLThread> m_FreeThreads;
+    private LCLArray<LCLThread> m_FreeThreads;
 
     public LCLAsyncTaskExecutor()
     {
-        m_Threads = new LCLPool<>(() -> new LCLThread(null));
-        m_FreeThreads = new ArrayList<>();
+        m_Threads = new LCLPool<>(() -> new LCLThread(null), object -> {});
+        m_FreeThreads = new LCLArray<>();
     }
 
     public final IAsyncTaskObserver executeTaskAsync(ITask task)
@@ -38,8 +36,8 @@ public class LCLAsyncTaskExecutor implements IDisposable
     public LCLAsyncTaskExecutor removeThread()
     {
         if(m_FreeThreads.isEmpty()) return this;
-        m_Threads.remove(m_FreeThreads.get(m_FreeThreads.size() - 1));
-        m_FreeThreads.remove(m_FreeThreads.get(m_FreeThreads.size() - 1));
+        m_Threads.remove(m_FreeThreads.get(m_FreeThreads.getSize() - 1));
+        m_FreeThreads.remove(m_FreeThreads.get(m_FreeThreads.getSize() - 1));
 
         return this;
     }
