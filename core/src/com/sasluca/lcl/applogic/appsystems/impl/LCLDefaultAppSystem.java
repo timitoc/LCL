@@ -3,9 +3,7 @@ package com.sasluca.lcl.applogic.appsystems.impl;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.sasluca.lcl.LCL;
-import com.sasluca.lcl.abstractions.IRenderable;
-import com.sasluca.lcl.abstractions.IResizeable;
-import com.sasluca.lcl.abstractions.IUpdatable;
+import com.sasluca.lcl.abstractions.*;
 import com.sasluca.lcl.applogic.appsystems.LCLAppSystem;
 
 /**
@@ -29,8 +27,8 @@ public class LCLDefaultAppSystem<State> extends LCLAppSystem<State>
         //Initializes the OpenGL context
         LCL.SYS.SpriteBatch.begin();
 
-        for(IRenderable renderable : p_RenderHandlers) renderable.render();
-        for(IUpdatable updateable : p_UpdateHandlers) updateable.update();
+        for(IRender renderable : p_RenderHandlers) renderable.render();
+        for(IUpdate updatable : p_UpdateHandlers) updatable.update();
 
         //Manages the current state
         manage();

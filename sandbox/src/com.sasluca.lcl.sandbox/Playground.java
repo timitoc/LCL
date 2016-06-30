@@ -11,7 +11,6 @@ import com.sasluca.lcl.sandbox.examples.EXFonts;
  * Copyright (C) 2016 - LCL
  */
 
-
 public class Playground extends Game
 {
     public enum State
@@ -29,10 +28,16 @@ public class Playground extends Game
 
         m_AppSystem = new LCLDefaultAppSystem<State>();
         for(State state : State.values()) m_AppSystem.addState(state);
-        m_AppSystem.addHandler(new EXBlurredImage());
+        m_AppSystem.addHandler(new TestHandler());
         m_AppSystem.changeState(State.TEST1);
         LCL.SYS.AppSystem = m_AppSystem;
 
         setScreen(m_AppSystem);
+    }
+
+    @Override public void dispose()
+    {
+        super.dispose();
+        m_AppSystem.dispose();
     }
 }

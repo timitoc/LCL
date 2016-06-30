@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
 import com.sasluca.lcl.sandbox.Playground.State;
@@ -19,22 +20,23 @@ import static com.sasluca.lcl.sandbox.Playground.State.*;
 public class EXBlurredImage implements IStateHandler<State>
 {
     LCLSprite m_Sprite;
+    Texture m_Texture;
 
     @Override public void onState(State currentState)
     {
-        if(currentState == TEST1) m_Sprite.render();
+        if(currentState == TEST1) LCL.SYS.SpriteBatch.draw(m_Texture, 0, 0);
     }
 
     @Override public void onChangeState(State currentState, State newState)
     {
         if(newState == TEST1)
         {
-            Pixmap orig = new Pixmap(Gdx.files.internal("test.png"));
+            Pixmap orig = new Pixmap(Gdx.files.internal("badlogic.jpg"));
             orig.setColor(Color.BLACK);
             Pixmap blurred = EXTBlurUtils.blur(orig, 6, 2, true);
 
-            Texture blurTex = new Texture(blurred);
-            m_Sprite = new LCLSprite(blurTex);
+            m_Texture = new Texture(blurred);
+            m_Sprite = new LCLSprite(m_Texture);
             blurred.dispose();
         }
     }

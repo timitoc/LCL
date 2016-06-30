@@ -11,5 +11,6 @@ public interface IColorable<This>
 {
     Color   getColor();
     This    setColor(Color newColor);
+    This    setAlpha(float newAlpha);
 }
 

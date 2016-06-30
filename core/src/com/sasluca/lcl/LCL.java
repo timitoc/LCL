@@ -24,7 +24,6 @@ public class LCL
     public LCLInputSystem InputSystem;
     public LCLResourceManager ResourceManger;
     public LCLAsyncTaskExecutor AsyncTaskExecutor;
-    public LCLVirtualKeyboardManager VirtualKeyboardManager;
 
     public final static LCL SYS = new LCL();
 
@@ -40,6 +39,5 @@ public class LCL
         Camera = new OrthographicCamera(width, height);
         Camera.setToOrtho(false, width, height);
         SpriteBatch.setProjectionMatrix(Camera.combined);
-        VirtualKeyboardManager = new LCLVirtualKeyboardManager();
     }
 }

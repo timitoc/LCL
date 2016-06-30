@@ -10,15 +10,17 @@ import com.sasluca.lcl.utils.collections.LCLObjectMap;
 
 public class LCLVirtualKeyboardManager
 {
-    private boolean m_IsKeyboardVisible = false;
-    private LCLObjectMap<Object, Boolean> m_KeyboardHandlers = new LCLObjectMap<>();
+    private static boolean m_IsKeyboardVisible = false;
+    private static LCLObjectMap<Object, Boolean> m_KeyboardHandlers = new LCLObjectMap<>();
 
-    public void addKeyboardHandler(Object sender)
+    private LCLVirtualKeyboardManager() {}
+
+    public static void addKeyboardHandler(Object sender)
     {
         if(!m_KeyboardHandlers.containsKey(sender)) m_KeyboardHandlers.put(sender, false);
     }
 
-    public void showKeyboard(Object sender)
+    public static void showKeyboard(Object sender)
     {
         if(!m_KeyboardHandlers.containsKey(sender)) return;
         Gdx.input.setOnscreenKeyboardVisible(m_IsKeyboardVisible = true);
@@ -26,7 +28,7 @@ public class LCLVirtualKeyboardManager
         //m_KeyboardHandlers.(sender, true); NEVER EVER USE REPLACE!! DOES NOT WORK ON ANDROID
     }
 
-    public void hideKeyboard(Object sender, boolean enforce)
+    public static void hideKeyboard(Object sender, boolean enforce)
     {
         if(!m_KeyboardHandlers.containsKey(sender)) return;
         if(enforce)
@@ -42,12 +44,12 @@ public class LCLVirtualKeyboardManager
         }
     }
 
-    public void removeKeyboardHandler(Object handler)
+    public static void removeKeyboardHandler(Object handler)
     {
         if(!m_KeyboardHandlers.containsKey(handler)) return;
         m_KeyboardHandlers.remove(handler);
     }
 
-    public boolean isKeyboardVisible() { return m_IsKeyboardVisible; }
+    public static boolean isKeyboardVisible() { return m_IsKeyboardVisible; }
 }
 

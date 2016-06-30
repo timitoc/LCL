@@ -47,6 +47,7 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
     //Color
     @Override public Color getColor() { return p_Color; }
     @Override public LCLLabel setColor(Color newColor) { p_Color = new Color(newColor); return this; }
+    @Override public LCLLabel setAlpha(float newAlpha) { p_Color.a = newAlpha; return this; }
 
     //Scale
     @Override public float getWidthScale() { return p_WidthScale; }
@@ -80,7 +81,7 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
     @Override public float getY() { return p_Y; }
     @Override public float getWidth() { return p_Font.getTextWidth(p_String.getText(), p_WidthScale); }
     @Override public float getHeight() { return p_Font.getTextHeight(p_String.getText(), p_HeightScale); }
-    @Override public LCLLabel setPosX(int newX) { p_X = newX; return this; }
+    @Override public LCLLabel setPosX(float newX) { p_X = newX; return this; }
     @Override public LCLLabel setPosY(float newY) { p_Y = newY; return this; }
 
     //Dispose

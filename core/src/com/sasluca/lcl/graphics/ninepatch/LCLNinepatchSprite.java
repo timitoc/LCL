@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
 import com.sasluca.lcl.graphics.fonts.LCLLabel;
+import com.sasluca.lcl.graphics.sprite.LCLSprite;
 
 /**
  * Created by Sas Luca on 21-Jun-16.
@@ -55,6 +56,7 @@ public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, ICol
 
     //Color
     @Override public Color getColor() { return p_Color; }
+    @Override public LCLNinepatchSprite setAlpha(float newAlpha) { p_Color.a = newAlpha; return this; }
     @Override public LCLNinepatchSprite setColor(Color newColor) { p_Color = new Color(newColor); return this; }
 
     //Size and scale

@@ -11,6 +11,6 @@ public interface ITransformable<This>
     float   getY();
     float   getWidth();
     float   getHeight();
-    This    setPosX(int newX);
+    This    setPosX(float newX);
     This    setPosY(float newY);
 }

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.sasluca.lcl.graphics.fonts.LCLLabel;
 
 /**
  * Created by Sas Luca on 21-Jun-16.
@@ -47,12 +46,13 @@ public class LCLSprite implements IRenderable<LCLSprite>, ITransformable<LCLSpri
     //Transform
     @Override public float getX() { return p_Sprite.getX(); }
     @Override public float getY() { return p_Sprite.getY(); }
-    @Override public LCLSprite setPosX(int newX) { p_Sprite.setPosition(newX, getY()); return this; }
+    @Override public LCLSprite setPosX(float newX) { p_Sprite.setPosition(newX, getY()); return this; }
     @Override public LCLSprite setPosY(float newY) { p_Sprite.setPosition(getX(), newY); return this; }
 
     //Color
     @Override public Color getColor() { return p_Sprite.getColor(); }
     @Override public LCLSprite setColor(Color newColor) { p_Sprite.setColor(newColor); return this; }
+    @Override public LCLSprite setAlpha(float newAlpha) { p_Sprite.setAlpha(newAlpha); return this; }
 
     //Flip
     @Override public boolean isFlipX() { return p_Sprite.isFlipX(); }

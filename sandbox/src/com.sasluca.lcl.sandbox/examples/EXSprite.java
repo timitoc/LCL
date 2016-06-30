@@ -31,7 +31,6 @@ public class EXSprite implements IStateHandler<State>
         {
             sprite = new LCLSprite(new Texture(Gdx.files.local("badlogic.jpg")));
             sprite.setColor(Color.BLACK).setScale(2).flipX(true);
-
         }
     }
 }
