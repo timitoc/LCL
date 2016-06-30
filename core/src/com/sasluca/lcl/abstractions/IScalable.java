@@ -19,9 +19,10 @@ public interface IScalable<This>
      * If a class implements both {@link ITransformable} and {@link IScalable}
      * then {@link ITransformable#getHeight()} will return (height* heightScale)
      * and this method will return the height without the scale.
-     * @return The heigth of the object without scale.
+     * @return The height of the object without scale.
      */
     float   getWidthScale();
+
     float   getHeightScale();
     float   getOriginalHeight();
     This    setScale(float newScale);

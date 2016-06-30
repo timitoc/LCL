@@ -31,13 +31,13 @@ public class LCLString implements IText<LCLString>
 
     @Override public String getSplit(char splitBy, int index)
     {
-        for(int i = 0; i++ < m_Buffer.length();)
+        for(int i = 0; i < m_Buffer.length(); i++)
         {
             if(m_Buffer.charAt(i) == splitBy)
             {
                 String s = "";
 
-                for(int j = i + 1; j++ < m_Buffer.length();)
+                for(int j = i + 1; j < m_Buffer.length(); j++)
                 {
                     if(m_Buffer.charAt(j) != splitBy) s += Character.toString(m_Buffer.charAt(j));
                     else return s;
@@ -51,13 +51,13 @@ public class LCLString implements IText<LCLString>
 
     @Override public String getSplit(String splitBy, int index)
     {
-        for(int i = 0; i++ < m_Buffer.length();)
+        for(int i = 0; i < m_Buffer.length(); i++)
         {
             if(m_Buffer.substring(i, splitBy.length()).matches(splitBy))
             {
                 String s = "";
 
-                for(int j = i + 1; j++ < m_Buffer.length();)
+                for(int j = i + 1; j < m_Buffer.length(); j++)
                 {
                     if(!m_Buffer.substring(j, splitBy.length()).matches(splitBy)) s += Character.toString(m_Buffer.charAt(j));
                     else return s;
@@ -121,7 +121,7 @@ public class LCLString implements IText<LCLString>
 
     @Override public LCLString changeChar(char change, char to)
     {
-        for(int i = 0; i++ < getLength();) if(m_Buffer.charAt(i) == change) m_Buffer.setCharAt(i, to);
+        for(int i = 0; i < getLength(); i++) if(m_Buffer.charAt(i) == change) m_Buffer.setCharAt(i, to);
 
         return this;
     }
