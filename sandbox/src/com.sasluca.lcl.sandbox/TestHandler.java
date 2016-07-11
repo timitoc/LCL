@@ -1,19 +1,15 @@
 package com.sasluca.lcl.sandbox;
 
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenAccessor;
-import aurelienribon.tweenengine.TweenEquations;
-import aurelienribon.tweenengine.TweenManager;
-import aurelienribon.tweenengine.equations.Circ;
-import aurelienribon.tweenengine.equations.Quad;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.sasluca.lcl.LCL;
-import com.sasluca.lcl.abstractions.IColorable;
-import com.sasluca.lcl.animation.LCLTween;
-import com.sasluca.lcl.animation.LCLUniversalAccessor;
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
-import com.sasluca.lcl.graphics.sprite.LCLSprite;
+import com.sasluca.lcl.input.events.ITouchUpEvent;
+import com.sasluca.lcl.ui.material_design.group.UIGroup;
+import com.sasluca.lcl.ui.material_design.image.UIImage;
+import com.sasluca.lcl.ui.material_design.label.UILabel;
+import com.sasluca.lcl.ui.material_design.lists.genericlists.snaplists.UISnapHorizontalList;
+import com.sasluca.lcl.utils.LCLUtils;
 
 import static com.sasluca.lcl.sandbox.Playground.State;
 
@@ -22,70 +18,47 @@ import static com.sasluca.lcl.sandbox.Playground.State;
  * Copyright (C) 2016 - LCL
  */
 
-class ColorAccesor implements TweenAccessor<IColorable>
-{
-
-    public static final int ALPHA = 1;
-
-    @Override public int getValues(IColorable iColorable, int tweentype, float[] floats)
-    {
-        switch(tweentype)
-        {
-            case ALPHA:
-                floats[0] = iColorable.getColor().a;
-                return 1;
-
-            default:
-                assert false;
-                return 0;
-        }
-    }
-
-    @Override public void setValues(IColorable iColorable, int tweentype, float[] floats)
-    {
-        switch(tweentype)
-        {
-            case ALPHA:
-                //System.out.println(floats[0]);
-                iColorable.setAlpha(floats[0]);
-                break;
-
-            default:
-                assert false; break;
-        }
-    }
-}
-
 public class TestHandler implements IStateHandler<State>
 {
-    LCLSprite m_Sprite;
-    LCLSprite m_Sprite2;
-    TweenManager m_TweenManager;
 
+    UISnapHorizontalList m_SnapList;
 
     @Override public void onState(State currentState)
     {
-        if(currentState == State.TEST1) LCLTween.TWEEN_MANAGER.update(LCL.SYS.Delta);
+
     }
 
     @Override public void onChangeState(State currentState, State newState)
     {
-        if(newState == State.TEST1)
+        m_SnapList = new UISnapHorizontalList(720, 1280);
+
+        UIImage btn = new UIImage(LCL.SYS.ResourceManger.<Texture>getResource("badlogic"));
+        btn.setSize(100, 100)
+                .setPosX(600)
+                .setPosY(20)
+                .subscribeToInputLayer(0);
+
+        btn.onTouchUp = (x, y, p, b, sender) -> { m_SnapList.nextItem(); };
+
+
+        for(int i = 0; i < 10; i++)
         {
-            m_Sprite = new LCLSprite(new Texture(Gdx.files.internal("badlogic.jpg")));
-            m_Sprite2 = new LCLSprite(new Texture(Gdx.files.internal("badlogic.jpg")));
+            UIGroup g = new UIGroup();
+            UILabel l = new UILabel("Roboto", Integer.toString(i), Color.WHITE);
+            UIImage s = new UIImage(LCL.SYS.ResourceManger.<Texture>getResource("default"));
+            s.setWidth(720).setHeight(1280);
+            LCLUtils.centerToDrawable(l, s, true, true);
+            g.addObject(s).addObject(l);
 
-            LCL.SYS.AppSystem.addRenderHandler(m_Sprite);
-            LCL.SYS.AppSystem.addRenderHandler(m_Sprite2);
+            if(i != 0) s.setColor(i % 2 == 0 ? Color.BLUE : Color.RED); else s.setColor(Color.BLUE);
 
-            LCLTween.addClass(m_Sprite.getClass());
-            //LCLTween.setAlpha(m_Sprite, 0).start();
-            //LCLTween.toAlpha(m_Sprite, 1, 2f).ease(Quad.IN).start();
-
-            Tween.set(m_Sprite, LCLUniversalAccessor.POS_XY).target(0, 0).start(LCLTween.TWEEN_MANAGER);
-            Tween.set(m_Sprite2, LCLUniversalAccessor.POS_XY).target(100, 100).start(LCLTween.TWEEN_MANAGER);
-            Tween.to(m_Sprite, LCLUniversalAccessor.POS_XY, 1f).target(500, 500).ease(Quad.IN).start(LCLTween.TWEEN_MANAGER);
-            Tween.to(m_Sprite2, LCLUniversalAccessor.POS_XY, 1f).target(100, 400).ease(Quad.IN).start(LCLTween.TWEEN_MANAGER);
+            m_SnapList.addItem(g);
         }
+
+        m_SnapList.subscribeToInputLayer(0);
+        LCLUtils.center(m_SnapList, true, true);
+
+        LCL.SYS.AppSystem.addRenderHandler(m_SnapList);
+        LCL.SYS.AppSystem.addRenderHandler(btn);
     }
 }

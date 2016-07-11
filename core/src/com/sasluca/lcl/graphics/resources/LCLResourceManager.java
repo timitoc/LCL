@@ -4,6 +4,7 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.sasluca.lcl.abstractions.IDisposable;
@@ -20,6 +21,7 @@ import com.sasluca.lcl.utils.threads.IAsyncTaskObserver;
 public class LCLResourceManager implements IUpdate<LCLResourceManager>, IDisposable
 {
     private LCLObjectMap<String, Object> m_Resources;
+    private LCLObjectMap<String, String> m_LoadingQueue;
     private AssetManager m_AssetManager;
 
     public LCLResourceManager()
@@ -35,6 +37,13 @@ public class LCLResourceManager implements IUpdate<LCLResourceManager>, IDisposa
     }
 
     //<editor-fold desc="Add Texture">
+    public final LCLResourceManager addTextureToQueue(String name, String path)
+    {
+        m_AssetManager.load(path, Texture.class);
+        m_LoadingQueue.put(path, name);
+        return this;
+    }
+
     public final LCLResourceManager addTexture(String name, Texture texture)
     {
         m_Resources.put(name, texture);
@@ -75,18 +84,27 @@ public class LCLResourceManager implements IUpdate<LCLResourceManager>, IDisposa
     }
     //</editor-fold>
 
-    public void addNinepatch(String name, String path)
+    public void addNinepatchFromAtlas(String name, String path)
     {
-        if(!m_Resources.containsKey(name))
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.getFileHandle(path, Files.FileType.Internal));
+        m_Resources.put(name, atlas.createPatch(name));
+    }
+
+    public void addNinepatchesFromAtlas(String path, String... names)
+    {
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.getFileHandle(path, Files.FileType.Internal));
+
+        for (String name : names)
         {
-            TextureAtlas atlas = new TextureAtlas(Gdx.files.getFileHandle(path, Files.FileType.Internal));
+            if(m_Resources.containsKey(name)) return;
             m_Resources.put(name, atlas.createPatch(name));
         }
     }
 
-    public final IAsyncTaskObserver executeLoadAsync()
+    public void addTextureAtlas(String name, String path)
     {
-        return () -> { return true; };
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.getFileHandle(path, Files.FileType.Internal));
+        m_Resources.put(name, atlas);
     }
 
     public <Resource> Resource getResource(String name)
@@ -99,7 +117,13 @@ public class LCLResourceManager implements IUpdate<LCLResourceManager>, IDisposa
         return ((Resource) m_Resources.get(name));
     }
 
-    @Override public LCLResourceManager update() { m_AssetManager.update(); return this; }
+    @Override public LCLResourceManager update()
+    {
+        if(m_AssetManager.update())
+            for(String path : m_LoadingQueue.keys()) m_Resources.put(m_LoadingQueue.get(path), m_Resources.get(path));
+
+        return this;
+    }
 
     @Override public void dispose()
     {

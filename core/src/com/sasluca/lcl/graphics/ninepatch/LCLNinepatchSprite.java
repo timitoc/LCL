@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
+import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.fonts.LCLLabel;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
 
@@ -13,8 +14,10 @@ import com.sasluca.lcl.graphics.sprite.LCLSprite;
  * Copyright (C) 2016 - LCL
  */
 
-public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, IColorable<LCLNinepatchSprite>, ISizeable<LCLNinepatchSprite>, IScalable<LCLNinepatchSprite>
+public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, IColorable<LCLNinepatchSprite>, ISizeable<LCLNinepatchSprite>, IScalable<LCLNinepatchSprite>, ITransformable<LCLNinepatchSprite>
 {
+    static { LCLTween.addClass(LCLNinepatchSprite.class); }
+
     protected float p_X;
     protected float p_Y;
     protected Color p_Color;
@@ -27,15 +30,20 @@ public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, ICol
     protected Texture.TextureFilter p_MinFilter;
     protected Texture.TextureFilter p_MagFilter;
 
-    public LCLNinepatchSprite(String ninepatch, Texture.TextureFilter minFilter, Texture.TextureFilter magFilter)
+    public LCLNinepatchSprite(String ninepatch, float width, float height, Texture.TextureFilter minFilter, Texture.TextureFilter magFilter)
     {
+        p_Color = new Color(Color.WHITE);
         p_NinePatch = LCL.SYS.ResourceManger.<NinePatch>getResource(ninepatch);
         p_MinFilter = minFilter;
         p_MagFilter = magFilter;
+        p_Width = width;
+        p_Height = height;
         p_WidthScale = 1;
         p_HeightScale = 1;
         p_IsRendering = true;
     }
+
+    public LCLNinepatchSprite setNinePatch(String ninepatch) { p_NinePatch = LCL.SYS.ResourceManger.<NinePatch>getResource(ninepatch); return this; }
 
     //Render
     @Override public LCLNinepatchSprite render()
@@ -53,6 +61,11 @@ public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, ICol
     @Override public boolean isRendering() { return p_IsRendering; }
     @Override public LCLNinepatchSprite setRenderingState(boolean renderingState) { p_IsRendering = renderingState; return this; }
 
+    //Transform
+    @Override public float getX() { return p_X; }
+    @Override public float getY() { return p_Y; }
+    @Override public LCLNinepatchSprite setPosX(float newX) { p_X = newX; return this; }
+    @Override public LCLNinepatchSprite setPosY(float newY) { p_Y = newY; return this; }
 
     //Color
     @Override public Color getColor() { return p_Color; }

@@ -1,9 +1,11 @@
 package com.sasluca.lcl.applogic.appsystems.impl;
 
+import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
+import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.applogic.appsystems.LCLAppSystem;
 
 /**
@@ -18,7 +20,7 @@ public class LCLDefaultAppSystem<State> extends LCLAppSystem<State>
         //Set the delta and update the camera
         LCL.SYS.Delta = delta;
 
-        //m_Camera.update();
+        LCL.SYS.Camera.update();
 
         //Clear the screen
         Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
@@ -26,6 +28,8 @@ public class LCLDefaultAppSystem<State> extends LCLAppSystem<State>
 
         //Initializes the OpenGL context
         LCL.SYS.SpriteBatch.begin();
+
+        if(p_UpdateTweenEngine) LCLTween.TWEEN_MANAGER.update(LCL.SYS.Delta);
 
         for(IRender renderable : p_RenderHandlers) renderable.render();
         for(IUpdate updatable : p_UpdateHandlers) updatable.update();

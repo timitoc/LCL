@@ -14,10 +14,10 @@ public abstract class LCLInputHandler
     public final void subscribeToInputLayer(int inputLayer)
     {
         //TODO: ERROR
-        if(inputLayer == m_InputLayer || LCL.SYS.InputSystem.numberOfInputLayers() < inputLayer) return;
+        if(inputLayer == m_InputLayer || LCLInputSystem.numberOfInputLayers() < inputLayer) return;
 
         m_InputLayer = inputLayer;
-        LCL.SYS.InputSystem.getInputLayer(inputLayer);
+        LCLInputSystem.getInputLayer(inputLayer).addInputHandler(this);
     }
 
     public final void unsubscribeFromInputLayer()
@@ -25,7 +25,7 @@ public abstract class LCLInputHandler
         if(m_InputLayer != -1)
         {
             m_InputLayer = -1;
-            LCL.SYS.InputSystem.getInputLayer(m_InputLayer).removeInputHandler(this);
+            LCLInputSystem.getInputLayer(m_InputLayer).removeInputHandler(this);
         }
     }
 

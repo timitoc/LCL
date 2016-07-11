@@ -10,46 +10,49 @@ import com.sasluca.lcl.utils.collections.LCLObjectMap;
 
 public class LCLVirtualKeyboardManager
 {
-    private static boolean m_IsKeyboardVisible = false;
-    private static LCLObjectMap<Object, Boolean> m_KeyboardHandlers = new LCLObjectMap<>();
+    private static boolean IsKeyboardVisible = false;
+    private static LCLObjectMap<Object, Boolean> KeyboardHandlers = new LCLObjectMap<>();
 
     private LCLVirtualKeyboardManager() {}
 
     public static void addKeyboardHandler(Object sender)
     {
-        if(!m_KeyboardHandlers.containsKey(sender)) m_KeyboardHandlers.put(sender, false);
+        if(!KeyboardHandlers.containsKey(sender)) KeyboardHandlers.put(sender, false);
     }
+
+    //TODO: Maybe a little more work on this...
 
     public static void showKeyboard(Object sender)
     {
-        if(!m_KeyboardHandlers.containsKey(sender)) return;
-        Gdx.input.setOnscreenKeyboardVisible(m_IsKeyboardVisible = true);
-        m_KeyboardHandlers.replace(sender, true);
-        //m_KeyboardHandlers.(sender, true); NEVER EVER USE REPLACE!! DOES NOT WORK ON ANDROID
+        if(!KeyboardHandlers.containsKey(sender)) return;
+        if(!IsKeyboardVisible)
+            Gdx.input.setOnscreenKeyboardVisible(IsKeyboardVisible = true);
+        KeyboardHandlers.replace(sender, true);
+        //KeyboardHandlers.(sender, true); NEVER EVER USE REPLACE!! DOES NOT WORK ON ANDROID
     }
 
     public static void hideKeyboard(Object sender, boolean enforce)
     {
-        if(!m_KeyboardHandlers.containsKey(sender)) return;
+        if(!KeyboardHandlers.containsKey(sender)) return;
         if(enforce)
         {
-            for(Object o : m_KeyboardHandlers.keys()) m_KeyboardHandlers.replace(0, false);
-            Gdx.input.setOnscreenKeyboardVisible(m_IsKeyboardVisible = false);
+            for(Object o : KeyboardHandlers.keys()) KeyboardHandlers.replace(0, false);
+            Gdx.input.setOnscreenKeyboardVisible(IsKeyboardVisible = false);
         }
         else
         {
-            m_KeyboardHandlers.replace(sender, false);
-            for(Object o : m_KeyboardHandlers.keys()) if(m_KeyboardHandlers.get(o)) { Gdx.input.setOnscreenKeyboardVisible(m_IsKeyboardVisible = true); return; }
-            Gdx.input.setOnscreenKeyboardVisible(m_IsKeyboardVisible = false);
+            KeyboardHandlers.replace(sender, false);
+            for(Object o : KeyboardHandlers.keys()) if(KeyboardHandlers.get(o)) return;
+            Gdx.input.setOnscreenKeyboardVisible(IsKeyboardVisible = false);
         }
     }
 
     public static void removeKeyboardHandler(Object handler)
     {
-        if(!m_KeyboardHandlers.containsKey(handler)) return;
-        m_KeyboardHandlers.remove(handler);
+        if(!KeyboardHandlers.containsKey(handler)) return;
+        KeyboardHandlers.remove(handler);
     }
 
-    public static boolean isKeyboardVisible() { return m_IsKeyboardVisible; }
+    public static boolean isKeyboardVisible() { return IsKeyboardVisible; }
 }
 

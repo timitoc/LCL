@@ -2,9 +2,15 @@ package com.sasluca.lcl;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.applogic.appsystems.LCLAppSystem;
 import com.sasluca.lcl.graphics.fonts.LCLFontManager;
 import com.sasluca.lcl.graphics.resources.LCLResourceManager;
+import com.sasluca.lcl.graphics.sprite.LCLSprite;
+import com.sasluca.lcl.input.LCLInputHandler;
+import com.sasluca.lcl.input.LCLInputLayer;
 import com.sasluca.lcl.input.LCLInputSystem;
 import com.sasluca.lcl.input.LCLVirtualKeyboardManager;
 import com.sasluca.lcl.utils.threads.LCLAsyncTaskExecutor;
@@ -20,9 +26,8 @@ public class LCL
     public LCLAppSystem AppSystem;
     public SpriteBatch SpriteBatch;
     public OrthographicCamera Camera;
-    public LCLFontManager FontManager;
-    public LCLInputSystem InputSystem;
     public LCLResourceManager ResourceManger;
+    public StretchViewport Viewport;
     public LCLAsyncTaskExecutor AsyncTaskExecutor;
 
     public final static LCL SYS = new LCL();
@@ -34,10 +39,12 @@ public class LCL
         SpriteBatch = new SpriteBatch();
         ResourceManger = new LCLResourceManager();
         AsyncTaskExecutor = new LCLAsyncTaskExecutor();
-        FontManager = new LCLFontManager();
-        InputSystem = new LCLInputSystem();
         Camera = new OrthographicCamera(width, height);
         Camera.setToOrtho(false, width, height);
+        Camera.update();
         SpriteBatch.setProjectionMatrix(Camera.combined);
+        LCLInputSystem.addInputLayer(new LCLInputLayer(5, true));
+        ResourceManger.addTexture("default", "default.jpg");
+        ResourceManger.addTexture("badlogic", "badlogic.jpg");
     }
 }

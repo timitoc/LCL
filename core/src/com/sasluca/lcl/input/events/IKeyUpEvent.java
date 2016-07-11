@@ -7,5 +7,5 @@ package com.sasluca.lcl.input.events;
 
 public interface IKeyUpEvent<Sender>
 {
-    void keyDown(int keycode, Sender sender);
+    void keyUp(int keycode, Sender sender);
 }

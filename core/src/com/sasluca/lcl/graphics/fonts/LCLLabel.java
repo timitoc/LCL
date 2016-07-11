@@ -3,6 +3,8 @@ package com.sasluca.lcl.graphics.fonts;
 import com.badlogic.gdx.graphics.Color;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
+import com.sasluca.lcl.animation.LCLTween;
+import com.sasluca.lcl.graphics.sprite.LCLSprite;
 import com.sasluca.lcl.utils.text.LCLString;
 
 /**
@@ -12,6 +14,8 @@ import com.sasluca.lcl.utils.text.LCLString;
 
 public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, ITransformable<LCLLabel>, IScalable<LCLLabel>, IColorable<LCLLabel>, IText<LCLLabel>, IDisposable
 {
+    static { LCLTween.addClass(LCLLabel.class); }
+
     protected float p_Y;
     protected float p_X;
     protected Color p_Color;
@@ -23,7 +27,7 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
 
     public LCLLabel(String font, String text, Color color)
     {
-        p_Font = LCL.SYS.FontManager.getFont(font);
+        p_Font = LCLFontManager.getFont(font);
         p_Color = new Color(color);
         p_String = new LCLString(text);
         p_WidthScale = 1;
@@ -43,6 +47,8 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
 
     @Override public boolean isRendering() { return p_IsRendering; }
     @Override public LCLLabel setRenderingState(boolean renderingState) { p_IsRendering = renderingState; return this; }
+
+    public LCLFont getFont() { return p_Font; }
 
     //Color
     @Override public Color getColor() { return p_Color; }
@@ -70,10 +76,8 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
     @Override public LCLLabel append(String text) { p_String.append(text); return this; }
     @Override public LCLLabel delete(int begin, int end) { p_String.delete(begin, end); return this; }
     @Override public String getSubstring(int begin, int end) { return p_String.getSubstring(begin, end); }
-    @Override public String getSplit(char splitBy, int index) { return p_String.getSplit(splitBy, index); }
     @Override public LCLLabel insert(int index, String string) { p_String.insert(index, string); return this; }
     @Override public LCLLabel changeChar(char change, char to) { p_String.changeChar(change, to); return this; }
-    @Override public String getSplit(String splitBy, int index) { return p_String.getSplit(splitBy, index); }
     @Override public LCLLabel changeCharAtIndex(int index, char change) { p_String.changeCharAtIndex(index, change); return this; }
 
     //Transform

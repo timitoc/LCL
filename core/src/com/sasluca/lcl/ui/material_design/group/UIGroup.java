@@ -1,22 +1,19 @@
-package com.sasluca.lcl.utils.group;
+package com.sasluca.lcl.ui.material_design.group;
 
 import com.badlogic.gdx.graphics.Color;
 import com.sasluca.lcl.abstractions.IColorable;
 import com.sasluca.lcl.abstractions.IRender;
-import com.sasluca.lcl.abstractions.IRenderable;
 import com.sasluca.lcl.abstractions.ITransformable;
 import com.sasluca.lcl.animation.LCLTween;
-import com.sasluca.lcl.graphics.sprite.LCLSprite;
+import com.sasluca.lcl.ui.UIView;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
 /**
- * Created by Sas Luca on 27-Jun-16.
- * Copyright (C) 2016 - LCL
+ * Created by Sas Luca on 11-Jul-16.
  */
-
-public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, ITransformable<LCLGroup>
+public class UIGroup extends UIView<UIGroup> implements IColorable<UIGroup>
 {
-    static { LCLTween.addClass(LCLGroup.class); }
+    static { LCLTween.addClass(UIGroup.class); }
 
     private float m_X;
     private float m_Y;
@@ -24,17 +21,15 @@ public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, IT
     private float m_Width;
     private float m_Height;
     private LCLArray m_Objects;
-    private boolean m_IsRendering;
 
-    public LCLGroup()
+    public UIGroup()
     {
         m_Objects = new LCLArray();
         m_Color = new Color(Color.WHITE);
-        m_IsRendering = true;
     }
 
     //<editor-fold desc="Add Object">
-    public LCLGroup addObject(Object object)
+    public UIGroup addObject(Object object)
     {
         if(m_Objects.contains(object))
         {
@@ -69,7 +64,7 @@ public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, IT
         return this;
     }
 
-    public LCLGroup removeObject(Object object)
+    public UIGroup removeObject(Object object)
     {
         if(!m_Objects.contains(object))
         {
@@ -104,7 +99,7 @@ public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, IT
         return this;
     }
 
-    public LCLGroup removeObject(int object)
+    public UIGroup removeObject(int object)
     {
         if(!m_Objects.contains(object))
         {
@@ -144,14 +139,14 @@ public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, IT
 
     //<editor-fold desc="Color">
     @Override public Color getColor() { return m_Color; }
-    @Override public LCLGroup setColor(Color newColor)
+    @Override public UIGroup setColor(Color newColor)
     {
         m_Color.set(newColor);
         for(int i = 0; i < m_Objects.getSize(); i++) if(m_Objects.get(i) instanceof IColorable) ((IColorable) m_Objects.get(i)).setColor(m_Color);
 
         return this;
     }
-    @Override public LCLGroup setAlpha(float newAlpha)
+    @Override public UIGroup setAlpha(float newAlpha)
     {
         m_Color.a = newAlpha;
         for(int i = 0; i < m_Objects.getSize(); i++) if(m_Objects.get(i) instanceof IColorable) ((IColorable) m_Objects.get(i)).setColor(m_Color);
@@ -237,7 +232,7 @@ public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, IT
         return m_Height;
     }
 
-    @Override public LCLGroup setPosX(float newX)
+    @Override public UIGroup setPosX(float newX)
     {
         for(int i = 0; i < m_Objects.getSize(); i++) if(m_Objects.get(i) instanceof ITransformable) ((ITransformable) m_Objects.get(i)).setPosX(newX + (((ITransformable) m_Objects.get(i)).getX() - m_X));
         m_X = newX;
@@ -245,7 +240,7 @@ public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, IT
         return this;
     }
 
-    @Override public LCLGroup setPosY(float newY)
+    @Override public UIGroup setPosY(float newY)
     {
         for(int i = 0; i < m_Objects.getSize(); i++) if(m_Objects.get(i) instanceof ITransformable) ((ITransformable) m_Objects.get(i)).setPosY(newY + (((ITransformable) m_Objects.get(i)).getY() - m_Y));
         m_Y = newY;
@@ -255,15 +250,11 @@ public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, IT
     //</editor-fold>
 
     //<editor-fold desc="Description">
-    @Override public boolean isRendering() { return m_IsRendering; }
-    @Override public LCLGroup setRenderingState(boolean renderingState) { m_IsRendering = renderingState; return this; }
-    @Override public LCLGroup render()
+    @Override public void renderImpl()
     {
-        if(!isRendering()) return this;
-
         for(int i = 0; i < m_Objects.getSize(); i++) if(m_Objects.get(i) instanceof IRender) ((IRender) m_Objects.get(i)).render();
-
-        return this;
     }
+
+    @Override protected void updateImpl() { }
     //</editor-fold>
 }

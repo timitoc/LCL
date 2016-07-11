@@ -9,17 +9,18 @@ import com.sasluca.lcl.utils.collections.LCLArray;
 
 public class LCLFontManager
 {
-    private LCLArray<LCLFont> m_Fonts;
+    private static LCLArray<LCLFont> m_Fonts = new LCLArray<>();
 
-    public LCLFontManager()
+    private LCLFontManager()
     {
-        m_Fonts = new LCLArray<>();
+
     }
 
-    public void addTrueTypeFont(String name, int size) { m_Fonts.add(new LCLTrueTypeFont(name, size)); }
-    public void addDistanceFieldFont(String name, float spread) { m_Fonts.add(new LCLDistanceFieldFont(name, spread)); }
-    public void addTrueTypeFont(String name, String path, int size) { m_Fonts.add(new LCLTrueTypeFont(name, size, path)); }
-    public void removeFont(String name) { for(LCLFont font : m_Fonts) if(font.getName().matches(name)) { m_Fonts.remove(font); font.dispose(); } }
-    public <Font extends LCLFont> Font getFont(String name) { for(LCLFont font : m_Fonts) if(font.getName().matches(name)) return (Font) font; return null; }
-    public void addDistanceFieldFont(String name, String pngPath, String fntPath, float spread) { m_Fonts.add(new LCLDistanceFieldFont(name, spread, pngPath, fntPath)); }
+    public static void addBitmapFont(String name) { m_Fonts.add(new LCLBitmapFont(name)); }
+    public static void addTrueTypeFont(String name, int size) { m_Fonts.add(new LCLTrueTypeFont(name, size)); }
+    public static void addDistanceFieldFont(String name, float spread) { m_Fonts.add(new LCLDistanceFieldFont(name, spread)); }
+    public static void addTrueTypeFont(String name, String path, int size) { m_Fonts.add(new LCLTrueTypeFont(name, size, path)); }
+    public static LCLFont getFont(String name) { for(LCLFont font : m_Fonts) if(font.getName().matches(name)) return font; return null; }
+    public static void removeFont(String name) { for(LCLFont font : m_Fonts) if(font.getName().matches(name)) { m_Fonts.remove(font); font.dispose(); } }
+    public static void addDistanceFieldFont(String name, String pngPath, String fntPath, float spread) { m_Fonts.add(new LCLDistanceFieldFont(name, spread, pngPath, fntPath)); }
 }

@@ -22,52 +22,16 @@ public class LCLString implements IText<LCLString>
     }
 
     @Override public int getLength() { return m_Buffer.length(); }
-
     @Override public String getText() { return m_Buffer.toString(); }
-
     @Override public char getCharAt(int index) { return m_Buffer.charAt(index); }
-
     @Override public String getSubstring(int begin, int end) { return m_Buffer.substring(begin, end); }
+    public boolean contains(String s) { return getText().contains(s); }
+    public boolean contains(char c) { return getText().contains(Character.toString(c)); }
 
-    @Override public String getSplit(char splitBy, int index)
+    public LCLString removeChar(char c)
     {
-        for(int i = 0; i < m_Buffer.length(); i++)
-        {
-            if(m_Buffer.charAt(i) == splitBy)
-            {
-                String s = "";
-
-                for(int j = i + 1; j < m_Buffer.length(); j++)
-                {
-                    if(m_Buffer.charAt(j) != splitBy) s += Character.toString(m_Buffer.charAt(j));
-                    else return s;
-                }
-
-                return s;
-            }
-        }
-        return null;
-    }
-
-    @Override public String getSplit(String splitBy, int index)
-    {
-        for(int i = 0; i < m_Buffer.length(); i++)
-        {
-            if(m_Buffer.substring(i, splitBy.length()).matches(splitBy))
-            {
-                String s = "";
-
-                for(int j = i + 1; j < m_Buffer.length(); j++)
-                {
-                    if(!m_Buffer.substring(j, splitBy.length()).matches(splitBy)) s += Character.toString(m_Buffer.charAt(j));
-                    else return s;
-                }
-
-                return s;
-            }
-        }
-
-        return null;
+        for(int i = 0; i < getLength(); i++) if(getCharAt(i) == c) deleteCharAt(i);
+        return this;
     }
 
     @Override public LCLString clear()
@@ -111,6 +75,8 @@ public class LCLString implements IText<LCLString>
 
         return this;
     }
+
+    public LCLString deleteCharAt(int index) { m_Buffer.deleteCharAt(index); return this; }
 
     @Override public LCLString insert(int index, String string)
     {

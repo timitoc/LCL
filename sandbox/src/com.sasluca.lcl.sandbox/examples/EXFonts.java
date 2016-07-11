@@ -3,6 +3,7 @@ package com.sasluca.lcl.sandbox.examples;
 import com.badlogic.gdx.graphics.Color;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
+import com.sasluca.lcl.graphics.fonts.LCLFontManager;
 import com.sasluca.lcl.graphics.fonts.LCLLabel;
 
 import static com.sasluca.lcl.sandbox.Playground.State;
@@ -28,7 +29,7 @@ public class EXFonts implements IStateHandler<State>
     {
         if(newState == State.TEST1)
         {
-            LCL.SYS.FontManager.addTrueTypeFont("Roboto", 95);
+            LCLFontManager.addTrueTypeFont("Roboto", 95);
             label = new LCLLabel("Roboto", "Hello World", Color.BLACK);
             System.out.println(label.getHeight() * 1.4f);
         }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.sasluca.lcl.animation.LCLTween;
 
 /**
  * Created by Sas Luca on 21-Jun-16.
@@ -17,6 +18,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class LCLSprite implements IRenderable<LCLSprite>, ITransformable<LCLSprite>, IColorable<LCLSprite>, IFlippable<LCLSprite>, ISizeable<LCLSprite>, IScalable<LCLSprite>, IRotatable<LCLSprite>, IOrigin<LCLSprite>
 {
+    static { LCLTween.addClass(LCLSprite.class); }
+
     protected Sprite p_Sprite;
     protected boolean p_IsRendering = true;
 
@@ -29,6 +32,8 @@ public class LCLSprite implements IRenderable<LCLSprite>, ITransformable<LCLSpri
     {
         p_Sprite = new Sprite(region);
     }
+
+    public LCLSprite setTexture(Texture t) { p_Sprite.setTexture(t); return this; }
 
     //Render
     @Override public LCLSprite render()
