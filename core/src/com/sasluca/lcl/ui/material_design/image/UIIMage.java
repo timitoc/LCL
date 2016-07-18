@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
 import com.sasluca.lcl.animation.LCLTween;
-import com.sasluca.lcl.ui.UIView;
+import com.sasluca.lcl.ui.material_design.UIView;
 
 /**
  * Created by Sas Luca on 11-Jul-16.

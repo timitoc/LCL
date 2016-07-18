@@ -2,15 +2,17 @@ package com.sasluca.lcl.ui.material_design.lists.genericlists.scrolllists;
 
 import com.sasluca.lcl.abstractions.IDisposable;
 import com.sasluca.lcl.graphics.mask.LCLMask;
-import com.sasluca.lcl.ui.UIView;
+import com.sasluca.lcl.ui.material_design.UIView;
 import com.sasluca.lcl.ui.material_design.group.UIGroup;
 import com.sasluca.lcl.ui.material_design.lists.genericlists.UIContainer;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
 /**
  * Created by Sas Luca on 11-Jul-16.
+ * Copyright (C) 2016 - LCL
  */
-public class UIHorizontalList extends UIView<UIHorizontalList> implements IDisposable 
+
+public class UIHorizontalList extends UIView<UIHorizontalList> implements IDisposable
 {
     private float m_OldX;
     private int m_Current;

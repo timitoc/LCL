@@ -1,6 +1,9 @@
 package com.sasluca.lcl.utils.text;
 
 import com.sasluca.lcl.abstractions.IText;
+import com.sasluca.lcl.utils.collections.LCLArray;
+
+import java.util.StringTokenizer;
 
 /**
  * Created by Sas Luca on 19-Jun-16.
@@ -27,6 +30,15 @@ public class LCLString implements IText<LCLString>
     @Override public String getSubstring(int begin, int end) { return m_Buffer.substring(begin, end); }
     public boolean contains(String s) { return getText().contains(s); }
     public boolean contains(char c) { return getText().contains(Character.toString(c)); }
+
+    public LCLArray<String> split(String delims)
+    {
+        LCLArray<String> array = new LCLArray<>();
+        StringTokenizer st = new StringTokenizer(m_Buffer.toString(), delims);
+        while (st.hasMoreElements()) { array.add((String) st.nextElement()); }
+
+        return array;
+    }
 
     public LCLString removeChar(char c)
     {

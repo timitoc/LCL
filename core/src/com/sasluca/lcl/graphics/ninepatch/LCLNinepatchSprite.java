@@ -43,7 +43,8 @@ public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, ICol
         p_IsRendering = true;
     }
 
-    public LCLNinepatchSprite setNinePatch(String ninepatch) { p_NinePatch = LCL.SYS.ResourceManger.<NinePatch>getResource(ninepatch); return this; }
+    public LCLNinepatchSprite setNinePatch(String ninepatch) {
+        p_NinePatch = LCL.SYS.ResourceManger.<NinePatch>getResource(ninepatch); return this; }
 
     //Render
     @Override public LCLNinepatchSprite render()

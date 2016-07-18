@@ -7,7 +7,7 @@ import com.sasluca.lcl.abstractions.IFocusable;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.animation.LCLUniversalAccessor;
 import com.sasluca.lcl.graphics.mask.LCLMask;
-import com.sasluca.lcl.ui.UIView;
+import com.sasluca.lcl.ui.material_design.UIView;
 import com.sasluca.lcl.ui.material_design.group.UIGroup;
 import com.sasluca.lcl.ui.material_design.lists.genericlists.UIContainer;
 import com.sasluca.lcl.utils.collections.LCLArray;
@@ -28,6 +28,8 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
     private boolean m_Animating;
     private boolean m_CurrentChanged;
     private LCLArray<UIContainer> m_List;
+
+    public IOnItemChanged onItemChanged;
 
     public UISnapHorizontalList(float width, float height)
     {
@@ -60,6 +62,7 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
     }
 
     public int getCurrent() { return m_Current; }
+    public int getNumberOfItems() { return m_List.getSize() - 1; }
     public UIView getItem(int id) { return m_List.get(id).getObject(); }
 
     @Override public boolean touchUp(int screenX, int screenY, int pointer, int button)
@@ -71,8 +74,17 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
             //System.out.println(m_InitialX - m_OldX + " " + ((System.nanoTime() - m_BeginTimer)/1000000000.0));
 
             //Moving to current + 1
-            if(!m_CurrentChanged && m_InitialX - m_OldX > 0 && ((System.nanoTime() - m_BeginTimer)/1000000000.0) < 0.20f && m_Current != m_List.getSize() - 1) m_Current++;
-            if(!m_CurrentChanged && m_InitialX - m_OldX < 0 && ((System.nanoTime() - m_BeginTimer)/1000000000.0) < 0.20f && m_Current != 0) m_Current--;
+            if(!m_CurrentChanged && m_InitialX - m_OldX > 0 && ((System.nanoTime() - m_BeginTimer)/1000000000.0) < 0.20f && m_Current != m_List.getSize() - 1)
+            {
+                m_Current++;
+                if(onItemChanged != null) onItemChanged.onItemChanged(this, m_Current - 1, m_Current);
+            }
+
+            if(!m_CurrentChanged && m_InitialX - m_OldX < 0 && ((System.nanoTime() - m_BeginTimer)/1000000000.0) < 0.20f && m_Current != 0)
+            {
+                m_Current--;
+                if(onItemChanged != null) onItemChanged.onItemChanged(this, m_Current + 1, m_Current);
+            }
 
             if(m_List.get(m_Current).getX() > m_Mask.getX() || m_List.get(m_Current).getX() < m_Mask.getX())
             {
@@ -128,7 +140,12 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
                 m_OldX = x;
 
                 if(m_Current == m_List.getSize() - 1 && m_List.get(m_Current).getX() < m_Mask.getX()) m_Group.setPosX(m_Mask.getX() - m_Group.getWidth() + m_List.get(m_Current).getWidth());
-                if(m_List.get(m_Current).getX() < m_Mask.getX() - ((30.0/100.0)*m_Mask.getWidth())) { m_Current++; m_CurrentChanged = true; }
+                if(m_List.get(m_Current).getX() < m_Mask.getX() - ((30.0/100.0)*m_Mask.getWidth()))
+                {
+                    m_Current++;
+                    m_CurrentChanged = true;
+                    if(onItemChanged != null) onItemChanged.onItemChanged(this, m_Current - 1, m_Current);
+                }
             }
             //Moving to current - 1
             else if(x > m_OldX)
@@ -138,7 +155,12 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
                 m_OldX = x;
 
                 if(m_Current == 0 && m_List.get(m_Current).getX() > m_Mask.getX()) m_Group.setPosX(m_Mask.getX());
-                if(m_List.get(m_Current).getX() > m_Mask.getX() + ((30.0/100.0)*m_Mask.getWidth())) { m_Current--; m_CurrentChanged = true; }
+                if(m_List.get(m_Current).getX() > m_Mask.getX() + ((30.0/100.0)*m_Mask.getWidth()))
+                {
+                    m_Current--;
+                    m_CurrentChanged = true;
+                    if(onItemChanged != null) onItemChanged.onItemChanged(this, m_Current +1, m_Current);
+                }
             }
         }
         else touchUp(x, y, pointer, 1);
@@ -150,9 +172,11 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
 
     public void nextItem()
     {
-        if(m_Current == m_List.getSize() - 1) return;
+        if(m_Current == m_List.getSize() - 1 || m_Animating) return;
 
         m_Current++;
+
+        if(onItemChanged != null) onItemChanged.onItemChanged(this, m_Current - 1, m_Current);
 
         Tween.to(m_Group, LCLUniversalAccessor.POS_X, 0.3f)
                 .targetRelative(m_Mask.getX() - m_List.get(m_Current).getX())
@@ -165,14 +189,16 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
 
     public void previousItem()
     {
-        if(m_Current == 0) return;
+        if(m_Current == 0 || m_Animating) return;
 
         m_Current--;
+
+        if(onItemChanged != null) onItemChanged.onItemChanged(this, m_Current + 1, m_Current);
 
         Tween.to(m_Group, LCLUniversalAccessor.POS_X, 0.3f)
                 .targetRelative(m_Mask.getX() - m_List.get(m_Current).getX())
                 .ease(Quad.IN)
-                .setCallback((type, source) -> { m_Animating = false; })
+                .setCallback((type, source) -> m_Animating = false)
                 .start(LCLTween.TWEEN_MANAGER);
 
         m_Animating = true;

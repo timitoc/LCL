@@ -24,8 +24,8 @@ public abstract class LCLInputHandler
     {
         if(m_InputLayer != -1)
         {
-            m_InputLayer = -1;
             LCLInputSystem.getInputLayer(m_InputLayer).removeInputHandler(this);
+            m_InputLayer = -1;
         }
     }
 

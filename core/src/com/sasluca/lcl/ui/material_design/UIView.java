@@ -1,4 +1,4 @@
-package com.sasluca.lcl.ui;
+package com.sasluca.lcl.ui.material_design;
 
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.IFocusable;
@@ -124,7 +124,7 @@ public abstract class UIView<This> extends LCLInputHandler implements IRenderabl
 
     @Override public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
-        if(p_Hitbox.isPointInside(screenX, screenY) && p_Pointer == pointer)
+        if(p_Pointer == pointer)
         {
             if(onTouchUp != null) onTouchUp.touchUp(screenX, screenY, pointer, button, ((This)this));
             loseFocus();

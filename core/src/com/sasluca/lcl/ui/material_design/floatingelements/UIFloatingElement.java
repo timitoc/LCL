@@ -1,7 +1,7 @@
 package com.sasluca.lcl.ui.material_design.floatingelements;
 
 import com.sasluca.lcl.abstractions.IColorable;
-import com.sasluca.lcl.ui.UIView;
+import com.sasluca.lcl.ui.material_design.UIView;
 
 /**
  * Created by Sas Luca on 04-Jul-16.

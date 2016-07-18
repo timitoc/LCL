@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
+import com.badlogic.gdx.graphics.g2d.DistanceFieldFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.sasluca.lcl.LCL;
@@ -17,7 +18,7 @@ import com.sasluca.lcl.LCL;
 public class LCLDistanceFieldFont extends LCLFont
 {
     /** The shader used to drawText the font. */
-    public static ShaderProgram fontShader = new ShaderProgram(Gdx.files.internal("shaders/distancefieldfonts/font.vert"), Gdx.files.internal("shaders/distancefieldfonts/font.frag"));
+    public static ShaderProgram fontShader = DistanceFieldFont.createDistanceFieldShader(); //new ShaderProgram(Gdx.files.internal("shaders/distancefieldfonts/font.vert"), Gdx.files.internal("shaders/distancefieldfonts/font.frag"));
     private final float m_Spread;
 
     public LCLDistanceFieldFont(String fontName, float spread)
@@ -46,12 +47,13 @@ public class LCLDistanceFieldFont extends LCLFont
         p_Cache = new BitmapFontCache(p_Font);
     }
 
-    public void drawText(String text, float x, float y, float widthScale, float heightScale, Color color)
+    public void drawText(String text, float x, float y, float widthScale, float heightScale, Color color, float smoothing)
     {
         LCL.SYS.SpriteBatch.setShader(fontShader);
 
-        fontShader.setUniformf("spread", m_Spread);
-        fontShader.setUniformf("scale", p_Font.getScaleX() * p_Font.getScaleY());
+        fontShader.setUniformf("u_smoothing", smoothing);
+        //fontShader.setUniformf("spread", m_Spread);
+        //fontShader.setUniformf("scale", p_Font.getScaleX() * p_Font.getScaleY());
 
         super.drawText(text, x, y, widthScale, heightScale, color);
 

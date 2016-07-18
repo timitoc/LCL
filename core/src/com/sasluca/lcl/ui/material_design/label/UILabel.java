@@ -5,9 +5,11 @@ import com.sasluca.lcl.abstractions.IColorable;
 import com.sasluca.lcl.abstractions.IScalable;
 import com.sasluca.lcl.abstractions.IText;
 import com.sasluca.lcl.animation.LCLTween;
+import com.sasluca.lcl.graphics.fonts.LCLDistanceFieldFont;
 import com.sasluca.lcl.graphics.fonts.LCLFont;
 import com.sasluca.lcl.graphics.fonts.LCLFontManager;
-import com.sasluca.lcl.ui.UIView;
+import com.sasluca.lcl.graphics.fonts.LCLLabel;
+import com.sasluca.lcl.ui.material_design.UIView;
 import com.sasluca.lcl.utils.text.LCLString;
 
 /**
@@ -23,6 +25,7 @@ public class UILabel extends UIView<UILabel> implements IText<UILabel>, IColorab
     protected float p_X;
     protected Color p_Color;
     protected LCLFont p_Font;
+    protected float p_Smoothing;
     protected LCLString p_String;
     protected float p_WidthScale;
     protected float p_HeightScale;
@@ -30,14 +33,22 @@ public class UILabel extends UIView<UILabel> implements IText<UILabel>, IColorab
     public UILabel(String font, String text, Color color)
     {
         p_Font = LCLFontManager.getFont(font);
+        if(p_Font instanceof LCLDistanceFieldFont) p_Smoothing = 4;
         p_Color = new Color(color);
         p_String = new LCLString(text);
         p_WidthScale = 1;
         p_HeightScale = 1;
     }
 
+    public float getSmoothing() { return p_Smoothing; }
+    public UILabel setSmoothing(float smoothing) { p_Smoothing = smoothing; return this; }
+
     //Render
-    @Override public void renderImpl() { p_Font.drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color); }
+    @Override public void renderImpl()
+    {
+        if(!(p_Font instanceof LCLDistanceFieldFont)) p_Font.drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color);
+        else ((LCLDistanceFieldFont)p_Font).drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color, p_Smoothing);
+    }
     @Override protected void updateImpl() { }
 
     public LCLFont getFont() { return p_Font; }

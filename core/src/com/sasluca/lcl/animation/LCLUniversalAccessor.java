@@ -1,6 +1,7 @@
 package com.sasluca.lcl.animation;
 
 import aurelienribon.tweenengine.TweenAccessor;
+import com.badlogic.gdx.graphics.Color;
 import com.sasluca.lcl.abstractions.*;
 
 /**
@@ -38,26 +39,26 @@ public class LCLUniversalAccessor implements TweenAccessor
         {
             //<editor-fold desc="Color">
             case COLOR_R:
-                floats[0] = ((IColorable)object).getColor().r;
+                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).r;
                 return 1;
 
             case COLOR_G:
-                floats[0] = ((IColorable)object).getColor().g;
+                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).g;
                 return 1;
 
             case COLOR_B:
-                floats[0] = ((IColorable)object).getColor().b;
+                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).b;
                 return 1;
 
             case COLOR_A:
-                floats[0] = ((IColorable)object).getColor().a;
+                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).a;
                 return 1;
 
             case COLOR_RGBA:
-                floats[0] = ((IColorable)object).getColor().r;
-                floats[1] = ((IColorable)object).getColor().g;
-                floats[2] = ((IColorable)object).getColor().b;
-                floats[3] = ((IColorable)object).getColor().a;
+                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).r;
+                floats[1] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).g;
+                floats[2] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).b;
+                floats[3] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).a;
                 return 4;
             //</editor-fold>
 
@@ -124,26 +125,26 @@ public class LCLUniversalAccessor implements TweenAccessor
         {
             //<editor-fold desc="Color">
             case COLOR_R:
-                ((IColorable)object).setAlpha(floats[0]);
+                if(object instanceof IColorable) ((IColorable)object).getColor().r = floats[0]; else ((Color)object).r = floats[0];
                 break;
 
             case COLOR_G:
-                ((IColorable)object).setAlpha(floats[0]);
+                if(object instanceof IColorable) ((IColorable)object).getColor().g = floats[0]; else ((Color)object).g = floats[0];
                 break;
 
             case COLOR_B:
-                ((IColorable)object).setAlpha(floats[0]);
+                if(object instanceof IColorable) ((IColorable)object).getColor().b = floats[0]; else ((Color)object).b = floats[0];
                 break;
 
             case COLOR_A:
-                ((IColorable)object).setAlpha(floats[0]);
+                if(object instanceof IColorable) ((IColorable)object).setAlpha(floats[0]); else ((Color)object).a = floats[0];
                 break;
 
             case COLOR_RGBA:
-                ((IColorable)object).setAlpha(floats[0]);
-                ((IColorable)object).setAlpha(floats[1]);
-                ((IColorable)object).setAlpha(floats[2]);
-                ((IColorable)object).setAlpha(floats[3]);
+                if(object instanceof IColorable) ((IColorable)object).getColor().r = floats[0]; else ((Color)object).r = floats[0];
+                if(object instanceof IColorable) ((IColorable)object).getColor().g = floats[0]; else ((Color)object).g = floats[0];
+                if(object instanceof IColorable) ((IColorable)object).getColor().b = floats[0]; else ((Color)object).b = floats[0];
+                if(object instanceof IColorable) ((IColorable)object).setAlpha(floats[0]); else ((Color)object).a = floats[0];
                 break;
             //</editor-fold>
 
@@ -203,6 +204,5 @@ public class LCLUniversalAccessor implements TweenAccessor
             default:
                 assert false; break;
         }
-
     }
 }

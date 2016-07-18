@@ -26,7 +26,7 @@ public class LCLTween
         {
             REGISTERED_CLASSES.add(clazz);
             Tween.registerAccessor(clazz, UNIVERSAL_ACCESSOR);
-
+            addClass(Color.class);
         }
         return INSTANCE;
     }

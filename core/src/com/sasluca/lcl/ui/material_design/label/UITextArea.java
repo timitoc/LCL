@@ -4,10 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.sasluca.lcl.abstractions.IColorable;
 import com.sasluca.lcl.abstractions.ISizeable;
 import com.sasluca.lcl.animation.LCLTween;
+import com.sasluca.lcl.graphics.fonts.LCLDistanceFieldFont;
 import com.sasluca.lcl.graphics.fonts.LCLFont;
 import com.sasluca.lcl.graphics.fonts.LCLFontManager;
 import com.sasluca.lcl.graphics.mask.LCLMask;
-import com.sasluca.lcl.ui.UIView;
+import com.sasluca.lcl.ui.material_design.UIView;
 import com.sasluca.lcl.utils.text.LCLString;
 
 /**
@@ -26,6 +27,7 @@ public class UITextArea extends UIView<UITextArea> implements ISizeable<UITextAr
     private LCLMask m_Mask;
     private LCLString m_Text;
     private boolean m_Masking;
+    private float m_Smoothing;
     private boolean m_IsRendering;
     private String m_DisplayedString;
 
@@ -71,31 +73,14 @@ public class UITextArea extends UIView<UITextArea> implements ISizeable<UITextAr
         m_DisplayedString = m_Text.getText();
     }
 
-    public static String fitText(String fontName, String text, float scalew, float width)
-    {
-        LCLFont font = LCLFontManager.getFont(fontName);
-        TEMP.clear();
-        int ct = 0;
-
-        for(int i = 0; i < text.split(" ").length; i++)
-        {
-            if(font.getTextWidth(TEMP.getText().split("\n")[ct] + text.split(" ")[i], scalew) >= width)
-            {
-                TEMP.append("\n");
-                ct++;
-            }
-
-            TEMP.append(" " + text.split(" ")[i]);
-        }
-
-        return TEMP.getText();
-    }
-
     @Override public void renderImpl()
     {
         if (m_Masking) m_Mask.start();
 
-        m_Font.drawText(m_Text.getText(), m_Mask.getX(), m_Mask.getY() - (m_Font.getTextHeight(m_Text.getText(), m_ScaleH) - m_Mask.getHeight()), m_ScaleW, m_ScaleH, m_Color);
+        if(m_Font instanceof LCLDistanceFieldFont)
+            ((LCLDistanceFieldFont)m_Font).drawText(m_Text.getText(), m_Mask.getX(), m_Mask.getY() - (m_Font.getTextHeight(m_Text.getText(), m_ScaleH) - m_Mask.getHeight()), m_ScaleW, m_ScaleH, m_Color, m_Smoothing);
+        else
+            m_Font.drawText(m_Text.getText(), m_Mask.getX(), m_Mask.getY() - (m_Font.getTextHeight(m_Text.getText(), m_ScaleH) - m_Mask.getHeight()), m_ScaleW, m_ScaleH, m_Color);
 
         if (m_Masking) m_Mask.end();
     }
@@ -109,6 +94,13 @@ public class UITextArea extends UIView<UITextArea> implements ISizeable<UITextAr
 
         return this;
     }
+
+    public LCLFont getFont() { return m_Font; }
+    public float getTextWidth() { return m_Font.getTextWidth(m_Text.getText(), m_ScaleW); }
+    public float getTextHeight() { return m_Font.getTextHeight(m_Text.getText(), m_ScaleH); }
+
+    public float getSmoothing() { return m_Smoothing; }
+    public UITextArea setSmoothing(float smoothing) { m_Smoothing = smoothing; return this; }
 
     public boolean isOverflowing() { return (m_Font.getTextHeight(m_Text.getText(), m_ScaleH) > m_Mask.getHeight()); }
 

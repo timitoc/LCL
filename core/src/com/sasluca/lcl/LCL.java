@@ -1,5 +1,6 @@
 package com.sasluca.lcl;
 
+import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -43,8 +44,10 @@ public class LCL
         Camera.setToOrtho(false, width, height);
         Camera.update();
         SpriteBatch.setProjectionMatrix(Camera.combined);
-        LCLInputSystem.addInputLayer(new LCLInputLayer(5, true));
+        LCLInputSystem.addInputLayer(new LCLInputLayer(1, true));
         ResourceManger.addTexture("default", "default.jpg");
         ResourceManger.addTexture("badlogic", "badlogic.jpg");
+
+        Tween.setCombinedAttributesLimit(5);
     }
 }

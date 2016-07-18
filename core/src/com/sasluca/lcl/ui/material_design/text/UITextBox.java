@@ -7,13 +7,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.sasluca.lcl.LCL;
+import com.sasluca.lcl.abstractions.IAnimates;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.animation.LCLUniversalAccessor;
 import com.sasluca.lcl.graphics.fonts.LCLFont;
 import com.sasluca.lcl.graphics.mask.LCLMask;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
 import com.sasluca.lcl.input.LCLVirtualKeyboardManager;
-import com.sasluca.lcl.ui.UIView;
+import com.sasluca.lcl.ui.material_design.UIView;
 import com.sasluca.lcl.ui.material_design.LCLMaterialDesign;
 import com.sasluca.lcl.ui.material_design.label.UILabel;
 import com.sasluca.lcl.utils.group.LCLGroup;
@@ -30,7 +31,7 @@ import static com.sasluca.lcl.utils.tuples.LCLTuple.tuple;
  */
 
 /** A single line text box */
-public class UITextBox extends UIView<UITextBox>
+public class UITextBox extends UIView<UITextBox> implements IAnimates
 {
     static { LCLTween.addClass(UITextBox.class); }
 
@@ -76,8 +77,8 @@ public class UITextBox extends UIView<UITextBox>
         m_PasswordString = new LCLString();
 
         m_Idle = new LCLSprite(LCL.SYS.ResourceManger.<Texture>getResource("textbox_idle"));
-        m_Idle.setWidth(560);
-        m_Idle.setColor(idleColor);
+        m_Idle.setWidth(560)
+                .setColor(idleColor);
 
         m_Focused = new LCLSprite(LCL.SYS.ResourceManger.<Texture>getResource("textbox_focused"));
         m_Focused.setColor(focusedColor)
@@ -85,18 +86,27 @@ public class UITextBox extends UIView<UITextBox>
 
         m_TextMask = new LCLMask(0, 0, m_Idle.getWidth(), m_Focused.getHeight());
 
-        m_InfoLabel = new UILabel("Roboto", "", focusedColor);
-        m_InfoLabel.setScale(1f).setPosX(1);
+        m_InfoLabel = new UILabel("Roboto_Italic", "", focusedColor);
+        m_InfoLabel.setScale(0.5f)
+                .setSmoothing(4)
+                .setPosX(1);
+
         centerToDrawable(m_InfoLabel, m_Idle, false, true);
 
         m_InfoMask = new LCLMask(0, -55, m_Idle.getWidth(), 55);
 
         m_DisplayedLabel = new UILabel("Roboto", "", textColor);
-        m_DisplayedLabel.setScale(1f).setPosX(1);
+        m_DisplayedLabel.setScale(0.5f)
+                .setSmoothing(4)
+                .setPosX(1);
+
         centerToDrawable(m_DisplayedLabel, m_Idle, false, true);
 
-        m_DefaultLabel = new UILabel("Roboto", "", idleColor);
-        m_DefaultLabel.setScale(1f).setPosX(1);
+        m_DefaultLabel = new UILabel("Roboto_Light", "", idleColor);
+        m_DefaultLabel.setScale(0.5f)
+                .setSmoothing(4)
+                .setPosX(1);
+
         centerToDrawable(m_DefaultLabel, m_Idle, false, true);
 
         m_Cursor = new LCLSprite(LCL.SYS.ResourceManger.<Texture>getResource("default"));
@@ -104,6 +114,7 @@ public class UITextBox extends UIView<UITextBox>
                 .setPosX(5)
                 .setColor(focusedColor)
                 .setRenderingState(false);
+
         centerToDrawable(m_Cursor, m_Focused, false, true);
 
         m_BlinkingTimer = new LCLTimer(m_BlinkingRate);
@@ -127,6 +138,8 @@ public class UITextBox extends UIView<UITextBox>
         LCLVirtualKeyboardManager.addKeyboardHandler(this);
     }
 
+    public String getText() { return m_Text.getText(); }
+
     public UITextBox showError()
     {
         m_ShowError = true;
@@ -146,6 +159,7 @@ public class UITextBox extends UIView<UITextBox>
         m_Cursor.setColor(m_FocusedColor);
         m_Focused.setColor(m_FocusedColor);
         m_Idle.setColor(m_IdleColor);
+        m_InfoLabel.setColor(m_FocusedColor);
         m_InfoLabel.write(m_InfoMessage);
 
         return this;
@@ -158,7 +172,7 @@ public class UITextBox extends UIView<UITextBox>
     //</editor-fold>
 
     //<editor-fold desc="Chars">
-    public UITextBox setPasswordChar(char c) { m_PasswordChar = c; return this; }
+    public UITextBox setPasswordChar(char c) { m_PasswordChar = c; m_DisplayedLabel.write(c == ' ' ? m_Text.getText() : m_PasswordString.getText()); return this; }
     public UITextBox allowSpace() { allowChar((char)32); return this; }
     public UITextBox disallowSpace() { disallowChar((char)32); return this; }
     public UITextBox allowLetters() { allowLowercaseLetters(); allowUppercaseLetters(); return this; }
@@ -176,21 +190,6 @@ public class UITextBox extends UIView<UITextBox>
     public UITextBox disallowChar(char c) { if(m_AllowedChars.contains(c)) m_AllowedChars.delete(m_AllowedChars.getText().lastIndexOf(c), m_AllowedChars.getText().lastIndexOf(c) + 1); return this; }
     //</editor-fold
 
-    private LCLTuple<Boolean, Float> isFullyVisible(int col)
-    {
-        String text = m_DisplayedLabel.getText().substring(0, col);
-        float textWidth = m_DisplayedLabel.getFont().getTextWidth(text, m_DisplayedLabel.getWidthScale());
-
-        String charS = Character.toString(m_DisplayedLabel.getText().charAt(col));
-        float charWidth = m_DisplayedLabel.getX() + m_DisplayedLabel.getFont().getTextWidth(charS, m_DisplayedLabel.getWidthScale());
-
-        return tuple
-        (
-                (m_DisplayedLabel.getX() + textWidth) - (m_TextMask.getX() + 1) >= charWidth,
-                (m_DisplayedLabel.getX() + textWidth) - (m_TextMask.getX() + 1)
-        );
-    }
-
     private void setTextPosition(int oldColumn, int newColumn)
     {
         if(newColumn > oldColumn)
@@ -207,12 +206,17 @@ public class UITextBox extends UIView<UITextBox>
 
         if(newColumn < oldColumn)
         {
-            LCLTuple<Boolean, Float> t = isFullyVisible(newColumn);
-
-            /*if(!t.getItem1())
+            //If we go back a column we move the cursor back by the width of the character at his previous column
+            LCLFont f = m_DisplayedLabel.getFont();
+            String c = Character.toString(m_DisplayedLabel.getCharAt(newColumn - 1));
+            float dif = m_DisplayedLabel.getFont().getTextWidth(c, m_DisplayedLabel.getWidthScale());
+            if (dif > m_Cursor.getX() - m_TextMask.getX())
             {
-                m_DisplayedLabel.setPosX(m_DisplayedLabel.getX() + (t.getItem2() - m_TextMask.getWidth() + 1));
-            }*/
+                m_DisplayedLabel.setPosX(m_DisplayedLabel.getX() - dif);
+
+                //If the cursor went behind the mask then we move the whole text up on the x axis by the difference between the cursor and mask + the width of the current char
+                m_DisplayedLabel.setPosX(m_DisplayedLabel.getX() + dif + (m_Cursor.getX() - m_TextMask.getX()));
+            }
         }
     }
 
@@ -298,7 +302,8 @@ public class UITextBox extends UIView<UITextBox>
         if(character == 8 && m_CursorCol != 0)
         {
             m_Text.deleteCharAt(m_CursorCol - 1);
-            m_DisplayedLabel.write(m_Text.getText());
+            m_PasswordString.deleteCharAt(m_CursorCol - 1);
+            m_DisplayedLabel.write(m_PasswordChar == ' ' ? m_Text.getText() : m_PasswordString.getText());
             setCursorPosition(m_CursorCol - 1);
         }
 
@@ -332,7 +337,7 @@ public class UITextBox extends UIView<UITextBox>
             return true;
         }
 
-        loseFocus();
+        if(isFocused()) loseFocus();
 
         return false;
     }
@@ -352,7 +357,7 @@ public class UITextBox extends UIView<UITextBox>
         if(m_DisplayedLabel.getText().isEmpty())
         {
             Tween.to(m_DefaultLabel, LCLUniversalAccessor.POS_XY, 0.3f)
-                    .target(getX(), getY() + m_Idle.getHeight())
+                    .target(m_Idle.getX(), m_Idle.getY() + m_Idle.getHeight())
                     .ease(Quad.OUT)
                     .setCallback((type, source) -> { m_Cursor.setRenderingState(true); })
                     .start(LCLTween.TWEEN_MANAGER);
@@ -416,9 +421,9 @@ public class UITextBox extends UIView<UITextBox>
     //</editor-fold>
 
     //<editor-fold desc="Transform">
-    @Override public float getX() { return m_Idle.getX(); }
-    @Override public float getY() { return m_Idle.getY(); }
-    @Override public float getWidth() { return m_Group.getWidth(); }
+    @Override public float getX() { return m_Group.getX(); }
+    @Override public float getY() { return m_Group.getY(); }
+    @Override public float getWidth() { return m_Idle.getWidth(); }
     @Override public float getHeight() { return m_Group.getHeight(); }
     @Override public UITextBox setPosX(float newX) { m_Group.setPosX(newX); return this; }
     @Override public UITextBox setPosY(float newY) { m_Group.setPosY(newY); return this; }
@@ -433,4 +438,6 @@ public class UITextBox extends UIView<UITextBox>
     public UITextBox setFocusedColor(Color color) { m_FocusedColor.set(color); return this; }
     public UITextBox setUnfocusedColor(Color color) { m_IdleColor.set(color); return this; }
     //</editor-fold>
+
+    @Override public boolean isAnimating() { return m_Animating; }
 }

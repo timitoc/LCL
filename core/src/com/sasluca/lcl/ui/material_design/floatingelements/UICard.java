@@ -27,7 +27,7 @@ public class UICard extends UIFloatingElement<UICard> implements ISizeable<UICar
     {
         m_RoundCornerLevel = 0;
         p_FloatLevel = floatLevel > 6 || floatLevel < 0 ? 6 : floatLevel;
-        m_Sprite = new LCLNinepatchSprite("CARD_RC_" + m_RoundCornerLevel + "_FLOAT_" + floatLevel + "_LCL", 200, 200, Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        m_Sprite = new LCLNinepatchSprite("card_roundcornerlevel_" + m_RoundCornerLevel + "_floatlevel_" + floatLevel + "_lcl", 200, 200, Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         m_Sprite.setPosX(-PADDING).setPosY(-PADDING);
     }
 

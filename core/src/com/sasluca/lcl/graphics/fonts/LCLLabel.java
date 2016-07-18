@@ -20,6 +20,7 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
     protected float p_X;
     protected Color p_Color;
     protected LCLFont p_Font;
+    protected float p_Smoothing;
     protected LCLString p_String;
     protected boolean p_IsRendering;
     protected float p_WidthScale;
@@ -28,6 +29,7 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
     public LCLLabel(String font, String text, Color color)
     {
         p_Font = LCLFontManager.getFont(font);
+        if(p_Font instanceof LCLDistanceFieldFont) p_Smoothing = 4;
         p_Color = new Color(color);
         p_String = new LCLString(text);
         p_WidthScale = 1;
@@ -35,12 +37,16 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
         p_IsRendering = true;
     }
 
+    public float getSmoothing() { return p_Smoothing; }
+    public LCLLabel setSmoothing(float smoothing) { p_Smoothing = smoothing; return this; }
+
     //Render
     @Override public LCLLabel render()
     {
         if(!p_IsRendering) return this;
 
-        p_Font.drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color);
+        if(!(p_Font instanceof LCLDistanceFieldFont)) p_Font.drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color);
+        else ((LCLDistanceFieldFont)p_Font).drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color, p_Smoothing);
 
         return this;
     }

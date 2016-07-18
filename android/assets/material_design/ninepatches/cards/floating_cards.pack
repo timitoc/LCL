@@ -1,0 +1,61 @@
+
+floating_cards.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+card_roundcornerlevel_0_floatlevel_0_lcl
+  rotate: false
+  xy: 1, 203
+  size: 200, 200
+  split: 75, 82, 84, 81
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+card_roundcornerlevel_0_floatlevel_1_lcl
+  rotate: false
+  xy: 1, 1
+  size: 200, 200
+  split: 84, 83, 74, 85
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+card_roundcornerlevel_0_floatlevel_2_lcl
+  rotate: false
+  xy: 203, 203
+  size: 200, 200
+  split: 79, 79, 89, 83
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+card_roundcornerlevel_0_floatlevel_3_lcl
+  rotate: false
+  xy: 203, 1
+  size: 200, 200
+  split: 81, 84, 79, 85
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+card_roundcornerlevel_0_floatlevel_4_lcl
+  rotate: false
+  xy: 405, 203
+  size: 200, 200
+  split: 86, 84, 76, 79
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+card_roundcornerlevel_0_floatlevel_5_lcl
+  rotate: false
+  xy: 405, 1
+  size: 200, 200
+  split: 86, 86, 84, 85
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+card_roundcornerlevel_0_floatlevel_6_lcl
+  rotate: false
+  xy: 607, 203
+  size: 200, 200
+  split: 82, 82, 82, 78
+  orig: 200, 200
+  offset: 0, 0
+  index: -1

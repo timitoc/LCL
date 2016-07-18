@@ -1,7 +1,7 @@
 package com.sasluca.lcl.ui.material_design.lists.genericlists;
 
 import com.sasluca.lcl.graphics.mask.LCLMask;
-import com.sasluca.lcl.ui.UIView;
+import com.sasluca.lcl.ui.material_design.UIView;
 import static com.sasluca.lcl.utils.LCLUtils.centerToDrawable;
 
 /**

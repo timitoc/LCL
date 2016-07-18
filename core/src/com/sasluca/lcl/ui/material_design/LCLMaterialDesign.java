@@ -1,6 +1,7 @@
 package com.sasluca.lcl.ui.material_design;
 
 import com.badlogic.gdx.graphics.Color;
+import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.graphics.fonts.LCLFontManager;
 
 import static com.sasluca.lcl.LCL.SYS;
@@ -23,6 +24,18 @@ public class LCLMaterialDesign
     public static void init()
     {
         LCLFontManager.addDistanceFieldFont("Roboto", 4);
+        LCLFontManager.addDistanceFieldFont("Roboto_Light", 4);
+        LCLFontManager.addDistanceFieldFont("Roboto_Medium", 4);
+        LCLFontManager.addDistanceFieldFont("Roboto_Italic", 4);
+
+        LCLFontManager.getFont("Roboto").getFont().getData().getGlyph('t').xadvance += 3;
+        LCLFontManager.getFont("Roboto_Light").getFont().getData().getGlyph('t').xadvance += 3;
+        LCLFontManager.getFont("Roboto_Medium").getFont().getData().getGlyph('t').xadvance += 3;
+        LCLFontManager.getFont("Roboto_Italic").getFont().getData().getGlyph('t').xadvance += 3;
+        LCLFontManager.getFont("Roboto").getFont().getData().getGlyph('j').xadvance += 3;
+        LCLFontManager.getFont("Roboto_Light").getFont().getData().getGlyph('j').xadvance += 3;
+        LCLFontManager.getFont("Roboto_Medium").getFont().getData().getGlyph('j').xadvance += 3;
+        LCLFontManager.getFont("Roboto_Italic").getFont().getData().getGlyph('j').xadvance += 3;
 
         SYS.ResourceManger.addNinepatchesFromAtlas("material_design/ninepatches/cards/floating_cards.pack",
                 "card_roundcornerlevel_0_floatlevel_0_lcl",

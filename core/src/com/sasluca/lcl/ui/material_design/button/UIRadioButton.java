@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.sasluca.lcl.abstractions.ISizeable;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
-import com.sasluca.lcl.ui.UIView;
+import com.sasluca.lcl.ui.material_design.UIView;
 import static com.sasluca.lcl.LCL.SYS;
 
 /**
