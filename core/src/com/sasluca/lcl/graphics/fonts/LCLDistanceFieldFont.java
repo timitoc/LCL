@@ -47,7 +47,7 @@ public class LCLDistanceFieldFont extends LCLFont
         p_Cache = new BitmapFontCache(p_Font);
     }
 
-    public void drawText(String text, float x, float y, float widthScale, float heightScale, Color color, float smoothing)
+    public void drawText(String text, float x, float y, float widthScale, float heightScale, Color color, float smoothing, boolean drawFromTop)
     {
         LCL.SYS.SpriteBatch.setShader(fontShader);
 
@@ -55,7 +55,7 @@ public class LCLDistanceFieldFont extends LCLFont
         //fontShader.setUniformf("spread", m_Spread);
         //fontShader.setUniformf("scale", p_Font.getScaleX() * p_Font.getScaleY());
 
-        super.drawText(text, x, y, widthScale, heightScale, color);
+        super.drawText(text, x, y, widthScale, heightScale, color, drawFromTop);
 
         LCL.SYS.SpriteBatch.setShader(null);
     }

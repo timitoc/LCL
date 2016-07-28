@@ -4,18 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector3;
 import com.sasluca.lcl.LCL;
+import com.sasluca.lcl.abstractions.IMasking;
 import com.sasluca.lcl.abstractions.IScalable;
 import com.sasluca.lcl.abstractions.ISizeable;
 import com.sasluca.lcl.abstractions.ITransformable;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
+import com.sasluca.lcl.ui.material_design.LCLMaterialDesign;
 
 /**
  * Created by Sas Luca on 21-Jun-16.
  * Copyright (C) 2016 - LCL
  */
 
-public class LCLMask implements ITransformable<LCLMask>, ISizeable<LCLMask>, IScalable<LCLMask>
+public class LCLMask implements IMasking<LCLMask>, ITransformable<LCLMask>, ISizeable<LCLMask>, IScalable<LCLMask>
 {
     static { LCLTween.addClass(LCLMask.class); }
 
@@ -25,6 +27,7 @@ public class LCLMask implements ITransformable<LCLMask>, ISizeable<LCLMask>, ISc
     protected float p_Height;
     protected float p_WidthScale;
     protected float p_HeightScale;
+    protected boolean p_Enabled;
 
     private static boolean Masking = false;
     private static Vector3 VECTOR3 = new Vector3();
@@ -37,6 +40,7 @@ public class LCLMask implements ITransformable<LCLMask>, ISizeable<LCLMask>, ISc
         p_Height = height;
         p_WidthScale = widthScale;
         p_HeightScale = heightScale;
+        p_Enabled = true;
     }
 
     public LCLMask(float x, float y, float width, float height)
@@ -47,7 +51,7 @@ public class LCLMask implements ITransformable<LCLMask>, ISizeable<LCLMask>, ISc
     /** All objects rendered after {@link #start()} will be inside the mask */
     public void start()
     {
-        if(Masking)
+        if(Masking || !p_Enabled)
         {
             //TODO: Error
             return;
@@ -80,7 +84,7 @@ public class LCLMask implements ITransformable<LCLMask>, ISizeable<LCLMask>, ISc
     /** Objects rendered after {@link #end()} will not be inside the mask. Remember you must call {@link #end()} before you call {@link #start()} again*/
     public void end()
     {
-        if(!Masking)
+        if(!Masking || !p_Enabled)
         {
             //TODO: Error
             return;
@@ -97,7 +101,7 @@ public class LCLMask implements ITransformable<LCLMask>, ISizeable<LCLMask>, ISc
         if(Masking)
         {
             //TODO: Error
-            return;
+            //return;
         }
 
         Masking = true;
@@ -114,8 +118,10 @@ public class LCLMask implements ITransformable<LCLMask>, ISizeable<LCLMask>, ISc
         if(!Masking)
         {
             //TODO: Error
-            return;
+            //return;
         }
+
+        Masking = false;
 
         LCL.SYS.SpriteBatch.flush();
         Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
@@ -143,4 +149,7 @@ public class LCLMask implements ITransformable<LCLMask>, ISizeable<LCLMask>, ISc
     @Override public LCLMask setHeightScale(float newHeightScale) { p_HeightScale = newHeightScale; return this; }
     @Override public LCLMask setSize(float newWidth, float newHeight) { p_Width = newWidth; p_Height = newHeight; return this; }
     @Override public LCLMask setScale(float newWidthScale, float newHeightScale) { p_WidthScale = newWidthScale; p_HeightScale = newHeightScale; return this; }
+
+    @Override public boolean getMaskingStrategy() { return p_Enabled; }
+    @Override public LCLMask setMaskingStrategy(boolean maskingStrategy) { p_Enabled = maskingStrategy; return this; }
 }

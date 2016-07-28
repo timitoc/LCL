@@ -64,21 +64,7 @@ public class LCLThread implements IReusable<LCLThread>, IDisposable
 
     @Override public void dispose()
     {
-        if(m_Task.started())
-        {
-            if(m_Task.finished())
-            {
-                m_IsAlive.getAndSet(false);
-                m_Thread = null;
-                m_Task = null;
-
-                return;
-            }
-            //TODO: ERROR -> Thread can not be stopped until the task ended
-
-            return;
-        }
-
+        m_Thread.interrupt();
         m_IsAlive.getAndSet(false);
         m_Thread = null;
         m_Task = null;

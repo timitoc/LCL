@@ -7,9 +7,11 @@ import com.sasluca.lcl.abstractions.IFocusable;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.animation.LCLUniversalAccessor;
 import com.sasluca.lcl.graphics.mask.LCLMask;
-import com.sasluca.lcl.ui.material_design.UIView;
+import com.sasluca.lcl.ui.material_design.lists.IOnItemChanged;
+import com.sasluca.lcl.ui.material_design.lists.modellists.scrolllists.UIModelVerticalList;
+import com.sasluca.lcl.ui.material_design.view.UIView;
 import com.sasluca.lcl.ui.material_design.group.UIGroup;
-import com.sasluca.lcl.ui.material_design.lists.genericlists.UIContainer;
+import com.sasluca.lcl.ui.material_design.view.UIContainer;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
 /**
@@ -19,6 +21,8 @@ import com.sasluca.lcl.utils.collections.LCLArray;
 
 public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implements IDisposable
 {
+    static { LCLTween.addClass(UISnapHorizontalList.class); }
+
     private float m_OldX;
     private int m_Current;
     private LCLMask m_Mask;
@@ -29,7 +33,7 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
     private boolean m_CurrentChanged;
     private LCLArray<UIContainer> m_List;
 
-    public IOnItemChanged onItemChanged;
+    public IOnItemChanged<UISnapHorizontalList> onItemChanged;
 
     public UISnapHorizontalList(float width, float height)
     {
@@ -58,7 +62,8 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
     private boolean isVisible(int id)
     {
         UIView i = m_List.get(id);
-        return (i.getX() >= m_Mask.getX() && i.getX() + i.getWidth() <= m_Mask.getX() + m_Mask.getWidth()) || (i.getY() >= m_Mask.getY() && i.getY() + i.getHeight() <= m_Mask.getY() + m_Mask.getHeight());
+        return (i.getX() + i.getWidth() >= m_Mask.getX() && i.getX() <= m_Mask.getX() + m_Mask.getWidth()) && (i.getY() + i.getHeight() >= m_Mask.getY() && i.getY() <= m_Mask.getY() + m_Mask.getHeight());
+        //return (i.getX() >= m_Mask.getX() && i.getX() + i.getWidth() <= m_Mask.getX() + m_Mask.getWidth()) && (i.getY() >= m_Mask.getY() && i.getY() + i.getHeight() <= m_Mask.getY() + m_Mask.getHeight());
     }
 
     public int getCurrent() { return m_Current; }

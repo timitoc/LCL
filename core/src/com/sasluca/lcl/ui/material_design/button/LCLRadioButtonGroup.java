@@ -1,5 +1,6 @@
 package com.sasluca.lcl.ui.material_design.button;
 
+import com.sasluca.lcl.abstractions.ICheckable;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
 /**
@@ -9,15 +10,15 @@ import com.sasluca.lcl.utils.collections.LCLArray;
 
 public class LCLRadioButtonGroup
 {
-    private LCLArray<UIRadioButton> m_Buttons;
+    private LCLArray<ICheckable> m_Buttons;
 
     public LCLRadioButtonGroup()
     {
         m_Buttons = new LCLArray<>();
     }
 
-    public LCLRadioButtonGroup unsubscribe(UIRadioButton btn) { m_Buttons.remove(btn); return this; }
-    public LCLRadioButtonGroup subscribe(UIRadioButton btn) { if(!m_Buttons.contains(btn)) { m_Buttons.add(btn); btn.uncheck(); } return this; }
+    public LCLRadioButtonGroup unsubscribe(ICheckable btn) { m_Buttons.remove(btn); return this; }
+    public LCLRadioButtonGroup subscribe(ICheckable btn) { if(!m_Buttons.contains(btn)) { m_Buttons.add(btn); btn.uncheck(); } return this; }
 
-    public LCLRadioButtonGroup check(UIRadioButton sender) { for(UIRadioButton btn : m_Buttons) btn.uncheck(); return this; }
+    public LCLRadioButtonGroup check(ICheckable sender) { for(ICheckable btn : m_Buttons) btn.uncheck(); return this; }
 }

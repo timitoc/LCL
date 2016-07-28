@@ -51,4 +51,6 @@ public class LCLStateManager<State> extends LCLManager<IStateHandler<State>>
 
         for(IStateHandler<State> handler : p_Handlers) handler.onState(m_CurrentState);
     }
+
+    public final State getCurrentState() { return m_CurrentState; }
 }

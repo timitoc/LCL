@@ -6,8 +6,8 @@ buildscript {
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
-        classpath 'com.android.tools.build:gradle:1.5.0'
-        classpath 'org.robovm:robovm-gradle-plugin:1.2.0'
+        classpath 'com.android.tools.build:gradle:2.0.0'
+        classpath 'org.robovm:robovm-gradle-plugin:1.9.0'
         classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     }
 }
@@ -56,6 +56,11 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+
+        compile 'org.apache.httpcomponents:httpmime:4.2.3'
+        compile 'org.apache.httpcomponents:httpclient:4.3.4'
+        compile "commons-io:commons-io:2.5"
+        compile "commons-io:commons-io:2.5"
     }
 }
 
@@ -85,6 +90,11 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+
+        compile 'org.apache.httpcomponents:httpmime:4.2.3'
+        compile 'org.apache.httpcomponents:httpclient:4.3.4'
+        compile "commons-io:commons-io:2.5"
+        compile "commons-io:commons-io:2.5"
     }
 }
 
@@ -103,6 +113,11 @@ project(":ios") {
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
+
+        compile 'org.apache.httpcomponents:httpmime:4.2.3'
+        compile 'org.apache.httpcomponents:httpclient:4.3.4'
+        compile "commons-io:commons-io:2.5"
+        compile "commons-io:commons-io:2.5"
     }
 }
 
@@ -120,6 +135,11 @@ project(":sandbox") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+
+        compile 'org.apache.httpcomponents:httpmime:4.2.3'
+        compile 'org.apache.httpcomponents:httpclient:4.3.4'
+        compile "commons-io:commons-io:2.5"
+        compile "commons-io:commons-io:2.5"
     }
 }
 
@@ -139,6 +159,11 @@ project(":core") {
         compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.10.0"
         compile "net.dermetfan.libgdx-utils:libgdx-utils:0.10.0"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+
+        compile 'org.apache.httpcomponents:httpmime:4.2.3'
+        compile 'org.apache.httpcomponents:httpclient:4.3.4'
+        compile "commons-io:commons-io:2.5"
+        compile "commons-io:commons-io:2.5"
     }
 }
 

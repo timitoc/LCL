@@ -1,6 +1,5 @@
 package com.sasluca.lcl.applogic.appsystems.impl;
 
-import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,7 +20,8 @@ public class LCLDefaultAppSystem<State> extends LCLAppSystem<State>
     @Override public void render(float delta)
     {
         //Set the delta and update the camera
-        LCL.SYS.Delta = delta;
+        if(!p_OverrideDelta) LCL.SYS.Delta = delta;
+        p_OverrideDelta = false;
 
         LCL.SYS.Camera.update();
 
@@ -34,7 +34,7 @@ public class LCLDefaultAppSystem<State> extends LCLAppSystem<State>
 
         if(p_UpdateTweenEngine) LCLTween.TWEEN_MANAGER.update(LCL.SYS.Delta);
 
-        for(IRender renderable : p_RenderHandlers) renderable.render();
+        for(IRender renderable : p_RenderLayers) renderable.render();
         for(IUpdate updatable : p_UpdateHandlers) updatable.update();
 
         //Manages the current state

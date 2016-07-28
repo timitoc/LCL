@@ -7,9 +7,23 @@ import com.badlogic.gdx.utils.ObjectMap;
  * Copyright (C) 2016 - LCL
  */
 
-public class LCLObjectMap<Key, Value> extends ObjectMap<Key, Value>
+public class LCLMap<Key, Value> extends ObjectMap<Key, Value>
 {
     public int getSize() { return size; }
     public boolean isEmpty() { return size == 0; }
     public void replace(Key sender, Value value) { remove(sender); put(sender, value); }
+
+    public Key getKey(int index)
+    {
+        int ct = 0;
+
+        for(Key k : keys())
+        {
+            if(ct == index) return k;
+
+            ct++;
+        }
+
+        return null;
+    }
 }

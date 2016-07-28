@@ -35,7 +35,7 @@ public class TestHandler2 implements IStateHandler<Playground.State>
                 .setDefaultText("Test")
                 .setInfoText("Acesta nu e dar e test");
 
-        LCL.SYS.AppSystem.addRenderHandler(textBox);
+        LCL.SYS.AppSystem.getRenderLayer(0).addRenderable(textBox);
         textBox.subscribeToInputLayer(0);
     }
 }

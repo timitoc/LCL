@@ -7,5 +7,5 @@ package com.sasluca.lcl.abstractions;
 
 public interface IClonable<This>
 {
-    This clone();
+    This getClone();
 }

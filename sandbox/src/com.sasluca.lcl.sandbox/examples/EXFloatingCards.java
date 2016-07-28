@@ -16,14 +16,14 @@ public class EXFloatingCards implements IStateHandler<State>
 {
     UICard[] m_Cards;
 
-    @Override public void onState(Playground.State currentState) { for(int i = 0; i <= UIFloatingElement.FLOAT_LEVEL; i++) m_Cards[i].render(); }
+    @Override public void onState(Playground.State currentState) { for(int i = 0; i <= UICard.FLOAT_LEVEL; i++) m_Cards[i].render(); }
 
     @Override public void onChangeState(Playground.State currentState, Playground.State newState)
     {
         if(newState == Playground.State.TEST1)
         {
             m_Cards = new UICard[7];
-            for(int i = 0; i <= UIFloatingElement.FLOAT_LEVEL; i++)
+            for(int i = 0; i <= UICard.FLOAT_LEVEL; i++)
             {
                 m_Cards[i] = new UICard(i);
                 m_Cards[i].setWidth(700).setHeight(150);

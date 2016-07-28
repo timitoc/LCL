@@ -2,10 +2,12 @@ package com.sasluca.lcl.ui.material_design.button;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.sasluca.lcl.abstractions.ICheckable;
 import com.sasluca.lcl.abstractions.ISizeable;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
-import com.sasluca.lcl.ui.material_design.UIView;
+import com.sasluca.lcl.ui.material_design.view.UIView;
+
 import static com.sasluca.lcl.LCL.SYS;
 
 /**
@@ -13,7 +15,7 @@ import static com.sasluca.lcl.LCL.SYS;
  * Copyright (C) 2016 - LCL
  */
 
-public class UIRadioButton extends UIView<UIRadioButton> implements ISizeable<UIRadioButton>
+public class UIRadioButton extends UIView<UIRadioButton> implements ISizeable<UIRadioButton>, ICheckable<UIRadioButton>
 {
     static { LCLTween.addClass(UIRadioButton.class); }
 

@@ -1,6 +1,6 @@
 package com.sasluca.lcl.ui.material_design.design;
 
-import com.sasluca.lcl.utils.collections.LCLObjectMap;
+import com.sasluca.lcl.utils.collections.LCLMap;
 
 /**
  * Created by Sas Luca on 11-Jul-16.
@@ -9,11 +9,11 @@ import com.sasluca.lcl.utils.collections.LCLObjectMap;
 
 public abstract class UIDesign
 {
-    private LCLObjectMap<String, Object> m_Objects;
+    private LCLMap<String, Object> m_Objects;
 
     public UIDesign()
     {
-        m_Objects = new LCLObjectMap<>();
+        m_Objects = new LCLMap<>();
     }
 
     protected void addToDesign(String name, Object object) { m_Objects.put(name, object); }

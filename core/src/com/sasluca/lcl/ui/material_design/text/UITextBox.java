@@ -14,16 +14,14 @@ import com.sasluca.lcl.graphics.fonts.LCLFont;
 import com.sasluca.lcl.graphics.mask.LCLMask;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
 import com.sasluca.lcl.input.LCLVirtualKeyboardManager;
-import com.sasluca.lcl.ui.material_design.UIView;
+import com.sasluca.lcl.ui.material_design.view.UIView;
 import com.sasluca.lcl.ui.material_design.LCLMaterialDesign;
 import com.sasluca.lcl.ui.material_design.label.UILabel;
 import com.sasluca.lcl.utils.group.LCLGroup;
 import com.sasluca.lcl.utils.text.LCLString;
 import com.sasluca.lcl.utils.timer.LCLTimer;
-import com.sasluca.lcl.utils.tuples.LCLTuple;
 
 import static com.sasluca.lcl.utils.LCLUtils.*;
-import static com.sasluca.lcl.utils.tuples.LCLTuple.tuple;
 
 /**
  * Created by Sas Luca on 07-Jul-16.
@@ -359,7 +357,7 @@ public class UITextBox extends UIView<UITextBox> implements IAnimates
             Tween.to(m_DefaultLabel, LCLUniversalAccessor.POS_XY, 0.3f)
                     .target(m_Idle.getX(), m_Idle.getY() + m_Idle.getHeight())
                     .ease(Quad.OUT)
-                    .setCallback((type, source) -> { m_Cursor.setRenderingState(true); })
+                    .setCallback((type, source) -> m_Cursor.setRenderingState(true))
                     .start(LCLTween.TWEEN_MANAGER);
         }
 

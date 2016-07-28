@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.sasluca.lcl.abstractions.ISizeable;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.ninepatch.LCLNinepatchSprite;
-import com.sasluca.lcl.graphics.sprite.LCLSprite;
-import com.sasluca.lcl.ui.material_design.button.UICheckBox;
 
 /**
  * Created by Sas Luca on 01-Jul-16.
@@ -21,23 +19,24 @@ public class UICard extends UIFloatingElement<UICard> implements ISizeable<UICar
     private int m_RoundCornerLevel;
     private LCLNinepatchSprite m_Sprite;
 
-    private final static int PADDING = 50;
+    public static final int PADDING = 50;
+    public static final int FLOAT_LEVEL = 6;
 
     public UICard(int floatLevel)
     {
+        super(50, 6);
         m_RoundCornerLevel = 0;
         p_FloatLevel = floatLevel > 6 || floatLevel < 0 ? 6 : floatLevel;
         m_Sprite = new LCLNinepatchSprite("card_roundcornerlevel_" + m_RoundCornerLevel + "_floatlevel_" + floatLevel + "_lcl", 200, 200, Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         m_Sprite.setPosX(-PADDING).setPosY(-PADDING);
+        p_Group.addObject(m_Sprite);
     }
 
     //<editor-fold desc="Float level">
-    public UICard setFloatLevel(int floatLevel)
+    public void setFloatLevelImpl(int floatLevel)
     {
         p_FloatLevel = floatLevel > 6 || floatLevel < 0 ? 6 : floatLevel;
         m_Sprite.setNinePatch("card_roundcornerlevel" + m_RoundCornerLevel + "_floatlevel_" + p_FloatLevel + "_lcl");
-
-        return this;
     }
     //</editor-fold>
 
@@ -46,15 +45,6 @@ public class UICard extends UIFloatingElement<UICard> implements ISizeable<UICar
     //</editor-fold>
 
     @Override protected void updateImpl() { }
-
-    //<editor-fold desc="Transform">
-    @Override public float getX() { return m_Sprite.getX() + PADDING; }
-    @Override public float getY() { return m_Sprite.getY() + PADDING; }
-    @Override public float getWidth() { return m_Sprite.getWidth() - PADDING * 2; }
-    @Override public float getHeight() { return m_Sprite.getHeight() - PADDING * 2; }
-    @Override public UICard setPosX(float newX) { m_Sprite.setPosX(newX - PADDING); return this; }
-    @Override public UICard setPosY(float newY) { m_Sprite.setPosY(newY - PADDING); return this; }
-    //</editor-fold>
 
     //<editor-fold desc="Size">
     @Override public UICard setWidth(float newWidth) { m_Sprite.setWidth(newWidth + PADDING * 2 < 200 ? 200 : newWidth + PADDING * 2); return this; }

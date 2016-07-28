@@ -1,7 +1,7 @@
 package com.sasluca.lcl.input;
 
 import com.badlogic.gdx.Gdx;
-import com.sasluca.lcl.utils.collections.LCLObjectMap;
+import com.sasluca.lcl.utils.collections.LCLMap;
 
 /**
  * Created by Sas Luca on 22-Jun-16.
@@ -11,7 +11,7 @@ import com.sasluca.lcl.utils.collections.LCLObjectMap;
 public class LCLVirtualKeyboardManager
 {
     private static boolean IsKeyboardVisible = false;
-    private static LCLObjectMap<Object, Boolean> KeyboardHandlers = new LCLObjectMap<>();
+    private static LCLMap<Object, Boolean> KeyboardHandlers = new LCLMap<>();
 
     private LCLVirtualKeyboardManager() {}
 

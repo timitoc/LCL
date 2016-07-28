@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
 import com.sasluca.lcl.animation.LCLTween;
-import com.sasluca.lcl.ui.material_design.UIView;
+import com.sasluca.lcl.ui.material_design.view.UIView;
 
 /**
  * Created by Sas Luca on 11-Jul-16.
@@ -38,10 +38,6 @@ public class UIImage extends UIView<UIImage> implements IColorable<UIImage>, IFl
     }
 
     @Override public void updateImpl() { }
-
-    @Override public boolean isRendering() { return p_IsRendering; }
-    @Override public UIImage setRenderingState(boolean renderingState) { p_IsRendering = renderingState; return this; }
-
 
     //Transform
     @Override public float getX() { return p_Sprite.getX(); }

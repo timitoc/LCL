@@ -35,8 +35,8 @@ public class EXAnims implements IStateHandler<Playground.State>
             m_Sprite = new LCLSprite(new Texture(Gdx.files.internal("badlogic.jpg")));
             m_Sprite2 = new LCLSprite(new Texture(Gdx.files.internal("badlogic.jpg")));
 
-            LCL.SYS.AppSystem.addRenderHandler(m_Sprite);
-            LCL.SYS.AppSystem.addRenderHandler(m_Sprite2);
+            LCL.SYS.AppSystem.getRenderLayer(0).addRenderable(m_Sprite);
+            LCL.SYS.AppSystem.getRenderLayer(0).addRenderable(m_Sprite2);
 
             LCLTween.addClass(m_Sprite.getClass());
             //LCLTween.setAlpha(m_Sprite, 0).start();

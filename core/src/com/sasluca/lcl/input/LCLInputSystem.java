@@ -13,7 +13,7 @@ public class LCLInputSystem implements InputProcessor
 {
     private static final LCLArray<LCLInputLayer> INPUT_LAYERS = new LCLArray<>();
     private static final LCLInputSystem INSTANCE = new LCLInputSystem();
-    private LCLInputLayer TOP_INPUT_LAYER;
+    private LCLInputLayer TOP_INPUT_LAYER; //TOP INPUT LAYER is layer 0
     
     private LCLInputSystem()
     {

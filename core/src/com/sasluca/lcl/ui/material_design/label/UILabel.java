@@ -8,8 +8,7 @@ import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.fonts.LCLDistanceFieldFont;
 import com.sasluca.lcl.graphics.fonts.LCLFont;
 import com.sasluca.lcl.graphics.fonts.LCLFontManager;
-import com.sasluca.lcl.graphics.fonts.LCLLabel;
-import com.sasluca.lcl.ui.material_design.UIView;
+import com.sasluca.lcl.ui.material_design.view.UIView;
 import com.sasluca.lcl.utils.text.LCLString;
 
 /**
@@ -46,8 +45,8 @@ public class UILabel extends UIView<UILabel> implements IText<UILabel>, IColorab
     //Render
     @Override public void renderImpl()
     {
-        if(!(p_Font instanceof LCLDistanceFieldFont)) p_Font.drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color);
-        else ((LCLDistanceFieldFont)p_Font).drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color, p_Smoothing);
+        if(!(p_Font instanceof LCLDistanceFieldFont)) p_Font.drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color, false);
+        else ((LCLDistanceFieldFont)p_Font).drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color, p_Smoothing, false);
     }
     @Override protected void updateImpl() { }
 

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.sasluca.lcl.abstractions.IDisposable;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.applogic.appsystems.LCLAppSystem;
 import com.sasluca.lcl.graphics.fonts.LCLFontManager;
@@ -21,23 +22,23 @@ import com.sasluca.lcl.utils.threads.LCLAsyncTaskExecutor;
  * Copyright (C) 2016 - LCL
  */
 
-public class LCL
+public class LCL implements IDisposable
 {
     public float Delta;
     public LCLAppSystem AppSystem;
     public SpriteBatch SpriteBatch;
     public OrthographicCamera Camera;
     public LCLResourceManager ResourceManger;
-    public StretchViewport Viewport;
     public LCLAsyncTaskExecutor AsyncTaskExecutor;
 
     public final static LCL SYS = new LCL();
 
     private LCL() {}
 
-    public void LCL_INIT(float width, float height)
+    public void LCL_INIT(float width, float height, LCLAppSystem appSystem)
     {
         SpriteBatch = new SpriteBatch();
+        AppSystem = appSystem;
         ResourceManger = new LCLResourceManager();
         AsyncTaskExecutor = new LCLAsyncTaskExecutor();
         Camera = new OrthographicCamera(width, height);
@@ -49,5 +50,13 @@ public class LCL
         ResourceManger.addTexture("badlogic", "badlogic.jpg");
 
         Tween.setCombinedAttributesLimit(5);
+    }
+
+
+    @Override public void dispose()
+    {
+        SpriteBatch.dispose();
+        ResourceManger.dispose();
+        AsyncTaskExecutor.dispose();
     }
 }

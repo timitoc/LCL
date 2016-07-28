@@ -1,21 +1,25 @@
-package com.sasluca.lcl.ui.material_design;
+package com.sasluca.lcl.ui.material_design.view;
 
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.IFocusable;
 import com.sasluca.lcl.abstractions.IRenderable;
 import com.sasluca.lcl.abstractions.ITransformable;
 import com.sasluca.lcl.abstractions.IUpdatable;
+import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.input.LCLHitbox;
 import com.sasluca.lcl.input.LCLInputHandler;
 import com.sasluca.lcl.input.events.*;
+import com.sasluca.lcl.ui.material_design.lists.modellists.scrolllists.UIModelVerticalList;
 
 /**
  * Created by Sas Luca on 27-Jun-16.
  * Copyright (C) 2016 - LCL
  */
 
-public abstract class UIView<This> extends LCLInputHandler implements IRenderable<This>, IUpdatable<This>, ITransformable<This>, IFocusable<This>
+public abstract class UIView<This> extends LCLInputHandler<This> implements IRenderable<This>, IUpdatable<This>, ITransformable<This>, IFocusable<This>
 {
+    static { LCLTween.addClass(UIView.class); }
+
     /** This events should be implemented by the client of the implementation */
     public IKeyUpEvent<This> onKeyUp;
     public IKeyDownEvent<This> onKeyDown;

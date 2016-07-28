@@ -4,14 +4,11 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.sasluca.lcl.abstractions.IDisposable;
-import com.sasluca.lcl.abstractions.IUpdatable;
 import com.sasluca.lcl.abstractions.IUpdate;
-import com.sasluca.lcl.utils.collections.LCLObjectMap;
-import com.sasluca.lcl.utils.threads.IAsyncTaskObserver;
+import com.sasluca.lcl.utils.collections.LCLMap;
 
 /**
  * Created by Sas Luca on 11-Jun-16.
@@ -20,13 +17,13 @@ import com.sasluca.lcl.utils.threads.IAsyncTaskObserver;
 
 public class LCLResourceManager implements IUpdate<LCLResourceManager>, IDisposable
 {
-    private LCLObjectMap<String, Object> m_Resources;
-    private LCLObjectMap<String, String> m_LoadingQueue;
+    private LCLMap<String, Object> m_Resources;
+    private LCLMap<String, String> m_LoadingQueue;
     private AssetManager m_AssetManager;
 
     public LCLResourceManager()
     {
-        m_Resources = new LCLObjectMap<>();
+        m_Resources = new LCLMap<>();
         m_AssetManager = new AssetManager();
     }
 
@@ -127,6 +124,7 @@ public class LCLResourceManager implements IUpdate<LCLResourceManager>, IDisposa
 
     @Override public void dispose()
     {
+        m_AssetManager.dispose();
         for(Object texture : m_Resources.values()) if(texture instanceof Texture) ((Texture) texture).dispose();
         for(Object disposable : m_Resources.values()) if(disposable instanceof IDisposable) ((IDisposable) disposable).dispose();
     }

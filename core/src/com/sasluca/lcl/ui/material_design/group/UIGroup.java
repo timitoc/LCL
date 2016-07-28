@@ -5,7 +5,7 @@ import com.sasluca.lcl.abstractions.IColorable;
 import com.sasluca.lcl.abstractions.IRender;
 import com.sasluca.lcl.abstractions.ITransformable;
 import com.sasluca.lcl.animation.LCLTween;
-import com.sasluca.lcl.ui.material_design.UIView;
+import com.sasluca.lcl.ui.material_design.view.UIView;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
 /**
@@ -100,6 +100,9 @@ public class UIGroup extends UIView<UIGroup> implements IColorable<UIGroup>
         return this;
     }
 
+    public Object getObject(int index)
+    { return m_Objects.get(index); }
+
     public UIGroup removeObject(Object object)
     {
         if(!m_Objects.contains(object))
@@ -170,7 +173,7 @@ public class UIGroup extends UIView<UIGroup> implements IColorable<UIGroup>
         return this;
     }
 
-    public int numberOfObjects() { return m_Objects.getSize(); }
+    public int getNumberOfObjects() { return m_Objects.getSize(); }
     //</editor-fold>
 
     //<editor-fold desc="Color">

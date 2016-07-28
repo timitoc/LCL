@@ -1,10 +1,14 @@
 package com.sasluca.lcl.ui.material_design.lists.genericlists.scrolllists;
 
 import com.sasluca.lcl.abstractions.IDisposable;
+import com.sasluca.lcl.abstractions.IMasking;
+import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.mask.LCLMask;
-import com.sasluca.lcl.ui.material_design.UIView;
+import com.sasluca.lcl.ui.material_design.lists.IList;
+import com.sasluca.lcl.ui.material_design.lists.modellists.scrolllists.UIModelVerticalList;
+import com.sasluca.lcl.ui.material_design.view.UIView;
 import com.sasluca.lcl.ui.material_design.group.UIGroup;
-import com.sasluca.lcl.ui.material_design.lists.genericlists.UIContainer;
+import com.sasluca.lcl.ui.material_design.view.UIContainer;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
 /**
@@ -12,8 +16,10 @@ import com.sasluca.lcl.utils.collections.LCLArray;
  * Copyright (C) 2016 - LCL
  */
 
-public class UIHorizontalList extends UIView<UIHorizontalList> implements IDisposable
+public class UIHorizontalList extends UIView<UIHorizontalList> implements IList<UIHorizontalList, UIView>, IMasking<UIHorizontalList>, IDisposable
 {
+    static { LCLTween.addClass(UIHorizontalList.class); }
+
     private float m_OldX;
     private int m_Current;
     private LCLMask m_Mask;
@@ -30,7 +36,7 @@ public class UIHorizontalList extends UIView<UIHorizontalList> implements IDispo
         m_Mask = new LCLMask(0, 0, width, height);
     }
 
-    public UIHorizontalList addItem(UIView item) 
+    @Override public UIHorizontalList addItem(UIView item)
     {
         UIContainer container = new UIContainer(item, m_Mask.getWidth(), m_Mask.getHeight(), false);
         m_List.add(container);
@@ -40,6 +46,8 @@ public class UIHorizontalList extends UIView<UIHorizontalList> implements IDispo
 
         return this;
     }
+
+    @Override public int getNumberOfItems() { return m_List.getSize(); }
 
     @Override public void renderImpl() 
     {
@@ -51,51 +59,13 @@ public class UIHorizontalList extends UIView<UIHorizontalList> implements IDispo
     private boolean isVisible(int id) 
     {
         UIView i = m_List.get(id);
-        return (i.getX() >= m_Mask.getX() && i.getX() + i.getWidth() <= m_Mask.getX() + m_Mask.getWidth()) || (i.getY() >= m_Mask.getY() && i.getY() + i.getHeight() <= m_Mask.getY() + m_Mask.getHeight());
+        return (i.getX() + i.getWidth() > m_Mask.getX() && i.getX() < m_Mask.getX() + m_Mask.getWidth()) && (i.getY() + i.getHeight() > m_Mask.getY() && i.getY() < m_Mask.getY() + m_Mask.getHeight());
+        //return (i.getX() >= m_Mask.getX() && i.getX() + i.getWidth() <= m_Mask.getX() + m_Mask.getWidth()) && (i.getY() >= m_Mask.getY() && i.getY() + i.getHeight() <= m_Mask.getY() + m_Mask.getHeight());
     }
 
     public int getCurrent() { return m_Current; }
 
     public UIView getItem(int id) { return m_List.get(id).getObject(); }
-
-    @Override public boolean touchUp(int i, int i1, int i2, int i3) 
-    {
-        
-        loseFocus();
-
-        if (!m_Animating) 
-        {
-            //System.out.println(m_InitialX - m_OldX + " " + ((System.nanoTime() - m_BeginTimer)/1000000000.0));
-
-            //Moving to current + 1
-            if ((m_List.get(m_Current).getX() < -((35.0 / 100.0) * m_Mask.getWidth()) || (m_InitialX - m_OldX > 0 && ((System.nanoTime() - m_BeginTimer) / 1000000000.0) < 0.20f)) && m_Current != m_List.getSize() - 1) 
-            {
-                //m_Anim1 = new TsunGoToPointXAnim(m_List.get(m_Current + 1), 0, 0.1f);
-                //m_Anim2 = new TsunGoToPointXAnim(m_List.get(m_Current), -720, 0.1f);
-            }
-            //Moving a bit to the left
-            else if (m_List.get(m_Current).getX() < 0 && m_Current != m_List.getSize() - 1) 
-            {
-                //m_Anim1 = new TsunGoToPointXAnim(m_List.get(m_Current + 1), 720, DURATION);
-                //m_Anim2 = new TsunGoToPointXAnim(m_List.get(m_Current), 0, DURATION);
-            }
-            //Moving to current - 1
-            else if ((m_List.get(m_Current).getX() > ((35.0 / 100.0) * 720.0) || (m_InitialX - m_OldX < 0 && ((System.nanoTime() - m_BeginTimer) / 1000000000.0) < 0.20f)) && m_Current != 0) 
-            {
-                //m_Anim1 = new TsunGoToPointXAnim(m_List.get(m_Current - 1), 0, DURATION);
-                //m_Anim2 = new TsunGoToPointXAnim(m_List.get(m_Current), 720, DURATION);
-            }
-            //Moving a bit to the right
-            else if (m_List.get(m_Current).getX() > 0 && m_Current != 0) 
-            {
-                //m_Anim1 = new TsunGoToPointXAnim(m_List.get(m_Current - 1), -720, DURATION);
-                //m_Anim2 = new TsunGoToPointXAnim(m_List.get(m_Current), 0, DURATION);
-            }
-        }
-
-        return false;
-    }
-    //</editor-fold>
 
     //<editor-fold desc="Touch Down">
     @Override public boolean touchDown(int screenX, int screenY, int pointer, int button) 
@@ -170,6 +140,9 @@ public class UIHorizontalList extends UIView<UIHorizontalList> implements IDispo
         m_Mask.setPosY(newY);
         return this;
     }
+
+    @Override public boolean getMaskingStrategy() { return m_Mask.getMaskingStrategy(); }
+    @Override public UIHorizontalList setMaskingStrategy(boolean maskingStrategy) { m_Mask.setMaskingStrategy(maskingStrategy); return this; }
 
     @Override public void dispose()
     {
