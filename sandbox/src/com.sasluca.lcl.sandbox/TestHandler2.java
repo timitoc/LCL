@@ -8,6 +8,7 @@ import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.animation.LCLUniversalAccessor;
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
+import com.sasluca.lcl.graphics.fonts.LCLFont;
 import com.sasluca.lcl.graphics.fonts.LCLFontManager;
 import com.sasluca.lcl.ui.material_design.floatingelements.UICard;
 import com.sasluca.lcl.ui.material_design.group.UIGroup;
@@ -30,12 +31,9 @@ public class TestHandler2 implements IStateHandler<Playground.State>
 
     @Override public void onChangeState(Playground.State currentState, Playground.State newState)
     {
-        UITextBox textBox = new UITextBox();
-        textBox.setPosY(100)
-                .setDefaultText("Test")
-                .setInfoText("Acesta nu e dar e test");
+        LCLFontManager.addTrueTypeFont("Roboto", 16);
+        UILabel label = new UILabel("Roboto", "test", Color.BLACK);
 
-        LCL.SYS.AppSystem.getRenderLayer(0).addRenderable(textBox);
-        textBox.subscribeToInputLayer(0);
+        LCL.SYS.AppSystem.getRenderLayer(0).addRenderable(label);
     }
 }
