@@ -114,7 +114,7 @@ public class UIModelVerticalList<Model, View extends UIModelView<Model, View>> e
 
         if (p_Hitbox.isPointInside(x, y))
         {
-            for(int i = 0; i < m_List.getSize(); i++) if(m_List.get(i).getView() != null) m_List.get(i).getView().loseFocus();
+            for(int i = 0; i < m_List.getSize(); i++) if(m_List.get(i).getView() != null && (y - m_OldY > 2 || y - m_OldY < -2) ) m_List.get(i).getView().loseFocus();
 
             //Moving up the list
             if (y < m_OldY)

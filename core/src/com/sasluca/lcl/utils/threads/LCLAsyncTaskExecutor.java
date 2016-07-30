@@ -16,20 +16,20 @@ import com.sasluca.lcl.utils.pools.LCLPool;
 public class LCLAsyncTaskExecutor implements IDisposable
 {
     private LCLPool<LCLThread> m_Threads;
-    private LCLArray<LCLThread> m_FreeThreads;
     private LCLMap<IAsyncTaskObserver, ITask> m_OnFinishChecks;
     private IUpdate m_OnFinishChecksHandler;
 
     public LCLAsyncTaskExecutor()
     {
         m_Threads = new LCLPool<>(() -> new LCLThread(null), object -> {});
-        m_FreeThreads = new LCLArray<>();
         m_OnFinishChecks = new LCLMap<>();
         m_OnFinishChecksHandler = () ->
         {
-            for(IAsyncTaskObserver observer : m_OnFinishChecks.keys())
+            //Loop thru all OnFinishChecks
+            for (IAsyncTaskObserver observer : m_OnFinishChecks.keys())
             {
-                if(m_OnFinishChecks.get(observer) != null)
+                //If a task finished and is not null execute it's
+                if (m_OnFinishChecks.get(observer) != null)
                 {
                     if (observer.finished())
                     {
@@ -39,6 +39,7 @@ public class LCLAsyncTaskExecutor implements IDisposable
                 }
             }
 
+            //If a key is null remove the object
             for(int i = 0; i < m_OnFinishChecks.getSize(); i++)
                 if(m_OnFinishChecks.get(m_OnFinishChecks.getKey(i)) == null)
                     m_OnFinishChecks.remove(m_OnFinishChecks.getKey(i));
@@ -53,9 +54,9 @@ public class LCLAsyncTaskExecutor implements IDisposable
     {
         LCLThread t = m_Threads.get();
 
-        if(m_FreeThreads.contains(t)) m_FreeThreads.remove(t);
+        t.setTask(task).start();
 
-        t.setTask(() -> { task.task(); m_FreeThreads.add(t); m_Threads.free(t); }).start();
+        m_OnFinishChecks.put(t::finished, () -> m_Threads.free(t));
 
         return t::finished;
     }
@@ -70,11 +71,9 @@ public class LCLAsyncTaskExecutor implements IDisposable
     {
         LCLThread t = m_Threads.get();
 
-        if(m_FreeThreads.contains(t)) m_FreeThreads.remove(t);
+        t.setTask(() -> { task.task(); }).start();
 
-        t.setTask(() -> { task.task(); m_FreeThreads.add(t); m_Threads.free(t); }).start();
-
-        m_OnFinishChecks.put(t::finished, onTaskFinish);
+        m_OnFinishChecks.put(t::finished, () -> { onTaskFinish.task(); m_Threads.free(t); });
 
         return t::finished;
     }
@@ -82,16 +81,21 @@ public class LCLAsyncTaskExecutor implements IDisposable
     /** Removes a free thread. Use this in case there are too many threads. */
     public LCLAsyncTaskExecutor removeThread()
     {
-        if(m_FreeThreads.isEmpty()) return this;
-        m_Threads.remove(m_FreeThreads.get(m_FreeThreads.getSize() - 1));
-        m_FreeThreads.remove(m_FreeThreads.get(m_FreeThreads.getSize() - 1));
+        m_Threads.remove();
+
+        return this;
+    }
+
+    public LCLAsyncTaskExecutor removeThreads(int numberOfThreads)
+    {
+        m_Threads.remove(numberOfThreads);
 
         return this;
     }
 
     public LCLAsyncTaskExecutor createThreads(int numberOfThreads)
     {
-        while(numberOfThreads-- > 0) { LCLThread t = new LCLThread(null); m_Threads.addObject(t); m_FreeThreads.add(t); }
+        while(numberOfThreads-- > 0) { LCLThread t = new LCLThread(null); m_Threads.addObject(t); }
 
         return this;
     }

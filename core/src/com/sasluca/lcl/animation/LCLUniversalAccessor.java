@@ -43,22 +43,22 @@ public class LCLUniversalAccessor implements TweenAccessor
                 return 1;
 
             case COLOR_G:
-                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).g;
+                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().g : ((Color)object).g;
                 return 1;
 
             case COLOR_B:
-                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).b;
+                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().b : ((Color)object).b;
                 return 1;
 
             case COLOR_A:
-                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).a;
+                floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().a : ((Color)object).a;
                 return 1;
 
             case COLOR_RGBA:
                 floats[0] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).r;
-                floats[1] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).g;
-                floats[2] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).b;
-                floats[3] = object instanceof IColorable ? ((IColorable)object).getColor().r : ((Color)object).a;
+                floats[1] = object instanceof IColorable ? ((IColorable)object).getColor().g : ((Color)object).g;
+                floats[2] = object instanceof IColorable ? ((IColorable)object).getColor().b : ((Color)object).b;
+                floats[3] = object instanceof IColorable ? ((IColorable)object).getColor().a : ((Color)object).a;
                 return 4;
             //</editor-fold>
 
@@ -142,9 +142,9 @@ public class LCLUniversalAccessor implements TweenAccessor
 
             case COLOR_RGBA:
                 if(object instanceof IColorable) ((IColorable)object).getColor().r = floats[0]; else ((Color)object).r = floats[0];
-                if(object instanceof IColorable) ((IColorable)object).getColor().g = floats[0]; else ((Color)object).g = floats[0];
-                if(object instanceof IColorable) ((IColorable)object).getColor().b = floats[0]; else ((Color)object).b = floats[0];
-                if(object instanceof IColorable) ((IColorable)object).setAlpha(floats[0]); else ((Color)object).a = floats[0];
+                if(object instanceof IColorable) ((IColorable)object).getColor().g = floats[1]; else ((Color)object).g = floats[1];
+                if(object instanceof IColorable) ((IColorable)object).getColor().b = floats[2]; else ((Color)object).b = floats[2];
+                if(object instanceof IColorable) ((IColorable)object).setAlpha(floats[3]); else ((Color)object).a = floats[3];
                 break;
             //</editor-fold>
 

@@ -14,6 +14,7 @@ import com.sasluca.lcl.ui.material_design.image.UIImage;
 
 /**
  * Created by Sas Luca on 11-Jul-16.
+ * Copyright (C) 2016 - LCL
  */
 
 public abstract class UIOverlayView<This> implements IFocusable<This>
@@ -30,8 +31,8 @@ public abstract class UIOverlayView<This> implements IFocusable<This>
     protected abstract void onEnter();
     protected abstract void onExit();
 
-    public static float DarkOverlayTransparency = 0.6f;
-    public static float DarkOverlayAnimDuration = 0.5f;
+    protected float p_DarkOverlayTransparency = 0.6f;
+    protected float p_DarkOverlayAnimDuration = 0.5f;
 
     public UIOverlayView()
     {
@@ -53,8 +54,8 @@ public abstract class UIOverlayView<This> implements IFocusable<This>
 
         if(p_UseDarkOverlay)
         {
-            Tween.to(m_DarkOverlay, LCLUniversalAccessor.COLOR_A, DarkOverlayAnimDuration)
-                    .target(DarkOverlayTransparency)
+            Tween.to(m_DarkOverlay, LCLUniversalAccessor.COLOR_A, p_DarkOverlayAnimDuration)
+                    .target(p_DarkOverlayTransparency)
                     .ease(Quad.IN)
                     .start(LCLTween.TWEEN_MANAGER);
         }
@@ -74,7 +75,7 @@ public abstract class UIOverlayView<This> implements IFocusable<This>
 
         if(p_UseDarkOverlay)
         {
-            Tween.to(m_DarkOverlay, LCLUniversalAccessor.COLOR_A, DarkOverlayAnimDuration)
+            Tween.to(m_DarkOverlay, LCLUniversalAccessor.COLOR_A, p_DarkOverlayAnimDuration)
                     .target(0)
                     .ease(Quad.IN)
                     .setCallback((a, b) -> LCL.SYS.AppSystem.getRenderLayer(LCL.SYS.AppSystem.getNumberOfRenderLayer() - 1).removeRenderable(m_DarkOverlay))

@@ -83,6 +83,11 @@ public class UIVerticalList extends UIView<UIVerticalList> implements IList<UIVe
         for(LCLInputHandler handler : m_List) handler.subscribeToInputLayer(newLayer);
     }
 
+    @Override protected void onUnsubscribeFromInputLayer()
+    {
+        for(LCLInputHandler handler : m_List) handler.unsubscribeFromInputLayer();
+    }
+
     @Override public void renderImpl()
     {
         m_Mask.start();

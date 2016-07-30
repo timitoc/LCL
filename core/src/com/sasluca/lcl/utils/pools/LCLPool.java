@@ -24,7 +24,7 @@ public class LCLPool<Object> implements IDisposable
         m_InstanceFactory = instanceFactory;
     }
 
-    public synchronized Object get()
+    public Object get()
     {
         if(!m_FreeObjects.isEmpty())
         {
@@ -42,7 +42,7 @@ public class LCLPool<Object> implements IDisposable
         return o;
     }
 
-    public synchronized LCLPool<Object> free(Object object)
+    public LCLPool<Object> free(Object object)
     {
         if(m_InUseObjects.contains(object))
         {
@@ -54,7 +54,7 @@ public class LCLPool<Object> implements IDisposable
         return this;
     }
 
-    public synchronized LCLPool<Object> remove(Object object)
+    public LCLPool<Object> remove(Object object)
     {
         if(!m_FreeObjects.contains(object))
         {
@@ -68,14 +68,35 @@ public class LCLPool<Object> implements IDisposable
         return this;
     }
 
+    public LCLPool<Object> remove()
+    {
+        if(m_FreeObjects.first() instanceof IDisposable) ((IDisposable) m_FreeObjects.first()).dispose();
+        m_FreeObjects.remove(0);
+
+        return this;
+    }
+
+    public LCLPool<Object> remove(int remove)
+    {
+        for(Object object : m_FreeObjects)
+        {
+            if(object instanceof IDisposable) ((IDisposable) object).dispose();
+            m_FreeObjects.remove(object);
+            remove--;
+            if(remove == 0) break;
+        }
+
+        return this;
+    }
+
     public LCLPool<Object> setInstanceFactory(IInstanceFactory<Object> instanceFactory) { m_InstanceFactory = instanceFactory; return this; }
 
-    public synchronized LCLPool<Object> addObject(Object object) { m_FreeObjects.add(object); return this; }
-    public synchronized LCLPool<Object> addObject() { m_FreeObjects.add(m_InstanceFactory.newInstance()); return this; }
+    public LCLPool<Object> addObject(Object object) { m_FreeObjects.add(object); return this; }
+    public LCLPool<Object> addObject() { m_FreeObjects.add(m_InstanceFactory.newInstance()); return this; }
 
-    public synchronized int getNumberOfFreeObjects() { return m_FreeObjects.getSize(); }
-    public synchronized int getNumberOfObjectsInUse() { return m_InUseObjects.getSize(); }
-    public synchronized int getNumberOfObjects() { return getNumberOfFreeObjects() + getNumberOfObjectsInUse(); }
+    public int getNumberOfFreeObjects() { return m_FreeObjects.getSize(); }
+    public int getNumberOfObjectsInUse() { return m_InUseObjects.getSize(); }
+    public int getNumberOfObjects() { return getNumberOfFreeObjects() + getNumberOfObjectsInUse(); }
 
     @Override public void dispose()
     {

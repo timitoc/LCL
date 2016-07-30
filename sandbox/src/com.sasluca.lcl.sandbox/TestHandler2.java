@@ -4,6 +4,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Quad;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.animation.LCLUniversalAccessor;
@@ -31,8 +32,15 @@ public class TestHandler2 implements IStateHandler<Playground.State>
 
     @Override public void onChangeState(Playground.State currentState, Playground.State newState)
     {
-        LCLFontManager.addTrueTypeFont("Roboto", 16);
-        UILabel label = new UILabel("Roboto", "test", Color.BLACK);
+        float densityIndependentSize = Gdx.graphics.getHeight() * 16 / LCL.SYS.Camera.viewportHeight;
+        int fontSize = Math.round(densityIndependentSize);
+
+        LCLFontManager.addTrueTypeFont("Roboto_T", "fonts/truetypefonts/Roboto/Roboto.ttf", fontSize);
+        UILabel label = new UILabel("Roboto_T", "test", Color.BLACK);
+
+        LCLUtils.center(label, true, true);
+
+        System.out.println(label.getHeight());
 
         LCL.SYS.AppSystem.getRenderLayer(0).addRenderable(label);
     }

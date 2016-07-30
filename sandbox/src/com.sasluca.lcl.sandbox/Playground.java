@@ -36,7 +36,7 @@ public class Playground extends Game
         LCLMaterialDesign.init();
 
         for(State state : State.values()) m_AppSystem.addState(state);
-        m_AppSystem.addHandler(new TestHandler());
+        m_AppSystem.addHandler(new TestHandler2());
         m_AppSystem.changeState(State.TEST1);
         LCL.SYS.AppSystem = m_AppSystem;
 
