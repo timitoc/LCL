@@ -1,12 +1,23 @@
 package com.sasluca.lcl.abstractions.functional;
 
-/**
- * Created by Sas Luca on 09-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /** An event to which you can pass arguments and does not return anything. */
-public interface IEvent
+@FunctionalInterface public interface IEvent
 {
     /** An event to which you can pass arguments and does not return anything. */
     void event(Object... args);

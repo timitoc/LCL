@@ -1,12 +1,22 @@
 package com.sasluca.lcl.input;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
-/**
- * Created by Sas Luca on 22-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class LCLInputSystem implements InputProcessor
@@ -27,12 +37,9 @@ public class LCLInputSystem implements InputProcessor
         INPUT_LAYERS.remove(index);
     }
 
-    public static void addInputLayer(LCLInputLayer inputLayer)
-    {
-        if(INPUT_LAYERS.contains(inputLayer, true)) return;
-        INPUT_LAYERS.add(inputLayer);
-        Gdx.input.setInputProcessor(INSTANCE);
-    }
+    public static void addInputLayer() { INPUT_LAYERS.add(new LCLInputLayer(1, true)); }
+    public static void addInputLayer(int numberOfPointers, boolean projectInput) { INPUT_LAYERS.add(new LCLInputLayer(1, true)); }
+    public static void addInputLayer(LCLInputLayer inputLayer) { if(!INPUT_LAYERS.contains(inputLayer)) INPUT_LAYERS.add(inputLayer); }
 
     public static int numberOfInputLayers() { return INPUT_LAYERS.getSize(); }
     public static LCLInputLayer getInputLayer(int index) { return INPUT_LAYERS.get(index); }

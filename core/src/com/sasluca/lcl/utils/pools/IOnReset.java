@@ -5,7 +5,11 @@ package com.sasluca.lcl.utils.pools;
  * Copyright (C) 2016 - LCL
  */
 
-public interface IOnReset<Object>
+/**
+ * Describes how to reset an object when you free it in an IPool
+ * @param <OBJECT>
+ */
+public interface IOnReset<OBJECT>
 {
-    void onReset(Object object);
+    void onReset(OBJECT object);
 }

@@ -8,19 +8,32 @@ import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.IScalable;
 import com.sasluca.lcl.abstractions.ITransformable;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
+import com.sasluca.lcl.utils.tuples.LCLPair;
+import com.sasluca.lcl.utils.tuples.LCLTuple;
 
 import java.util.Random;
 
-/**
- * Created by Sas Luca on 04-Jul-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class LCLUtils
 {
     /**
      * Consider you have a line the length of the distance between two points starting from the first point(denoted by aX and aY) and with a rotation of 0.
-     * This method returns degree at which you have to rotate the line in order for it's end to match the second point(denoted by bX and bY) considering
+     * THIS method returns degree at which you have to rotate the line in order for it's end to match the second point(denoted by bX and bY) considering
      * it's starts from the first point
      * @param aX The position of the first point on the X axis
      * @param aY The position of the first point on the Y axis
@@ -31,31 +44,37 @@ public class LCLUtils
     public static float angleBetweenPoints(float aX, float aY, float bX, float bY) { return (float) (Math.toDegrees(Math.atan2(bY - aY, bX - aX))); }
 
     /**
-     * This method will set the position of a class that implements TsunTransform and TsunScale to the center of your screen (assuming the camera is at it's default position)
+     * THIS method will set the position of a class that implements TsunTransform and TsunScale to the center of your screen (assuming the camera is at it's default position)
      * @param object The affected object
      * @param centerX Whether to center the object on the X axis or not
      * @param centerY Whether to center the object on the Y axis or not
      */
-    public static <T extends ITransformable> void center(T object, boolean centerX, boolean centerY) { object.setPosX(centerX ? LCL.SYS.Camera.viewportWidth / 2 - object.getWidth() / 2 : object.getX()); object.setPosY(centerY ? LCL.SYS.Camera.viewportHeight / 2 - object.getHeight() / 2 : object.getY()); }
+    public static void center(ITransformable object, boolean centerX, boolean centerY) { object.setPosX(centerX ? LCL.getCamera().viewportWidth / 2 - object.getWidth() / 2 : object.getX()); object.setPosY(centerY ? LCL.getCamera().viewportHeight / 2 - object.getHeight() / 2 : object.getY()); }
+
+    public static LCLPair<Float, Float> getCenterPosition(ITransformable object) { return (LCLPair<Float, Float>) LCLTuple.tuple(LCL.getCamera().viewportWidth / 2 - object.getWidth() / 2, LCL.getCamera().viewportHeight / 2 - object.getHeight() / 2); }
 
     /**
-     * This method will set the position of an object to the center of a point denoted by pointX and pointY
+     * THIS method will set the position of an object to the center of a point denoted by pointX and pointY
      * @param object The affected object
      * @param pointX The position of the point the object will be centered to on the X axis
      * @param pointY The position of the point the object will be centered to on the Y axis
      * @param centerX Whether to center the object on the X axis or not
      * @param centerY Whether to center the object on the Y axis or not
      */
-    public static <T extends ITransformable> void centerToPoint(T object, float pointX, float pointY, boolean  centerX, boolean centerY) { object.setPosX(centerX ? pointX - object.getWidth() / 2 : object.getX()); object.setPosY(centerY ? pointY - object.getHeight() / 2 : object.getY()); }
+    public static void centerToPoint(ITransformable object, float pointX, float pointY, boolean  centerX, boolean centerY) { object.setPosX(centerX ? pointX - object.getWidth() / 2 : object.getX()); object.setPosY(centerY ? pointY - object.getHeight() / 2 : object.getY()); }
+
+    public static LCLPair<Float, Float> getCenterToPointPosition(ITransformable object, float pointX, float pointY) { return (LCLPair<Float, Float>) LCLTuple.tuple(pointX - object.getWidth() / 2, pointY - object.getHeight() / 2); }
 
     /**
-     * This method will set the position of a object to the center of m_Target
+     * THIS method will set the position of a object to the center of m_Target
      * @param object The affected object
      * @param target The object to which the object will be centered to
      * @param centerX Whether to center the object on the X axis or not
      * @param centerY Whether to center the object on the Y axis or not
      */
-    public static <T extends ITransformable> void centerToDrawable(T object, T target, boolean centerX, boolean centerY) { object.setPosX(centerX ? target.getX() + target.getWidth() / 2 - object.getWidth() / 2 : object.getX()); object.setPosY(centerY ? target.getY() + target.getHeight() / 2 - object.getHeight() / 2 : object.getY()); }
+    public static void centerToDrawable(ITransformable object, ITransformable target, boolean centerX, boolean centerY) { object.setPosX(centerX ? target.getX() + target.getWidth() / 2 - object.getWidth() / 2 : object.getX()); object.setPosY(centerY ? target.getY() + target.getHeight() / 2 - object.getHeight() / 2 : object.getY()); }
+
+    public static LCLPair<Float, Float> getCenterToDrawablePosition(ITransformable object, ITransformable target) { return (LCLPair<Float, Float>) LCLTuple.tuple(target.getWidth() / 2 - object.getWidth() / 2, target.getHeight() / 2 - object.getHeight() / 2); }
 
     /**
      * Changes the scales of a {@link com.sasluca.lcl.abstractions.IScalable} to fit a size
@@ -179,7 +198,7 @@ public class LCLUtils
 
     private static long start = System.currentTimeMillis();
     /**
-     * This method can be used to limit the FPS under 60 FPS
+     * THIS method can be used to limit the FPS under 60 FPS
      * @param fps the FPS cap. Must be under 60 fps
      */
     public static void limitFPS(int fps)
@@ -197,28 +216,28 @@ public class LCLUtils
     public static void startScrissor(float x, float y, float width, float height)
     {
         vector3.x = x;
-        LCL.SYS.Camera.project(vector3);
+        LCL.getCamera().project(vector3);
         x = vector3.x;
 
         vector3.y = y;
-        LCL.SYS.Camera.project(vector3);
+        LCL.getCamera().project(vector3);
         y = vector3.y;
 
         vector3.x = width;
-        LCL.SYS.Camera.project(vector3);
+        LCL.getCamera().project(vector3);
         width = vector3.x;
 
         vector3.y = height;
-        LCL.SYS.Camera.project(vector3);
+        LCL.getCamera().project(vector3);
         height = vector3.y;
 
-        LCL.SYS.SpriteBatch.flush();
+        LCL.getSpriteBatch().flush();
 
         Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
         Gdx.gl.glScissor((int)x, (int)y, (int)width, (int)height);
     }
 
-    public static void endScrissor() { Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST); LCL.SYS.SpriteBatch.flush(); }
+    public static void endScrissor() { Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST); LCL.getSpriteBatch().flush(); }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static boolean isInteger(String s) { try { Integer.parseInt(s); } catch(NumberFormatException e) { return false; } catch(NullPointerException e) { return false; } return true; }

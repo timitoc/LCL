@@ -7,9 +7,20 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.IDisposable;
 
-/**
- * Created by Sas Luca on 11-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public abstract class LCLFont implements IDisposable
@@ -28,7 +39,7 @@ public abstract class LCLFont implements IDisposable
     {
         p_Font.getData().setScale(widthScale, heightScale);
         p_Font.setColor(color);
-        p_Font.draw(LCL.SYS.SpriteBatch, text, x, y + (drawFromTop ? 0 : getTextHeight(text, p_Font.getScaleY())));
+        p_Font.draw(LCL.getSpriteBatch(), text, x, y + (drawFromTop ? 0 : getTextHeight(text, p_Font.getScaleY())));
     }
 
     public void drawText(String text, float x, float y, Color color, float widthScale, float heightScale, LCLColoredTextPart[] coloredParts)
@@ -39,7 +50,7 @@ public abstract class LCLFont implements IDisposable
 
         for(int i = 0; i < coloredParts.length; i++) p_Cache.setColors(coloredParts[i].color, coloredParts[i].begin, coloredParts[i].end);
 
-        p_Cache.draw(LCL.SYS.SpriteBatch);
+        p_Cache.draw(LCL.getSpriteBatch());
     }
 
     public final float getTextWidth(String text, float widthScale)

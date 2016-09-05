@@ -2,9 +2,20 @@ package com.sasluca.lcl.input;
 
 import com.sasluca.lcl.abstractions.ITransformable;
 
-/**
- * Created by Sas Luca on 02-Jul-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class LCLHitbox
@@ -35,11 +46,13 @@ public class LCLHitbox
     //</editor-fold>
 
     //<editor-fold desc="Setters">
-    public void setObject(ITransformable object) { m_Object = object; }
-    public void setTopPadding(float topPadding) { m_TopPadding = topPadding; }
-    public void setLeftPadding(float leftPadding) { m_LeftPadding = leftPadding; }
-    public void setRightPadding(float rightPadding) { m_RightPadding = rightPadding; }
-    public void setBottomPadding(float bottomPadding) { m_BottomPadding = bottomPadding; }
+    public LCLHitbox setObject(ITransformable object) { m_Object = object; return this; }
+    public LCLHitbox setTopPadding(float topPadding) { m_TopPadding = topPadding; return this; }
+    public LCLHitbox setLeftPadding(float leftPadding) { m_LeftPadding = leftPadding; return this; }
+    public LCLHitbox setRightPadding(float rightPadding) { m_RightPadding = rightPadding; return this; }
+    public LCLHitbox setBottomPadding(float bottomPadding) { m_BottomPadding = bottomPadding; return this; }
+    public LCLHitbox setVerticalPadding(float vpadding) { m_LeftPadding = m_RightPadding = vpadding / 2; return this; }
+    public LCLHitbox setHorizontalPadding(float hpadding) { m_TopPadding = m_BottomPadding = hpadding / 2; return this; }
     //</editor-fold>
 
     //<editor-fold desc="Getters">

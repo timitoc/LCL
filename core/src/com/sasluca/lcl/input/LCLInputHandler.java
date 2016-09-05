@@ -1,40 +1,51 @@
 package com.sasluca.lcl.input;
 
-/**
- * Created by Sas Luca on 21/06/16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-public abstract class LCLInputHandler<This>
+public abstract class LCLInputHandler<THIS>
 {
     private int m_InputLayer = -1;
 
-    public final This subscribeToInputLayer(int inputLayer)
+    public final THIS subscribeToInputLayer(int inputLayer)
     {
         //TODO: ERROR
-        if(inputLayer == m_InputLayer || LCLInputSystem.numberOfInputLayers() < inputLayer) return ((This)this);
+        if(inputLayer == m_InputLayer || LCLInputSystem.numberOfInputLayers() < inputLayer) return ((THIS)this);
 
         onSubscribeToInputLayer(m_InputLayer, inputLayer);
         m_InputLayer = inputLayer;
         LCLInputSystem.getInputLayer(inputLayer).addInputHandler(this);
 
-        return ((This)this);
+        return ((THIS)this);
     }
 
-    public final This unsubscribeFromInputLayer()
+    public final THIS unsubscribeFromInputLayer()
     {
         if(m_InputLayer != -1)
         {
-            onUnsubscribeFromInputLayer();
+            onUnsubscribeFromInputLayer(m_InputLayer);
             LCLInputSystem.getInputLayer(m_InputLayer).removeInputHandler(this);
             m_InputLayer = -1;
         }
 
-        return ((This)this);
+        return ((THIS)this);
     }
 
     protected void onSubscribeToInputLayer(int currentLayer, int newLayer) {}
-    protected void onUnsubscribeFromInputLayer() {}
+    protected void onUnsubscribeFromInputLayer(int oldLayer) {}
 
     public boolean keyUp(int keycode) { return false; }
     public boolean keyDown(int keycode) { return false; }

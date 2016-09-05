@@ -9,9 +9,20 @@ import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.fonts.LCLLabel;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
 
-/**
- * Created by Sas Luca on 21-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, IColorable<LCLNinepatchSprite>, ISizeable<LCLNinepatchSprite>, IScalable<LCLNinepatchSprite>, ITransformable<LCLNinepatchSprite>
@@ -33,7 +44,7 @@ public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, ICol
     public LCLNinepatchSprite(String ninepatch, float width, float height, Texture.TextureFilter minFilter, Texture.TextureFilter magFilter)
     {
         p_Color = new Color(Color.WHITE);
-        p_NinePatch = LCL.SYS.ResourceManger.<NinePatch>getResource(ninepatch);
+        p_NinePatch = LCL.getResourceManager().<NinePatch>getResource(ninepatch);
         p_MinFilter = minFilter;
         p_MagFilter = magFilter;
         p_Width = width;
@@ -44,19 +55,19 @@ public class LCLNinepatchSprite implements IRenderable<LCLNinepatchSprite>, ICol
     }
 
     public LCLNinepatchSprite setNinePatch(String ninepatch) {
-        p_NinePatch = LCL.SYS.ResourceManger.<NinePatch>getResource(ninepatch); return this; }
+        p_NinePatch = LCL.getResourceManager().<NinePatch>getResource(ninepatch); return this; }
 
     //Render
-    @Override public LCLNinepatchSprite render()
+    @Override public void render()
     {
-        if(!p_IsRendering) return this;
+        if(!p_IsRendering) return;
 
         p_NinePatch.setColor(p_Color);
         p_NinePatch.scale(p_WidthScale, p_HeightScale);
         p_NinePatch.getTexture().setFilter(p_MinFilter, p_MagFilter);
-        p_NinePatch.draw(LCL.SYS.SpriteBatch, p_X, p_Y, p_Width, p_Height);
+        p_NinePatch.draw(LCL.getSpriteBatch(), p_X, p_Y, p_Width, p_Height);
 
-        return this;
+        return;
     }
 
     @Override public boolean isRendering() { return p_IsRendering; }

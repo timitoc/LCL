@@ -1,64 +1,81 @@
 package com.sasluca.lcl.utils.threads;
 
 import com.sasluca.lcl.LCL;
-import com.sasluca.lcl.abstractions.IDisposable;
-import com.sasluca.lcl.abstractions.IUpdate;
+import com.sasluca.lcl.abstractions.ITransformable;
 import com.sasluca.lcl.abstractions.functional.ITask;
 import com.sasluca.lcl.utils.collections.LCLArray;
 import com.sasluca.lcl.utils.collections.LCLMap;
-import com.sasluca.lcl.utils.pools.LCLPool;
+import com.sasluca.lcl.utils.pools.LCLSynchronizedPool;
 
-/**
- * Created by Sas Luca on 11-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-public class LCLAsyncTaskExecutor implements IDisposable
+public class LCLAsyncTaskExecutor
 {
-    private LCLPool<LCLThread> m_Threads;
-    private LCLMap<IAsyncTaskObserver, ITask> m_OnFinishChecks;
-    private IUpdate m_OnFinishChecksHandler;
+    static { init(); }
 
-    public LCLAsyncTaskExecutor()
+    private static boolean m_Init;
+    private static LCLSynchronizedPool<LCLThread> m_Threads;
+    private static LCLMap<IAsyncTaskObserver, ITask> m_OnFinishChecks;
+    private static final LCLAsyncTaskExecutor METHOD_CHAIN = new LCLAsyncTaskExecutor();
+
+    private LCLAsyncTaskExecutor() {}
+
+    public static void init()
     {
-        m_Threads = new LCLPool<>(() -> new LCLThread(null), object -> {});
+        if(m_Init) return;
+        m_Init = true;
+
         m_OnFinishChecks = new LCLMap<>();
-        m_OnFinishChecksHandler = () ->
-        {
-            //Loop thru all OnFinishChecks
-            for (IAsyncTaskObserver observer : m_OnFinishChecks.keys())
-            {
-                //If a task finished and is not null execute it's
-                if (m_OnFinishChecks.get(observer) != null)
-                {
-                    if (observer.finished())
-                    {
-                        m_OnFinishChecks.get(observer).task();
-                        m_OnFinishChecks.replace(observer, null);
-                    }
-                }
-            }
+        m_Threads = new LCLSynchronizedPool<>(() -> new LCLThread(null), EMPTY_LAMBDA -> {});
 
-            //If a key is null remove the object
-            for(int i = 0; i < m_OnFinishChecks.getSize(); i++)
-                if(m_OnFinishChecks.get(m_OnFinishChecks.getKey(i)) == null)
-                    m_OnFinishChecks.remove(m_OnFinishChecks.getKey(i));
-
-            return null;
-        };
-
-        LCL.SYS.AppSystem.addUpdateHandler(m_OnFinishChecksHandler);
+        LCL.getAppSystem().addUpdateHandler(LCLAsyncTaskExecutor::update);
     }
 
-    public final IAsyncTaskObserver executeTaskAsync(ITask task)
+    private static void update()
+    {
+        //Loop thru all OnFinishChecks
+        for (IAsyncTaskObserver observer : m_OnFinishChecks.getKeys())
+        {
+            //If a task currentTaskFinished and is not null execute it's
+            if (m_OnFinishChecks.get(observer) != null)
+            {
+                if (observer.finished())
+                {
+                    m_OnFinishChecks.get(observer).task();
+                    m_OnFinishChecks.replace(observer, null);
+                }
+            }
+        }
+
+        //If a key is null remove the object
+        for(int i = 0; i < m_OnFinishChecks.getSize(); i++)
+            if(m_OnFinishChecks.get(m_OnFinishChecks.getKey(i)) == null)
+                m_OnFinishChecks.remove(m_OnFinishChecks.getKey(i--));
+    }
+
+    public static IAsyncTaskObserver executeTaskAsync(ITask task)
     {
         LCLThread t = m_Threads.get();
 
         t.setTask(task).start();
 
-        m_OnFinishChecks.put(t::finished, () -> m_Threads.free(t));
+        m_OnFinishChecks.put(t::currentTaskFinished, () -> m_Threads.free(t));
 
-        return t::finished;
+        return t::currentTaskFinished;
     }
 
     /**
@@ -67,46 +84,44 @@ public class LCLAsyncTaskExecutor implements IDisposable
      * @param onTaskFinish
      * @return
      */
-    public final IAsyncTaskObserver executeTaskAsync(ITask task, ITask onTaskFinish)
+    public static IAsyncTaskObserver executeTaskAsync(ITask task, ITask onTaskFinish)
     {
-        LCLThread t = m_Threads.get();
+        LCLThread t = m_Threads.get().setTask(task).start();
 
-        t.setTask(() -> { task.task(); }).start();
+        m_OnFinishChecks.put(t::currentTaskFinished, () -> { onTaskFinish.task(); m_Threads.free(t); });
 
-        m_OnFinishChecks.put(t::finished, () -> { onTaskFinish.task(); m_Threads.free(t); });
-
-        return t::finished;
+        return t::currentTaskFinished;
     }
 
     /** Removes a free thread. Use this in case there are too many threads. */
-    public LCLAsyncTaskExecutor removeThread()
+    public static LCLAsyncTaskExecutor removeThread()
     {
         m_Threads.remove();
 
-        return this;
+        return METHOD_CHAIN;
     }
 
-    public LCLAsyncTaskExecutor removeThreads(int numberOfThreads)
+    public static LCLAsyncTaskExecutor removeThreads(int numberOfThreads)
     {
         m_Threads.remove(numberOfThreads);
 
-        return this;
+        return METHOD_CHAIN;
     }
 
-    public LCLAsyncTaskExecutor createThreads(int numberOfThreads)
+    public static LCLAsyncTaskExecutor createThreads(int numberOfThreads)
     {
         while(numberOfThreads-- > 0) { LCLThread t = new LCLThread(null); m_Threads.addObject(t); }
 
-        return this;
+        return METHOD_CHAIN;
     }
 
-    public int getNumberOfThreads() { return m_Threads.getNumberOfObjects(); }
-    public int getNumberOfFreeThreads() { return m_Threads.getNumberOfFreeObjects(); }
-    public int getNumberOfThreadsInUse() { return m_Threads.getNumberOfObjectsInUse(); }
+    public static int getNumberOfThreads() { return m_Threads.getNumberOfObjects(); }
+    public static int getNumberOfFreeThreads() { return m_Threads.getNumberOfFreeObjects(); }
+    public static int getNumberOfThreadsInUse() { return m_Threads.getNumberOfObjectsInUse(); }
 
-    @Override public void dispose()
+    public static void dispose()
     {
-        LCL.SYS.AppSystem.removeUpdateHandler(m_OnFinishChecksHandler);
+        LCL.getAppSystem().removeUpdateHandler(LCLAsyncTaskExecutor::update);
         m_Threads.dispose();
     }
 }

@@ -9,9 +9,20 @@ import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
-/**
- * Created by Sas Luca on 27-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, ITransformable<LCLGroup>
@@ -293,13 +304,11 @@ public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, IT
     //<editor-fold desc="Description">
     @Override public boolean isRendering() { return m_IsRendering; }
     @Override public LCLGroup setRenderingState(boolean renderingState) { m_IsRendering = renderingState; return this; }
-    @Override public LCLGroup render()
+    @Override public void render()
     {
-        if(!isRendering()) return this;
+        if(!isRendering()) return;
 
         for(int i = 0; i < m_Objects.getSize(); i++) if(m_Objects.get(i) instanceof IRender) ((IRender) m_Objects.get(i)).render();
-
-        return this;
     }
     //</editor-fold>
 }

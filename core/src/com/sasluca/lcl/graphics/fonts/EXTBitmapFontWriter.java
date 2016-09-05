@@ -25,7 +25,7 @@ package com.sasluca.lcl.graphics.fonts;
  import com.badlogic.gdx.graphics.g2d.PixmapPacker.Page;
  import com.badlogic.gdx.utils.Array;
 
-/** A utility to output BitmapFontData to a FNT file. This can be useful for caching the result from TrueTypeFont, for faster load
+/** A utility to output BitmapFontData to a FNT file. THIS can be useful for caching the result from TrueTypeFont, for faster load
  * times.
  *
  * The font format is from the AngelCodeFont BMFont tool.
@@ -33,7 +33,7 @@ package com.sasluca.lcl.graphics.fonts;
  * @author mattdesl AKA davedes */
 
 /**
- * This file is 'borrowed' from gdx-tools in the libgdx source
+ * THIS file is 'borrowed' from gdx-tools in the libgdx source
  */
 
 /**

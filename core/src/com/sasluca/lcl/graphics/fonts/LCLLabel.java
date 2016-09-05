@@ -7,9 +7,20 @@ import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
 import com.sasluca.lcl.utils.text.LCLString;
 
-/**
- * Created by Sas Luca on 19-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, ITransformable<LCLLabel>, IScalable<LCLLabel>, IColorable<LCLLabel>, IText<LCLLabel>, IDisposable
@@ -41,14 +52,12 @@ public class LCLLabel<Font extends LCLFont> implements IRenderable<LCLLabel>, IT
     public LCLLabel setSmoothing(float smoothing) { p_Smoothing = smoothing; return this; }
 
     //Render
-    @Override public LCLLabel render()
+    @Override public void render()
     {
-        if(!p_IsRendering) return this;
+        if(!p_IsRendering) return;
 
         if(!(p_Font instanceof LCLDistanceFieldFont)) p_Font.drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color, false);
         else ((LCLDistanceFieldFont)p_Font).drawText(p_String.getText(), p_X, p_Y, p_WidthScale, p_HeightScale, p_Color, p_Smoothing, false);
-
-        return this;
     }
 
     @Override public boolean isRendering() { return p_IsRendering; }

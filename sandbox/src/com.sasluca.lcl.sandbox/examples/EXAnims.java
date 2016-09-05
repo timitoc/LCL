@@ -25,7 +25,7 @@ public class EXAnims implements IStateHandler<Playground.State>
 
     @Override public void onState(Playground.State currentState)
     {
-        if(currentState == Playground.State.TEST1) LCLTween.TWEEN_MANAGER.update(LCL.SYS.Delta);
+        if(currentState == Playground.State.TEST1) LCLTween.TWEEN_MANAGER.update(LCL.getDelta());
     }
 
     @Override public void onChangeState(Playground.State currentState, Playground.State newState)
@@ -35,8 +35,8 @@ public class EXAnims implements IStateHandler<Playground.State>
             m_Sprite = new LCLSprite(new Texture(Gdx.files.internal("badlogic.jpg")));
             m_Sprite2 = new LCLSprite(new Texture(Gdx.files.internal("badlogic.jpg")));
 
-            LCL.SYS.AppSystem.getRenderLayer(0).addRenderable(m_Sprite);
-            LCL.SYS.AppSystem.getRenderLayer(0).addRenderable(m_Sprite2);
+            LCL.getAppSystem().getRenderLayer(0).addRenderable(m_Sprite);
+            LCL.getAppSystem().getRenderLayer(0).addRenderable(m_Sprite2);
 
             LCLTween.addClass(m_Sprite.getClass());
             //LCLTween.setAlpha(m_Sprite, 0).start();

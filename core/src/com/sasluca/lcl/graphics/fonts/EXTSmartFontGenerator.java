@@ -37,7 +37,7 @@ public class EXTSmartFontGenerator
     /** Will load font from file. If that fails, font will be generated and saved to file.
      * @param fontFile the actual font (.otf, .ttf)
      * @param fontName the name of the font, i.e. "arial-small", "arial-large", "monospace-10"
-     *                 This will be used for creating the font file names
+     *                 THIS will be used for creating the font file names
      * @param fontSize size of font when screen width equals referenceScreenWidth */
     public BitmapFont createFont(FileHandle fontFile, String fontName, int fontSize)
     {

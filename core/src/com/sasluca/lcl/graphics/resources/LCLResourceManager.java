@@ -10,12 +10,23 @@ import com.sasluca.lcl.abstractions.IDisposable;
 import com.sasluca.lcl.abstractions.IUpdate;
 import com.sasluca.lcl.utils.collections.LCLMap;
 
-/**
- * Created by Sas Luca on 11-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-public class LCLResourceManager implements IUpdate<LCLResourceManager>, IDisposable
+public class LCLResourceManager implements IUpdate, IDisposable
 {
     private LCLMap<String, Object> m_Resources;
     private LCLMap<String, String> m_LoadingQueue;
@@ -114,18 +125,16 @@ public class LCLResourceManager implements IUpdate<LCLResourceManager>, IDisposa
         return ((Resource) m_Resources.get(name));
     }
 
-    @Override public LCLResourceManager update()
+    @Override public void update()
     {
         if(m_AssetManager.update())
-            for(String path : m_LoadingQueue.keys()) m_Resources.put(m_LoadingQueue.get(path), m_Resources.get(path));
-
-        return this;
+            for(String path : m_LoadingQueue.getKeys()) m_Resources.put(m_LoadingQueue.get(path), m_Resources.get(path));
     }
 
     @Override public void dispose()
     {
         m_AssetManager.dispose();
-        for(Object texture : m_Resources.values()) if(texture instanceof Texture) ((Texture) texture).dispose();
-        for(Object disposable : m_Resources.values()) if(disposable instanceof IDisposable) ((IDisposable) disposable).dispose();
+        for(Object texture : m_Resources.getValues()) if(texture instanceof Texture) ((Texture) texture).dispose();
+        for(Object disposable : m_Resources.getValues()) if(disposable instanceof IDisposable) ((IDisposable) disposable).dispose();
     }
 }

@@ -12,4 +12,5 @@ eclipse.project {
 }
 dependencies {
     compile 'com.badlogicgames.gdx:gdx:1.9.2'
+    compile project(path: ':lcl_material_design')
 }

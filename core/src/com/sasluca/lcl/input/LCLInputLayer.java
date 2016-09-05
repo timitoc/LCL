@@ -6,14 +6,26 @@ import com.badlogic.gdx.utils.Array;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
-/**
- * Created by Sas Luca on 22/06/16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class LCLInputLayer implements InputProcessor
 {
-    private Vector3 m_Touch;
+    protected static Vector3 VEC3 = new Vector3(0, 0, 0);
+
     private boolean m_Enabled;
     private int m_NumberOfPointers;
     private boolean m_UnprojectInput;
@@ -22,7 +34,6 @@ public class LCLInputLayer implements InputProcessor
     public LCLInputLayer(boolean unprojectInput)
     {
         m_InputHandlers = new LCLArray<>();
-        m_Touch = new Vector3(0, 0, 0);
         m_NumberOfPointers = 1;
         m_Enabled = true;
         m_UnprojectInput = unprojectInput;
@@ -30,18 +41,18 @@ public class LCLInputLayer implements InputProcessor
 
     public LCLInputLayer(int numberOfPointers, boolean unprojectInput) { this(unprojectInput); m_NumberOfPointers = numberOfPointers; }
 
-    public void enable() { m_Enabled = true; }
-    public void disable() { m_Enabled = false; }
+    public LCLInputLayer enable() { m_Enabled = true; return this; }
+    public LCLInputLayer disable() { m_Enabled = false; return this; }
     public boolean isEnabled() { return m_Enabled; }
 
-    public void addInputHandler(LCLInputHandler handler) { m_InputHandlers.add(handler); }
-    public void setNumberOfPointers(int numberOfPointers) { m_NumberOfPointers = numberOfPointers; }
-    public void removeInputHandler(LCLInputHandler handler) { m_InputHandlers.removeValue(handler, true); }
+    public LCLInputLayer addInputHandler(LCLInputHandler handler) { m_InputHandlers.add(handler); return this; }
+    public LCLInputLayer setNumberOfPointers(int numberOfPointers) { m_NumberOfPointers = numberOfPointers; return this; }
+    public LCLInputLayer removeInputHandler(LCLInputHandler handler) { m_InputHandlers.remove(handler); return this; }
 
-    public Array<LCLInputHandler> getInputHandlers() { return m_InputHandlers; }
+    public LCLArray<LCLInputHandler> getInputHandlers() { return m_InputHandlers; }
 
     //<editor-fold desc="Events">
-    @Override public final boolean keyDown(int keycode)
+    @Override public boolean keyDown(int keycode)
     {
         if(!m_Enabled) return false;
 
@@ -51,7 +62,7 @@ public class LCLInputLayer implements InputProcessor
         return b;
     }
 
-    @Override public final boolean keyUp(int keycode)
+    @Override public boolean keyUp(int keycode)
     {
         if(!m_Enabled) return false;
 
@@ -61,7 +72,7 @@ public class LCLInputLayer implements InputProcessor
         return b;
     }
 
-    @Override public final boolean keyTyped (char character)
+    @Override public boolean keyTyped (char character)
     {
         if(!m_Enabled) return false;
 
@@ -71,71 +82,71 @@ public class LCLInputLayer implements InputProcessor
         return b;
     }
 
-    @Override public final boolean touchDown (int screenX, int screenY, int pointer, int button)
+    @Override public boolean touchDown (int screenX, int screenY, int pointer, int button)
     {
         if(!m_Enabled) return false;
 
         if(pointer > m_NumberOfPointers) return false;
 
-        m_Touch.x = screenX;
-        m_Touch.y = screenY;
+        VEC3.x = screenX;
+        VEC3.y = screenY;
 
-        if(m_UnprojectInput) LCL.SYS.Camera.unproject(m_Touch);
+        if(m_UnprojectInput) LCL.getCamera().unproject(VEC3);
 
         boolean b = false;
-        for(int i = 0; i < m_InputHandlers.getSize(); i++) if(m_InputHandlers.get(i).touchDown((int) m_Touch.x, (int) m_Touch.y, pointer, button)) b = true;
+        for(int i = 0; i < m_InputHandlers.getSize(); i++) if(m_InputHandlers.get(i).touchDown((int) VEC3.x, (int) VEC3.y, pointer, button)) b = true;
 
         return b;
     }
 
-    @Override public final boolean touchUp(int screenX, int screenY, int pointer, int button)
+    @Override public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
         if(!m_Enabled) return false;
 
         if(pointer > m_NumberOfPointers) return false;
 
-        m_Touch.x = screenX;
-        m_Touch.y = screenY;
+        VEC3.x = screenX;
+        VEC3.y = screenY;
 
-        if(m_UnprojectInput) LCL.SYS.Camera.unproject(m_Touch);
+        if(m_UnprojectInput) LCL.getCamera().unproject(VEC3);
 
         boolean b = false;
-        for(int i = 0; i < m_InputHandlers.getSize(); i++) if(m_InputHandlers.get(i).touchUp((int) m_Touch.x, (int) m_Touch.y, pointer, button)) b = true;
+        for(int i = 0; i < m_InputHandlers.getSize(); i++) if(m_InputHandlers.get(i).touchUp((int) VEC3.x, (int) VEC3.y, pointer, button)) b = true;
 
         return b;
     }
 
-    @Override public final boolean touchDragged(int screenX, int screenY, int pointer)
+    @Override public boolean touchDragged(int screenX, int screenY, int pointer)
     {
         if(!m_Enabled || pointer > m_NumberOfPointers) return false;
 
-        m_Touch.x = screenX;
-        m_Touch.y = screenY;
+        VEC3.x = screenX;
+        VEC3.y = screenY;
 
-        if(m_UnprojectInput) LCL.SYS.Camera.unproject(m_Touch);
+        if(m_UnprojectInput) LCL.getCamera().unproject(VEC3);
 
         boolean b = false;
-        for(int i = 0; i < m_InputHandlers.getSize(); i++) if(m_InputHandlers.get(i).touchDragged((int) m_Touch.x, (int) m_Touch.y, pointer)) b = true;
+        for(int i = 0; i < m_InputHandlers.getSize(); i++) if(m_InputHandlers.get(i).touchDragged((int) VEC3.x, (int) VEC3.y, pointer)) b = true;
 
         return b;
     }
 
-    @Override public final boolean mouseMoved(int screenX, int screenY)
+    @Override public boolean mouseMoved(int screenX, int screenY)
     {
         if(!m_Enabled) return false;
 
-        m_Touch.x = screenX;
-        m_Touch.y = screenY;
+        VEC3.x = screenX;
+        VEC3.y = screenY;
 
-        if(m_UnprojectInput) LCL.SYS.Camera.unproject(m_Touch);
+        if(m_UnprojectInput) LCL.getCamera().unproject(VEC3);
 
         boolean b = false;
-        for(int i = 0; i < m_InputHandlers.getSize(); i++) if(m_InputHandlers.get(i).mouseMoved((int) m_Touch.x, (int) m_Touch.y)) b = true;
+        for(int i = 0; i < m_InputHandlers.getSize(); i++) if(m_InputHandlers.get(i).mouseMoved((int) VEC3.x, (int) VEC3.y)) b = true;
 
         return b;
     }
 
-    @Override public final boolean scrolled(int amount)
+    @Override public boolean scrolled(int amount)
     {
         if(!m_Enabled) return false;
 

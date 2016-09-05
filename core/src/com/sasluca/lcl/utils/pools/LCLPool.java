@@ -1,15 +1,25 @@
 package com.sasluca.lcl.utils.pools;
 
 import com.sasluca.lcl.abstractions.IDisposable;
-import com.sasluca.lcl.abstractions.IReusable;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
-/**
- * Created by Sas Luca on 11-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-public class LCLPool<Object> implements IDisposable
+public class LCLPool<Object> implements IPool<Object>, IDisposable
 {
     private LCLArray<Object> m_FreeObjects;
     private LCLArray<Object> m_InUseObjects;
@@ -70,8 +80,19 @@ public class LCLPool<Object> implements IDisposable
 
     public LCLPool<Object> remove()
     {
-        if(m_FreeObjects.first() instanceof IDisposable) ((IDisposable) m_FreeObjects.first()).dispose();
+        if(m_FreeObjects.get(0) instanceof IDisposable) ((IDisposable) m_FreeObjects.get(0)).dispose();
         m_FreeObjects.remove(0);
+
+        return this;
+    }
+
+    public LCLPool<Object> clear()
+    {
+        for(int i = 0; i < m_FreeObjects.getSize(); i++) if(m_FreeObjects.get(i) instanceof IDisposable) ((IDisposable) m_FreeObjects.get(i)).dispose();
+        for(int i = 0; i < m_InUseObjects.getSize(); i++) if(m_InUseObjects.get(i) instanceof IDisposable) ((IDisposable) m_InUseObjects.get(i)).dispose();
+
+        m_FreeObjects.clear();
+        m_InUseObjects.clear();
 
         return this;
     }

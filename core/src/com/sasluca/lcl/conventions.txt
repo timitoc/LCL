@@ -34,7 +34,7 @@ Setters:
     ex: setColor(Color newColor)
         setLooping(boolean loop)
 
-    -void should be replaced with a <This> generic that return a reference to the object. This is used for method chaining.
+    -void should be replaced with a <THIS> generic that return a reference to the object. THIS is used for method chaining.
     -if grammatically correct arguments should have the word "new" as a prefix, otherwise let the argument be called something else.
     ex: setColor(Color newColor) //Do this
         setLooping(boolean newLooping) //Don't do this, instead...

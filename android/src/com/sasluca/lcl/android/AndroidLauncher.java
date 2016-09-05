@@ -22,6 +22,6 @@ public class AndroidLauncher extends AndroidApplication
 
 	@Override protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		opener.onActivityResult(requestCode, resultCode, data, true);
+		opener.onActivityResult(requestCode, resultCode, data);
 	}
 }

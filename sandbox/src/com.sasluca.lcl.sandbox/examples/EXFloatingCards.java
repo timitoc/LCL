@@ -1,10 +1,9 @@
 package com.sasluca.lcl.sandbox.examples;
 
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
+import com.sasluca.lcl.materialdesign.floatingelements.UICard;
 import com.sasluca.lcl.sandbox.Playground;
 import com.sasluca.lcl.sandbox.Playground.State;
-import com.sasluca.lcl.ui.material_design.floatingelements.UICard;
-import com.sasluca.lcl.ui.material_design.floatingelements.UIFloatingElement;
 import com.sasluca.lcl.utils.LCLUtils;
 
 /**

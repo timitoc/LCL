@@ -1,46 +1,53 @@
 package com.sasluca.lcl.graphics.mask;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.IMasking;
 import com.sasluca.lcl.abstractions.IScalable;
 import com.sasluca.lcl.abstractions.ISizeable;
 import com.sasluca.lcl.abstractions.ITransformable;
 import com.sasluca.lcl.animation.LCLTween;
-import com.sasluca.lcl.graphics.sprite.LCLSprite;
-import com.sasluca.lcl.ui.material_design.LCLMaterialDesign;
 
-/**
- * Created by Sas Luca on 21-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public class LCLMask implements IMasking<LCLMask>, ITransformable<LCLMask>, ISizeable<LCLMask>, IScalable<LCLMask>
 {
     static { LCLTween.addClass(LCLMask.class); }
 
-    protected float p_X;
-    protected float p_Y;
-    protected float p_Width;
-    protected float p_Height;
-    protected float p_WidthScale;
-    protected float p_HeightScale;
     protected boolean p_Enabled;
+    protected float p_WidthScale;
+    protected int p_NumberInStack;
+    protected boolean p_IsMasking;
+    protected float p_HeightScale;
+    protected Rectangle p_Rectangle;
 
-    private static boolean Masking = false;
-    private static Vector3 VECTOR3 = new Vector3();
+    protected static Rectangle CLIP_BOUNDS = new Rectangle();
+    protected static int NumberOfScissors = 0;
     
     public LCLMask(float x, float y, float width, float height, float widthScale, float heightScale)
     {
-        p_X = x;
-        p_Y = y;
-        p_Width = width;
-        p_Height = height;
+        p_Rectangle = new Rectangle(x, y, width * widthScale, height * heightScale);
+
         p_WidthScale = widthScale;
         p_HeightScale = heightScale;
+
         p_Enabled = true;
+        p_NumberInStack = -1;
     }
 
     public LCLMask(float x, float y, float width, float height)
@@ -51,105 +58,63 @@ public class LCLMask implements IMasking<LCLMask>, ITransformable<LCLMask>, ISiz
     /** All objects rendered after {@link #start()} will be inside the mask */
     public void start()
     {
-        if(Masking || !p_Enabled)
+        if(!p_Enabled) return;
+
+        if(getWidth() < 1 || getHeight() < 1)
         {
-            //TODO: Error
+            System.out.println("LCLMask: width or height can not be smaller than 1");
             return;
         }
 
-        Masking = true;
+        p_IsMasking = true;
 
-        VECTOR3.x = p_X;
-        LCL.SYS.Camera.project(VECTOR3);
-        float x = VECTOR3.x;
+        ScissorStack.calculateScissors(LCL.getCamera(), LCL.getSpriteBatch().getTransformMatrix(), p_Rectangle, CLIP_BOUNDS);
+        ScissorStack.pushScissors(CLIP_BOUNDS);
 
-        VECTOR3.y = p_Y;
-        LCL.SYS.Camera.project(VECTOR3);
-        float y = VECTOR3.y;
-
-        VECTOR3.x = p_Width * p_WidthScale;
-        LCL.SYS.Camera.project(VECTOR3);
-        float width = VECTOR3.x;
-
-        VECTOR3.y = p_Height * p_HeightScale;
-        LCL.SYS.Camera.project(VECTOR3);
-        float height = VECTOR3.y;
-
-        LCL.SYS.SpriteBatch.flush();
-
-        Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
-        Gdx.gl.glScissor((int)x, (int)y, (int)width, (int)height);
+        p_NumberInStack = NumberOfScissors++;
     }
 
     /** Objects rendered after {@link #end()} will not be inside the mask. Remember you must call {@link #end()} before you call {@link #start()} again*/
     public void end()
     {
-        if(!Masking || !p_Enabled)
-        {
-            //TODO: Error
-            return;
-        }
+        if(!p_Enabled) return;
 
-        Masking = false;
+        p_IsMasking = false;
 
-        LCL.SYS.SpriteBatch.flush();
-        Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
+        ScissorStack.popScissors();
+
+        //TODO: Test this
+        if(--NumberOfScissors == 0) LCL.getSpriteBatch().flush();
+
+        p_NumberInStack = -1;
     }
 
-    public static void startMask(float x, float y, float width, float height)
-    {
-        if(Masking)
-        {
-            //TODO: Error
-            //return;
-        }
+    public boolean isMasking() { return p_IsMasking; }
+    public int getNumberInStack() { return p_NumberInStack; }
 
-        Masking = true;
+    public static int getNumberOfScissors() { return NumberOfScissors; }
 
-        LCL.SYS.SpriteBatch.flush();
-
-        Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST);
-        Gdx.gl.glScissor((int)x, (int)y, (int)width, (int)height);
-    }
-
-    /** Has the same effect as {@link #end()} */
-    public static void endMask()
-    {
-        if(!Masking)
-        {
-            //TODO: Error
-            //return;
-        }
-
-        Masking = false;
-
-        LCL.SYS.SpriteBatch.flush();
-        Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST);
-    }
-
-    public static boolean isMasking() { return Masking; }
-
-    @Override public float getOriginalWidth() { return p_Width; }
-    @Override public float getOriginalHeight() { return p_Height; }
+    @Override public float getOriginalWidth() { return p_Rectangle.getWidth() / p_WidthScale; }
+    @Override public float getOriginalHeight() { return p_Rectangle.getHeight() / p_HeightScale; }
     @Override public float getWidthScale() { return p_WidthScale; }
     @Override public float getHeightScale() { return p_HeightScale; }
 
-    @Override public float getX() { return p_X; }
-    @Override public float getY() { return p_Y; }
-    @Override public float getWidth() { return p_Width * p_WidthScale; }
-    @Override public float getHeight() { return p_Height * p_HeightScale; }
+    @Override public float getX() { return p_Rectangle.getX(); }
+    @Override public float getY() { return p_Rectangle.getY(); }
+    @Override public float getWidth() { return p_Rectangle.getWidth(); }
+    @Override public float getHeight() { return p_Rectangle.getHeight(); }
 
-    @Override public LCLMask setPosX(float newX) { p_X = newX; return this; }
-    @Override public LCLMask setPosY(float newY) { p_Y = newY; return this; }
+    @Override public LCLMask setPosX(float newX) { p_Rectangle.x = newX; return this; }
+    @Override public LCLMask setPosY(float newY) { p_Rectangle.y = newY; return this; }
 
-    @Override public LCLMask setWidth(float newWidth) { p_Width = newWidth; return this; }
-    @Override public LCLMask setHeight(float newHeight) { p_Height = newHeight; return this; }
-    @Override public LCLMask setWidthScale(float newWidthScale) { p_WidthScale = newWidthScale; return this;}
-    @Override public LCLMask setScale(float newScale) { p_WidthScale = p_HeightScale = newScale;return this; }
-    @Override public LCLMask setHeightScale(float newHeightScale) { p_HeightScale = newHeightScale; return this; }
-    @Override public LCLMask setSize(float newWidth, float newHeight) { p_Width = newWidth; p_Height = newHeight; return this; }
-    @Override public LCLMask setScale(float newWidthScale, float newHeightScale) { p_WidthScale = newWidthScale; p_HeightScale = newHeightScale; return this; }
+    @Override public LCLMask setWidth(float newWidth) { p_Rectangle.width = newWidth * p_WidthScale; return this; }
+    @Override public LCLMask setHeight(float newHeight) { p_Rectangle.height = newHeight * p_HeightScale; return this; }
+    @Override public LCLMask setScale(float newScale) { setWidthScale(newScale).setHeightScale(newScale); return this; }
+    @Override public LCLMask setSize(float newWidth, float newHeight) { setWidth(newWidth).setHeight(newHeight); return this; }
+    @Override public LCLMask setWidthScale(float w) { p_Rectangle.width = getOriginalWidth() * w; p_WidthScale = w; return this;}
+    @Override public LCLMask setHeightScale(float h) { p_Rectangle.height = getOriginalHeight() * h; p_HeightScale = h; return this;}
+    @Override public LCLMask setScale(float newWidthScale, float newHeightScale) { setWidthScale(newWidthScale).setHeightScale(newHeightScale); return this; }
 
-    @Override public boolean getMaskingStrategy() { return p_Enabled; }
-    @Override public LCLMask setMaskingStrategy(boolean maskingStrategy) { p_Enabled = maskingStrategy; return this; }
+    @Override public boolean isMaskingEnabled() { return p_Enabled; }
+    @Override public LCLMask setMasking(boolean masking) { p_Enabled = masking; return this; }
 }

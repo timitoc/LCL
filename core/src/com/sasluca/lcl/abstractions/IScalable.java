@@ -1,11 +1,22 @@
 package com.sasluca.lcl.abstractions;
 
-/**
- * Created by Sas Luca on 09-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-public interface IScalable<This>
+public interface IScalable<THIS>
 {
     /** 
      * If a class implements both {@link ITransformable} and {@link IScalable}
@@ -25,8 +36,8 @@ public interface IScalable<This>
 
     float   getHeightScale();
     float   getOriginalHeight();
-    This    setScale(float newScale);
-    This    setWidthScale(float newWidthScale);
-    This    setHeightScale(float newHeightScale);
-    This    setScale(float newWidthScale, float newHeightScale);
+    THIS    setScale(float newScale);
+    THIS    setWidthScale(float newWidthScale);
+    THIS    setHeightScale(float newHeightScale);
+    THIS    setScale(float newWidthScale, float newHeightScale);
 }

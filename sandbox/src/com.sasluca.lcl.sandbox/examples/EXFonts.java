@@ -1,7 +1,6 @@
 package com.sasluca.lcl.sandbox.examples;
 
 import com.badlogic.gdx.graphics.Color;
-import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
 import com.sasluca.lcl.graphics.fonts.LCLFontManager;
 import com.sasluca.lcl.graphics.fonts.LCLLabel;

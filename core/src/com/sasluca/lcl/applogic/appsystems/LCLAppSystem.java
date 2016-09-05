@@ -7,9 +7,20 @@ import com.sasluca.lcl.applogic.managers.statemanager.LCLStateManager;
 import com.sasluca.lcl.applogic.renderlayer.LCLRenderLayer;
 import com.sasluca.lcl.utils.collections.LCLArray;
 
-/**
- * Created by Sas Luca on 10-Jun-16.
- * Copyright (C) 2016 - LCL
+/*
+ * Copyright 2016 Sas Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 public abstract class LCLAppSystem<State> extends LCLStateManager<State> implements Screen
@@ -18,6 +29,7 @@ public abstract class LCLAppSystem<State> extends LCLStateManager<State> impleme
     protected LCLArray<IResizeable> p_ResizeHandlers;
     protected LCLArray<LCLRenderLayer> p_RenderLayers;
     protected boolean p_UpdateTweenEngine;
+    protected boolean p_ManageKeyboard;
     protected boolean p_OverrideDelta;
 
     public LCLAppSystem()
@@ -27,12 +39,6 @@ public abstract class LCLAppSystem<State> extends LCLStateManager<State> impleme
         p_RenderLayers = new LCLArray<>();
         addRenderLayer();
         p_UpdateTweenEngine = true;
-    }
-
-    public void overrideDelta(float delta)
-    {
-        p_OverrideDelta = true;
-        LCL.SYS.Delta = delta;
     }
 
     public LCLAppSystem addRenderLayer() { p_RenderLayers.add(new LCLRenderLayer()); return this;}
@@ -46,4 +52,5 @@ public abstract class LCLAppSystem<State> extends LCLStateManager<State> impleme
     public LCLRenderLayer getRenderLayer(int index) { return p_RenderLayers.get(index); }
     public boolean isUpdatingTweenEngine() { return p_UpdateTweenEngine; }
     public LCLAppSystem setTweenEngineUpdateState(boolean updateState) { p_UpdateTweenEngine = updateState; return this; }
+    public LCLAppSystem manageKeyboard(boolean manage) { p_ManageKeyboard = manage; return this; }
 }

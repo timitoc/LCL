@@ -1,3 +1,4 @@
 include 'desktop', 'android', 'ios', 'core'
 include 'sandbox'
+include 'lcl_material_design'
 

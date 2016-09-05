@@ -11,44 +11,33 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Copyright (C) 2016 - LCL
  */
 
-public class LCLThread implements IReusable<LCLThread>, IDisposable
+public class LCLThread implements IDisposable
 {
-    private Thread m_Thread;
-    private LCLAsyncTask m_Task;
-    private AtomicBoolean m_IsAlive;
+    private boolean m_Started;
+    private final LCLAsyncTask m_Task;
+    private final Thread m_Thread;
+    private final AtomicBoolean m_IsAlive;
 
     public LCLThread(ITask task)
     {
         m_Task = new LCLAsyncTask(task);
-        m_IsAlive = new AtomicBoolean();
+        m_IsAlive = new AtomicBoolean(true);
         m_Thread = new Thread(() -> { while(m_IsAlive.get()) m_Task.executeTask(); });
-    }
-
-    @Override public final LCLThread reset()
-    {
-        return this;
     }
 
     public LCLThread start()
     {
-        if(m_Task == null)
-        {
-            //TODO: ERROR
-            return this;
-        }
+        if (m_Started) return this;
+        m_Started = true;
 
-        if(!m_IsAlive.get())
-        {
-            m_Thread.start();
-            m_IsAlive.getAndSet(true);
-        }
+        m_Thread.start();
 
         return this;
     }
 
-    public synchronized LCLThread setTask(ITask task)
+    public LCLThread setTask(ITask task)
     {
-        if(!m_Task.finished() && m_Task.started())
+        if (!m_Task.finished() && m_Task.started())
         {
             //TODO: ERROR
             return this;
@@ -59,15 +48,14 @@ public class LCLThread implements IReusable<LCLThread>, IDisposable
         return this;
     }
 
-    public final synchronized boolean started() { return m_Task.started(); }
-    public final synchronized boolean finished() { return m_Task.finished(); }
+    public final boolean isRunning() { return m_IsAlive.get(); }
+    public final boolean currentTaskStarted() { return m_Task.started(); }
+    public final boolean currentTaskFinished() { return m_Task.finished(); }
 
     @Override public void dispose()
     {
         m_Thread.interrupt();
         m_IsAlive.getAndSet(false);
-        m_Thread = null;
-        m_Task = null;
 
         return;
     }

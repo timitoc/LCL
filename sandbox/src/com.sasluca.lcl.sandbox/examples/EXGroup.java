@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
 import com.sasluca.lcl.graphics.sprite.LCLSprite;
 import com.sasluca.lcl.sandbox.Playground.State;
-import com.sasluca.lcl.sandbox.Playground.State.*;
 import com.sasluca.lcl.utils.group.LCLGroup;
 
 /**
