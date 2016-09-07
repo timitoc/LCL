@@ -1,9 +1,6 @@
 package com.sasluca.lcl.utils.tuples.imutable;
 
-import com.sasluca.lcl.utils.collections.LCLArray;
 import com.sasluca.lcl.utils.tuples.LCLTuple;
-
-import java.util.Iterator;
 
 /*
  * Copyright 2016 Sas Luca

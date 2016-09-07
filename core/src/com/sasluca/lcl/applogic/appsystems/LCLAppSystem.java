@@ -1,11 +1,10 @@
 package com.sasluca.lcl.applogic.appsystems;
 
 import com.badlogic.gdx.Screen;
-import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.*;
 import com.sasluca.lcl.applogic.managers.statemanager.LCLStateManager;
 import com.sasluca.lcl.applogic.renderlayer.LCLRenderLayer;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -25,18 +24,18 @@ import com.sasluca.lcl.utils.collections.LCLArray;
 
 public abstract class LCLAppSystem<State> extends LCLStateManager<State> implements Screen
 {
-    protected LCLArray<IUpdate> p_UpdateHandlers;
-    protected LCLArray<IResizeable> p_ResizeHandlers;
-    protected LCLArray<LCLRenderLayer> p_RenderLayers;
+    protected LCLList<IUpdate> p_UpdateHandlers;
+    protected LCLList<IResizeable> p_ResizeHandlers;
+    protected LCLList<LCLRenderLayer> p_RenderLayers;
     protected boolean p_UpdateTweenEngine;
     protected boolean p_ManageKeyboard;
     protected boolean p_OverrideDelta;
 
     public LCLAppSystem()
     {
-        p_UpdateHandlers = new LCLArray<>();
-        p_ResizeHandlers = new LCLArray<>();
-        p_RenderLayers = new LCLArray<>();
+        p_UpdateHandlers = new LCLList<>();
+        p_ResizeHandlers = new LCLList<>();
+        p_RenderLayers = new LCLList<>();
         addRenderLayer();
         p_UpdateTweenEngine = true;
     }

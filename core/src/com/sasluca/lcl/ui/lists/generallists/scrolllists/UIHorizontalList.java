@@ -7,7 +7,7 @@ import com.sasluca.lcl.graphics.mask.LCLMask;
 import com.sasluca.lcl.ui.view.UIView;
 import com.sasluca.lcl.ui.group.UIGroup;
 import com.sasluca.lcl.ui.view.UIContainer;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -36,12 +36,12 @@ public class UIHorizontalList extends UIView<UIHorizontalList> implements IMaski
     private UIGroup m_Group;
     private long m_BeginTimer;
     private boolean m_Animating;
-    private LCLArray<UIContainer> m_List;
+    private LCLList<UIContainer> m_List;
 
     public UIHorizontalList(float width, float height) 
     {
         m_Group = new UIGroup();
-        m_List = new LCLArray<>();
+        m_List = new LCLList<>();
         m_Mask = new LCLMask(0, 0, width, height);
     }
 

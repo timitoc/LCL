@@ -2,9 +2,8 @@ package com.sasluca.lcl.input;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.sasluca.lcl.LCL;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -29,11 +28,11 @@ public class LCLInputLayer implements InputProcessor
     private boolean m_Enabled;
     private int m_NumberOfPointers;
     private boolean m_UnprojectInput;
-    private LCLArray<LCLInputHandler> m_InputHandlers;
+    private LCLList<LCLInputHandler> m_InputHandlers;
 
     public LCLInputLayer(boolean unprojectInput)
     {
-        m_InputHandlers = new LCLArray<>();
+        m_InputHandlers = new LCLList<>();
         m_NumberOfPointers = 1;
         m_Enabled = true;
         m_UnprojectInput = unprojectInput;
@@ -49,7 +48,7 @@ public class LCLInputLayer implements InputProcessor
     public LCLInputLayer setNumberOfPointers(int numberOfPointers) { m_NumberOfPointers = numberOfPointers; return this; }
     public LCLInputLayer removeInputHandler(LCLInputHandler handler) { m_InputHandlers.remove(handler); return this; }
 
-    public LCLArray<LCLInputHandler> getInputHandlers() { return m_InputHandlers; }
+    public LCLList<LCLInputHandler> getInputHandlers() { return m_InputHandlers; }
 
     //<editor-fold desc="Events">
     @Override public boolean keyDown(int keycode)

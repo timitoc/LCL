@@ -1,7 +1,7 @@
 package com.sasluca.lcl.utils.text;
 
 import com.sasluca.lcl.abstractions.IText;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 import java.util.StringTokenizer;
 
@@ -42,9 +42,9 @@ public class LCLString implements IText<LCLString>
     public boolean contains(String s) { return getText().contains(s); }
     public boolean contains(char c) { return getText().contains(Character.toString(c)); }
 
-    public LCLArray<String> split(String delims)
+    public LCLList<String> split(String delims)
     {
-        LCLArray<String> array = new LCLArray<>();
+        LCLList<String> array = new LCLList<>();
         StringTokenizer st = new StringTokenizer(m_Buffer.toString(), delims);
         while (st.hasMoreElements()) { array.add((String) st.nextElement()); }
 

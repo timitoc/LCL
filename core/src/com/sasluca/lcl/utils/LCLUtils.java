@@ -95,13 +95,6 @@ public class LCLUtils
      */
     public static boolean checkTouch(float touchX, float touchY, float x, float y, float width, float height) { return touchX >= x && touchX <= x + width && touchY >= y && touchY <= y + height; }
 
-    /**
-     * @param number A number
-     * @param precision The number of decimals that should be left
-     * @return the number with the number of decimals specified by the precision
-     */
-    public static float round(float number, int precision) { return (float) Math.round(number * (precision * 10)) / (precision * 10); }
-
     public static boolean pointIsInside(ITransformable obj, float pointX, float pointY) { return (pointX >= obj.getX() && pointX <= obj.getWidth() + obj.getX()) && (pointY >= obj.getY() && pointY <= obj.getHeight() + obj.getY()); }
 
     /**

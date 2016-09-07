@@ -3,8 +3,6 @@ package com.sasluca.lcl.animation;
 import aurelienribon.tweenengine.TweenAccessor;
 import com.badlogic.gdx.graphics.Color;
 import com.sasluca.lcl.abstractions.*;
-import com.sasluca.lcl.utils.collections.LCLArray;
-import com.sasluca.lcl.utils.collections.LCLMap;
 
 /*
  * Copyright 2016 Sas Luca

@@ -8,7 +8,7 @@ import com.sasluca.lcl.ui.view.UIView;
 import com.sasluca.lcl.ui.mvc.LCLModel;
 import com.sasluca.lcl.ui.mvc.UIModelContainer;
 import com.sasluca.lcl.ui.mvc.UIModelView;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 import com.sasluca.lcl.utils.pools.LCLPool;
 
 /*
@@ -38,12 +38,12 @@ public class UIModelVerticalList<Model extends LCLModel, View extends UIModelVie
     private float m_ViewHeight;
     private float m_HeightPadding;
     private LCLPool<View> m_ViewsPool;
-    private LCLArray<UIModelContainer> m_List;
+    private LCLList<UIModelContainer> m_List;
 
     public UIModelVerticalList(float listWidth, float listHeight, float heightPadding, View view)
     {
         m_Group = new UIGroup();
-        m_List = new LCLArray<>();
+        m_List = new LCLList<>();
         m_HeightPadding = heightPadding;
         m_Mask = new LCLMask(0, 0, listWidth, listHeight);
         m_ViewsPool = new LCLPool<>(view::getClone, EMPTY_LAMBDA -> {} );

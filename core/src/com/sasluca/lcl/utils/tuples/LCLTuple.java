@@ -1,7 +1,7 @@
 package com.sasluca.lcl.utils.tuples;
 
 import com.google.gson.Gson;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 import com.sasluca.lcl.utils.tuples.imutable.*;
 import com.sasluca.lcl.utils.tuples.mutable.*;
 
@@ -30,7 +30,7 @@ import java.util.Iterator;
 public abstract class LCLTuple implements Iterable, Serializable
 {
     /** Used to generate iterators */
-    private static final LCLArray ARRAY = new LCLArray();
+    private static final LCLList ARRAY = new LCLList();
 
     /** @return Json representing the values inside the tuple */
     public String toJson() { return new Gson().toJson(this); }
@@ -40,10 +40,10 @@ public abstract class LCLTuple implements Iterable, Serializable
     /** Returns number of values inside tuple*/
     public abstract int getSize();
 
-    /** Returns a {@link LCLArray} which contains all the elements in the tuple*/
-    public LCLArray asList()
+    /** Returns a {@link LCLList} which contains all the elements in the tuple*/
+    public LCLList asList()
     {
-        LCLArray arrayList = new LCLArray();
+        LCLList arrayList = new LCLList();
 
         int i = 0;
         while(++i <= getSize()) arrayList.add(get(i));
@@ -245,7 +245,7 @@ public abstract class LCLTuple implements Iterable, Serializable
     }
 
     /** Static factory method returning a tuple containing all the values given in the list parameter*/
-    public static LCLTuple tuple(LCLArray values)
+    public static LCLTuple tuple(LCLList values)
     {
         if(values.getSize() == 2)  return pair    (values.get(0), values.get(1));
         if(values.getSize() == 3)  return triplet (values.get(0), values.get(1), values.get(2));
@@ -263,7 +263,7 @@ public abstract class LCLTuple implements Iterable, Serializable
     }
 
     /** Static factory method returning a mutable tuple containing all the values given in the list parameter*/
-    public static LCLTuple mutableTuple(LCLArray values)
+    public static LCLTuple mutableTuple(LCLList values)
     {
         if(values.getSize() == 2)  return mutablePair    (values.get(0), values.get(1));
         if(values.getSize() == 3)  return mutableTriplet (values.get(0), values.get(1), values.get(2));

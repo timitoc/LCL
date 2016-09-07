@@ -1,7 +1,7 @@
 package com.sasluca.lcl.utils.pools;
 
 import com.sasluca.lcl.abstractions.IDisposable;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 import com.sasluca.lcl.utils.tuples.mutable.LCLMutablePair;
 
 /*
@@ -22,14 +22,14 @@ import com.sasluca.lcl.utils.tuples.mutable.LCLMutablePair;
 
 public class LCLPool<OBJECT> implements IPool<OBJECT>, IDisposable
 {
-    private LCLArray<LCLMutablePair<Boolean, OBJECT>> m_Objects; //True if in use
+    private LCLList<LCLMutablePair<Boolean, OBJECT>> m_Objects; //True if in use
     private IOnReset<OBJECT> m_OnReset;
     private IInstanceFactory<OBJECT> m_InstanceFactory;
 
     public LCLPool(IInstanceFactory<OBJECT> instanceFactory, IOnReset<OBJECT> onReset)
     {
         m_OnReset = onReset;
-        m_Objects = new LCLArray<>();
+        m_Objects = new LCLList<>();
         m_InstanceFactory = instanceFactory;
     }
 

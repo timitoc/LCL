@@ -6,8 +6,7 @@ import com.sasluca.lcl.abstractions.IRender;
 import com.sasluca.lcl.abstractions.IRenderable;
 import com.sasluca.lcl.abstractions.ITransformable;
 import com.sasluca.lcl.animation.LCLTween;
-import com.sasluca.lcl.graphics.sprite.LCLSprite;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -34,12 +33,12 @@ public class LCLGroup implements IRenderable<LCLGroup>, IColorable<LCLGroup>, IT
     private Color m_Color;
     private float m_Width;
     private float m_Height;
-    private LCLArray m_Objects;
+    private LCLList m_Objects;
     private boolean m_IsRendering;
 
     public LCLGroup()
     {
-        m_Objects = new LCLArray();
+        m_Objects = new LCLList();
         m_Color = new Color(Color.WHITE);
         m_IsRendering = true;
     }

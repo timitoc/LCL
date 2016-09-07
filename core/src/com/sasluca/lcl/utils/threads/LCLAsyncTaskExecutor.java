@@ -1,9 +1,7 @@
 package com.sasluca.lcl.utils.threads;
 
 import com.sasluca.lcl.LCL;
-import com.sasluca.lcl.abstractions.ITransformable;
 import com.sasluca.lcl.abstractions.functional.ITask;
-import com.sasluca.lcl.utils.collections.LCLArray;
 import com.sasluca.lcl.utils.collections.LCLMap;
 import com.sasluca.lcl.utils.pools.LCLSynchronizedPool;
 

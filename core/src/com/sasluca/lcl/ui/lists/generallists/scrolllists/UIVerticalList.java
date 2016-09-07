@@ -9,7 +9,7 @@ import com.sasluca.lcl.input.LCLInputHandler;
 import com.sasluca.lcl.ui.view.UIView;
 import com.sasluca.lcl.ui.group.UIGroup;
 import com.sasluca.lcl.ui.view.UIContainer;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -36,12 +36,12 @@ public class UIVerticalList extends UIView<UIVerticalList> implements IMasking<U
     private LCLMask m_Mask;
     private UIGroup m_Group;
     private float m_InitialY;
-    private LCLArray<UIContainer> m_List;
+    private LCLList<UIContainer> m_List;
 
     public UIVerticalList(float width, float height)
     {
         m_Group = new UIGroup();
-        m_List = new LCLArray<>();
+        m_List = new LCLList<>();
         m_Mask = new LCLMask(0, 0, width, height);
     }
 

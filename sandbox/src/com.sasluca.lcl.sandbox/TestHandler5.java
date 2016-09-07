@@ -1,7 +1,7 @@
 package com.sasluca.lcl.sandbox;
 
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 public class TestHandler5 implements IStateHandler<Playground.State>
 {
@@ -14,7 +14,7 @@ public class TestHandler5 implements IStateHandler<Playground.State>
     @Override public void onChangeState(Playground.State currentState, Playground.State newState)
     {
         //How to solve concurrent modification
-        LCLArray<Integer> array = new LCLArray<>();
+        LCLList<Integer> array = new LCLList<>();
 
         array.add(1)
              .add(2)

@@ -1,6 +1,6 @@
 package com.sasluca.lcl.graphics.fonts;
 
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -20,7 +20,7 @@ import com.sasluca.lcl.utils.collections.LCLArray;
 
 public class LCLFontManager
 {
-    private static LCLArray<LCLFont> m_Fonts = new LCLArray<>();
+    private static LCLList<LCLFont> m_Fonts = new LCLList<>();
 
     private LCLFontManager() { }
 

@@ -1,7 +1,7 @@
 package com.sasluca.lcl.input;
 
 import com.badlogic.gdx.InputProcessor;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -21,7 +21,7 @@ import com.sasluca.lcl.utils.collections.LCLArray;
 
 public class LCLInputSystem implements InputProcessor
 {
-    private static final LCLArray<LCLInputLayer> INPUT_LAYERS = new LCLArray<>();
+    private static final LCLList<LCLInputLayer> INPUT_LAYERS = new LCLList<>();
     private static final LCLInputSystem INSTANCE = new LCLInputSystem();
     private LCLInputLayer TOP_INPUT_LAYER; //TOP INPUT LAYER is layer 0
     

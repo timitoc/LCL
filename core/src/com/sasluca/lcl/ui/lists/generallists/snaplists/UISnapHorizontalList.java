@@ -11,7 +11,7 @@ import com.sasluca.lcl.ui.lists.IOnItemChanged;
 import com.sasluca.lcl.ui.group.UIGroup;
 import com.sasluca.lcl.ui.view.UIContainer;
 import com.sasluca.lcl.ui.view.UIView;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -41,14 +41,14 @@ public class UISnapHorizontalList extends UIView<UISnapHorizontalList> implement
     private long m_BeginTimer;
     private boolean m_Animating;
     private boolean m_CurrentChanged;
-    private LCLArray<UIContainer> m_List;
+    private LCLList<UIContainer> m_List;
 
     public IOnItemChanged<UISnapHorizontalList> onItemChanged;
 
     public UISnapHorizontalList(float width, float height)
     {
         m_Group = new UIGroup();
-        m_List = new LCLArray<>();
+        m_List = new LCLList<>();
         m_Mask = new LCLMask(0, 0, width, height);
     }
 

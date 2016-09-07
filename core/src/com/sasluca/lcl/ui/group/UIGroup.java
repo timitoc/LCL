@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.sasluca.lcl.abstractions.*;
 import com.sasluca.lcl.animation.LCLTween;
 import com.sasluca.lcl.ui.view.UIView;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -33,11 +33,11 @@ public class UIGroup extends UIView<UIGroup> implements IColorable<UIGroup>
     private float m_Height;
     private float m_WidthScale;
     private float m_HeightScale;
-    private LCLArray m_Objects;
+    private LCLList m_Objects;
 
     public UIGroup()
     {
-        m_Objects = new LCLArray();
+        m_Objects = new LCLList();
         m_Color = new Color(Color.WHITE);
     }
 

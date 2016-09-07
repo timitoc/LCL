@@ -1,7 +1,7 @@
 package com.sasluca.lcl.ui.button;
 
 import com.sasluca.lcl.abstractions.ICheckable;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -22,11 +22,11 @@ import com.sasluca.lcl.utils.collections.LCLArray;
 public class LCLRadioButtonGroup
 {
     private ICheckable m_CurrentChecked;
-    private LCLArray<ICheckable> m_Buttons;
+    private LCLList<ICheckable> m_Buttons;
 
     public LCLRadioButtonGroup()
     {
-        m_Buttons = new LCLArray<>();
+        m_Buttons = new LCLList<>();
     }
 
     public LCLRadioButtonGroup unsubscribe(ICheckable btn)

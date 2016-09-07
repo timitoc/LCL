@@ -1,6 +1,6 @@
 package com.sasluca.lcl.ui.mvc;
 
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -20,7 +20,7 @@ import com.sasluca.lcl.utils.collections.LCLArray;
 
 public class LCLModel
 {
-    private LCLArray<UIModelView> m_Views;
+    private LCLList<UIModelView> m_Views;
 
     public void addView(UIModelView view)
     {

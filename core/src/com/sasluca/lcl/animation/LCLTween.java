@@ -3,7 +3,7 @@ package com.sasluca.lcl.animation;
 import aurelienribon.tweenengine.*;
 import com.sasluca.lcl.abstractions.*;
 import com.badlogic.gdx.graphics.Color;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -26,7 +26,7 @@ public class LCLTween
     private static Tween TWEEN_INSTANCE;
     private static final LCLTween INSTANCE = new LCLTween();
     public static final TweenManager TWEEN_MANAGER = new TweenManager();
-    private static final LCLArray<Class> REGISTERED_CLASSES = new LCLArray<>();
+    private static final LCLList<Class> REGISTERED_CLASSES = new LCLList<>();
 
     private LCLTween() {}
 

@@ -1,6 +1,6 @@
 package com.sasluca.lcl.permissions;
 
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 import com.sasluca.lcl.utils.collections.LCLMap;
 
 public class LCLPermissionManager
@@ -11,7 +11,7 @@ public class LCLPermissionManager
     private static LCLPermissionManager METHOD_CHAIN = new LCLPermissionManager();
     private LCLPermissionManager() {}
 
-    public static void init(LCLArray<IPermission> permissions)
+    public static void init(LCLList<IPermission> permissions)
     {
         for (IPermission p : permissions)
         {

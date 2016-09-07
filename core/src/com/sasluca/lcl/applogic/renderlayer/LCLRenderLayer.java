@@ -2,7 +2,7 @@ package com.sasluca.lcl.applogic.renderlayer;
 
 import com.sasluca.lcl.abstractions.IRender;
 import com.sasluca.lcl.abstractions.IRenderable;
-import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.collections.list.LCLList;
 
 /*
  * Copyright 2016 Sas Luca
@@ -23,11 +23,11 @@ import com.sasluca.lcl.utils.collections.LCLArray;
 public class LCLRenderLayer implements IRenderable<LCLRenderLayer>
 {
     private boolean m_Rendering;
-    private LCLArray<IRender> m_Renderables;
+    private LCLList<IRender> m_Renderables;
 
     public LCLRenderLayer()
     {
-        m_Renderables = new LCLArray<>();
+        m_Renderables = new LCLList<>();
         m_Rendering = true;
     }
 
