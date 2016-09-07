@@ -2,6 +2,7 @@ package com.sasluca.lcl.utils.pools;
 
 import com.sasluca.lcl.abstractions.IDisposable;
 import com.sasluca.lcl.utils.collections.LCLArray;
+import com.sasluca.lcl.utils.tuples.mutable.LCLMutablePair;
 
 /*
  * Copyright 2016 Sas Luca
@@ -19,104 +20,129 @@ import com.sasluca.lcl.utils.collections.LCLArray;
  * limitations under the License.
  */
 
-public class LCLPool<Object> implements IPool<Object>, IDisposable
+public class LCLPool<OBJECT> implements IPool<OBJECT>, IDisposable
 {
-    private LCLArray<Object> m_FreeObjects;
-    private LCLArray<Object> m_InUseObjects;
-    private IOnReset<Object> m_OnReset;
-    private IInstanceFactory<Object> m_InstanceFactory;
+    private LCLArray<LCLMutablePair<Boolean, OBJECT>> m_Objects; //True if in use
+    private IOnReset<OBJECT> m_OnReset;
+    private IInstanceFactory<OBJECT> m_InstanceFactory;
 
-    public LCLPool(IInstanceFactory<Object> instanceFactory, IOnReset<Object> onReset)
+    public LCLPool(IInstanceFactory<OBJECT> instanceFactory, IOnReset<OBJECT> onReset)
     {
         m_OnReset = onReset;
-        m_FreeObjects = new LCLArray<>();
-        m_InUseObjects = new LCLArray<>();
+        m_Objects = new LCLArray<>();
         m_InstanceFactory = instanceFactory;
     }
 
-    public Object get()
+    public OBJECT get()
     {
-        if(!m_FreeObjects.isEmpty())
+        if(!m_Objects.isEmpty())
         {
-            Object freeObject = m_FreeObjects.get(m_FreeObjects.getSize() - 1);
-
-            m_FreeObjects.remove(m_FreeObjects.getSize() - 1);
-            m_InUseObjects.add(freeObject);
-
-            return freeObject;
+            for (LCLMutablePair<Boolean, OBJECT> p : m_Objects)
+            {
+                if (!p.get1())
+                {
+                    p.set1(true);
+                    return p.get2();
+                }
+            }
         }
 
-        Object o = m_InstanceFactory.newInstance();
-        m_InUseObjects.add(o);
+        LCLMutablePair<Boolean, OBJECT> newObj = new LCLMutablePair<>(false, m_InstanceFactory.newInstance());
 
-        return o;
+        m_Objects.add(newObj);
+
+        return newObj.get2();
     }
 
-    public LCLPool<Object> free(Object object)
+    public LCLPool<OBJECT> free(OBJECT object)
     {
-        if(m_InUseObjects.contains(object))
+        if (!m_Objects.isEmpty())
         {
-            m_OnReset.onReset(object);
-            m_InUseObjects.remove(object);
-            m_FreeObjects.add(object);
-        }
-
-        return this;
-    }
-
-    public LCLPool<Object> remove(Object object)
-    {
-        if(!m_FreeObjects.contains(object))
-        {
-            //TODO:ERROR
-            return this;
-        }
-
-        if(object instanceof IDisposable) ((IDisposable) object).dispose();
-        m_FreeObjects.remove(object);
-
-        return this;
-    }
-
-    public LCLPool<Object> remove()
-    {
-        if(m_FreeObjects.get(0) instanceof IDisposable) ((IDisposable) m_FreeObjects.get(0)).dispose();
-        m_FreeObjects.remove(0);
-
-        return this;
-    }
-
-    public LCLPool<Object> clear()
-    {
-        for(int i = 0; i < m_FreeObjects.getSize(); i++) if(m_FreeObjects.get(i) instanceof IDisposable) ((IDisposable) m_FreeObjects.get(i)).dispose();
-        for(int i = 0; i < m_InUseObjects.getSize(); i++) if(m_InUseObjects.get(i) instanceof IDisposable) ((IDisposable) m_InUseObjects.get(i)).dispose();
-
-        m_FreeObjects.clear();
-        m_InUseObjects.clear();
-
-        return this;
-    }
-
-    public LCLPool<Object> remove(int remove)
-    {
-        for(Object object : m_FreeObjects)
-        {
-            if(object instanceof IDisposable) ((IDisposable) object).dispose();
-            m_FreeObjects.remove(object);
-            remove--;
-            if(remove == 0) break;
+            for (LCLMutablePair<Boolean, OBJECT> p : m_Objects)
+                if (p.get1() && p.get2().equals(object))
+                {
+                    m_OnReset.onReset(object);
+                    p.set1(false);
+                }
         }
 
         return this;
     }
 
-    public LCLPool<Object> setInstanceFactory(IInstanceFactory<Object> instanceFactory) { m_InstanceFactory = instanceFactory; return this; }
+    public LCLPool<OBJECT> remove(OBJECT object)
+    {
+        for (LCLMutablePair<Boolean, OBJECT> p : m_Objects)
+        {
+            if (p.get2().equals(object))
+            {
+                m_Objects.erase(p);
+                break;
+            }
+        }
 
-    public LCLPool<Object> addObject(Object object) { m_FreeObjects.add(object); return this; }
-    public LCLPool<Object> addObject() { m_FreeObjects.add(m_InstanceFactory.newInstance()); return this; }
+        m_Objects.clean();
 
-    public int getNumberOfFreeObjects() { return m_FreeObjects.getSize(); }
-    public int getNumberOfObjectsInUse() { return m_InUseObjects.getSize(); }
+        return this;
+    }
+
+    public LCLPool<OBJECT> remove()
+    {
+        for (LCLMutablePair<Boolean, OBJECT> p : m_Objects)
+        {
+            if (!p.get1())
+            {
+                m_Objects.erase(p);
+                break;
+            }
+        }
+
+        m_Objects.clean();
+
+        return this;
+    }
+
+    public LCLPool<OBJECT> clear()
+    {
+        m_Objects.clear();
+
+        return this;
+    }
+
+    public LCLPool<OBJECT> remove(int remove)
+    {
+        for (LCLMutablePair<Boolean, OBJECT> p : m_Objects)
+        {
+            if (!p.get1())
+            {
+                m_Objects.erase(p);
+                if(--remove == 0) break;
+            }
+        }
+
+        m_Objects.clean();
+
+        return this;
+    }
+
+    public LCLPool<OBJECT> setInstanceFactory(IInstanceFactory<OBJECT> instanceFactory) { m_InstanceFactory = instanceFactory; return this; }
+
+    public LCLPool<OBJECT> addObject() { m_Objects.add(new LCLMutablePair<>(false, m_InstanceFactory.newInstance())); return this; }
+
+    public int getNumberOfFreeObjects()
+    {
+        int ct = 0;
+        for (LCLMutablePair<Boolean, OBJECT> p : m_Objects) if (!p.get1()) ct++;
+        return m_Objects.getSize();
+    }
+
+    public int getNumberOfObjectsInUse()
+    {
+        int ct = 0;
+        for (LCLMutablePair<Boolean, OBJECT> p : m_Objects) if (p.get1()) ct++;
+
+        return ct;
+    }
+
     public int getNumberOfObjects() { return getNumberOfFreeObjects() + getNumberOfObjectsInUse(); }
 
     @Override public void dispose()
@@ -127,12 +153,10 @@ public class LCLPool<Object> implements IPool<Object>, IDisposable
             return;
         }
 
-        for(Object object : m_FreeObjects) if(object instanceof IDisposable) ((IDisposable) object).dispose();
-        m_FreeObjects.clear();
+        m_Objects.clear();
 
         m_OnReset = null;
-        m_FreeObjects = null;
-        m_InUseObjects = null;
+        m_Objects = null;
         m_InstanceFactory = null;
     }
 }

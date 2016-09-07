@@ -28,6 +28,7 @@ public class LCLAsyncTaskExecutor
     static { init(); }
 
     private static boolean m_Init;
+    private static int m_MaxNumberOfThreads;
     private static LCLSynchronizedPool<LCLThread> m_Threads;
     private static LCLMap<IAsyncTaskObserver, ITask> m_OnFinishChecks;
     private static final LCLAsyncTaskExecutor METHOD_CHAIN = new LCLAsyncTaskExecutor();
@@ -39,6 +40,7 @@ public class LCLAsyncTaskExecutor
         if(m_Init) return;
         m_Init = true;
 
+        m_MaxNumberOfThreads = 10;
         m_OnFinishChecks = new LCLMap<>();
         m_Threads = new LCLSynchronizedPool<>(() -> new LCLThread(null), EMPTY_LAMBDA -> {});
 

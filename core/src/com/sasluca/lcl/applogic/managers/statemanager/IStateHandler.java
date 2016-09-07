@@ -21,7 +21,7 @@ package com.sasluca.lcl.applogic.managers.statemanager;
  * The handler reacts to changes in state and does a specific job depending on the current state.
  * @param <STATE> The type of state used.
  */
-public interface IStateHandler<STATE>
+public interface IStateHandler<STATE> extends IOnStateChangeHandler<STATE>
 {
     /**
      * This method is called each frame.

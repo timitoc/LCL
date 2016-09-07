@@ -38,7 +38,7 @@ public class LCLSynchronizedPool<Object> implements IPool<Object>, IDisposable
         m_InstanceFactory = instanceFactory;
     }
 
-    public synchronized Object get()
+    @Override public synchronized Object get()
     {
         if(!m_FreeObjects.isEmpty())
         {
@@ -56,7 +56,7 @@ public class LCLSynchronizedPool<Object> implements IPool<Object>, IDisposable
         return o;
     }
 
-    public synchronized LCLSynchronizedPool<Object> free(Object object)
+    @Override public synchronized LCLSynchronizedPool<Object> free(Object object)
     {
         if(m_InUseObjects.contains(object))
         {
@@ -68,7 +68,7 @@ public class LCLSynchronizedPool<Object> implements IPool<Object>, IDisposable
         return this;
     }
 
-    public synchronized LCLSynchronizedPool<Object> remove(Object object)
+    @Override public synchronized LCLSynchronizedPool<Object> remove(Object object)
     {
         if(!m_FreeObjects.contains(object))
         {
@@ -82,7 +82,7 @@ public class LCLSynchronizedPool<Object> implements IPool<Object>, IDisposable
         return this;
     }
 
-    public synchronized LCLSynchronizedPool<Object> remove()
+    @Override public synchronized LCLSynchronizedPool<Object> remove()
     {
         if(m_FreeObjects.get(0) instanceof IDisposable) ((IDisposable) m_FreeObjects.get(0)).dispose();
         m_FreeObjects.remove(0);
@@ -90,7 +90,7 @@ public class LCLSynchronizedPool<Object> implements IPool<Object>, IDisposable
         return this;
     }
 
-    public synchronized LCLSynchronizedPool<Object> clear()
+    @Override public synchronized LCLSynchronizedPool<Object> clear()
     {
         for(int i = 0; i < m_FreeObjects.getSize(); i++) if(m_FreeObjects.get(i) instanceof IDisposable) ((IDisposable) m_FreeObjects.get(i)).dispose();
         for(int i = 0; i < m_InUseObjects.getSize(); i++) if(m_InUseObjects.get(i) instanceof IDisposable) ((IDisposable) m_InUseObjects.get(i)).dispose();
@@ -101,7 +101,7 @@ public class LCLSynchronizedPool<Object> implements IPool<Object>, IDisposable
         return this;
     }
 
-    public synchronized LCLSynchronizedPool<Object> remove(int remove)
+    @Override public synchronized LCLSynchronizedPool<Object> remove(int remove)
     {
         for(Object object : m_FreeObjects)
         {
@@ -114,13 +114,12 @@ public class LCLSynchronizedPool<Object> implements IPool<Object>, IDisposable
         return this;
     }
 
-    public synchronized LCLSynchronizedPool<Object> setInstanceFactory(IInstanceFactory<Object> instanceFactory) { m_InstanceFactory = instanceFactory; return this; }
-    public synchronized LCLSynchronizedPool<Object> addObject(Object object) { m_FreeObjects.add(object); return this; }
-    public synchronized LCLSynchronizedPool<Object> addObject() { m_FreeObjects.add(m_InstanceFactory.newInstance()); return this; }
+    @Override public synchronized LCLSynchronizedPool<Object> setInstanceFactory(IInstanceFactory<Object> instanceFactory) { m_InstanceFactory = instanceFactory; return this; }
+    @Override public synchronized LCLSynchronizedPool<Object> addObject() { m_FreeObjects.add(m_InstanceFactory.newInstance()); return this; }
 
-    public synchronized int getNumberOfFreeObjects() { return m_FreeObjects.getSize(); }
-    public synchronized int getNumberOfObjectsInUse() { return m_InUseObjects.getSize(); }
-    public synchronized int getNumberOfObjects() { return getNumberOfFreeObjects() + getNumberOfObjectsInUse(); }
+    @Override public synchronized int getNumberOfFreeObjects() { return m_FreeObjects.getSize(); }
+    @Override public synchronized int getNumberOfObjectsInUse() { return m_InUseObjects.getSize(); }
+    @Override public synchronized int getNumberOfObjects() { return getNumberOfFreeObjects() + getNumberOfObjectsInUse(); }
 
     @Override public void dispose()
     {

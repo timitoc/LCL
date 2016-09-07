@@ -22,10 +22,7 @@ public class LCLFontManager
 {
     private static LCLArray<LCLFont> m_Fonts = new LCLArray<>();
 
-    private LCLFontManager()
-    {
-
-    }
+    private LCLFontManager() { }
 
     public static void addBitmapFont(String name) { m_Fonts.add(new LCLBitmapFont(name)); }
     public static void addTrueTypeFont(String name, int size) { m_Fonts.add(new LCLTrueTypeFont(name, size)); }

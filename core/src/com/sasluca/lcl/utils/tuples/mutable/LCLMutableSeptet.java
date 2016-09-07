@@ -1,8 +1,6 @@
-package com.sasluca.lcl.utils.tuples;
+package com.sasluca.lcl.utils.tuples.mutable;
 
-import com.sasluca.lcl.utils.collections.LCLArray;
-
-import java.util.Iterator;
+import com.sasluca.lcl.utils.tuples.LCLTuple;
 
 /*
  * Copyright 2016 Sas Luca
@@ -21,7 +19,7 @@ import java.util.Iterator;
  */
 
 /**
- * A septet is a {@link LCLTuple tuple} that holds seven values
+ * A mutable septet is a {@link LCLTuple tuple} that holds seven values which can be changed
  * @param <A> The class of the first value
  * @param <B> The class of the second value
  * @param <C> The class of the third value
@@ -30,34 +28,34 @@ import java.util.Iterator;
  * @param <F> The class of the sixth value
  * @param <G> The class of the seventh value
  */
-public class LCLSeptet<A, B, C, D, E, F, G> extends LCLTuple
+public class LCLMutableSeptet<A, B, C, D, E, F, G> extends LCLTuple
 {
     /** Object is serializable */
-    private static final long serialVersionUID = 9198241034724536719L;
+    private static final long serialVersionUID = 4639826600226228528L;
 
     /** First value of type {@link A}, variable is final since the object is immutable */
-    private final A m_Value1;
+    private A m_Value1;
 
     /** Second value of type {@link B}, variable is final since the object is immutable */
-    private final B m_Value2;
+    private B m_Value2;
 
     /** Third value of type {@link C}, variable is final since the object is immutable */
-    private final C m_Value3;
+    private C m_Value3;
 
     /** Fourth value of type {@link D}, variable is final since the object is immutable */
-    private final D m_Value4;
+    private D m_Value4;
 
     /** Fifth value of type {@link E}, variable is final since the object is immutable */
-    private final E m_Value5;
+    private E m_Value5;
 
     /** Sixth value of type {@link F}, variable is final since the object is immutable */
-    private final F m_Value6;
+    private F m_Value6;
 
     /** Seventh value of type {@link G}, variable is final since the object is immutable */
-    private final G m_Value7;
+    private G m_Value7;
 
     /** Default constructor, requires that you give it the values */
-    public LCLSeptet(A value1, B value2, C value3, D value4, E value5, F value6, G value7)
+    public LCLMutableSeptet(A value1, B value2, C value3, D value4, E value5, F value6, G value7)
     {
         m_Value1 = value1;
         m_Value2 = value2;
@@ -67,6 +65,14 @@ public class LCLSeptet<A, B, C, D, E, F, G> extends LCLTuple
         m_Value6 = value6;
         m_Value7 = value7;
     }
+
+    public final <O extends A> LCLMutableSeptet<A, B, C, D, E, F, G> set1(O value) { m_Value1 = value; return this; }
+    public final <O extends B> LCLMutableSeptet<A, B, C, D, E, F, G> set2(O value) { m_Value2 = value; return this; }
+    public final <O extends C> LCLMutableSeptet<A, B, C, D, E, F, G> set3(O value) { m_Value3 = value; return this; }
+    public final <O extends D> LCLMutableSeptet<A, B, C, D, E, F, G> set4(O value) { m_Value4 = value; return this; }
+    public final <O extends E> LCLMutableSeptet<A, B, C, D, E, F, G> set5(O value) { m_Value5 = value; return this; }
+    public final <O extends F> LCLMutableSeptet<A, B, C, D, E, F, G> set6(O value) { m_Value6 = value; return this; }
+    public final <O extends G> LCLMutableSeptet<A, B, C, D, E, F, G> set7(O value) { m_Value7 = value; return this; }
 
     /**
      * @param <O> Extends {@link A}, can be use to cast the object if the generics were not specified

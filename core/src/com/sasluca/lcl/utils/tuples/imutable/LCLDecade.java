@@ -1,4 +1,4 @@
-package com.sasluca.lcl.utils.tuples;
+package com.sasluca.lcl.utils.tuples.imutable;
 
 /*
  * Copyright 2016 Sas Luca
@@ -16,6 +16,8 @@ package com.sasluca.lcl.utils.tuples;
  * limitations under the License.
  */
 
+import com.sasluca.lcl.utils.tuples.LCLTuple;
+
 /**
  * A decade is a {@link LCLTuple tuple} that holds ten values
  * @param <A> The class of the first value
@@ -32,7 +34,7 @@ package com.sasluca.lcl.utils.tuples;
 public class LCLDecade<A, B, C, D, E, F, G, H, I, J> extends LCLTuple
 {
     /** Object is serializable */
-    private static final long serialVersionUID = -195788183940836700L;
+    private static final long serialVersionUID = 5752262023098516853L;
 
     /** First value of type {@link A}, variable is final since the object is immutable */
     private final A m_Value1;

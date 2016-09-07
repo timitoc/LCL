@@ -28,8 +28,9 @@ public class EXFonts implements IStateHandler<State>
     {
         if(newState == State.TEST1)
         {
-            LCLFontManager.addTrueTypeFont("Roboto", 95);
+            //LCLFontManager.addTrueTypeFont("Roboto_d". "fonts", 16);
             label = new LCLLabel("Roboto", "Hello World", Color.BLACK);
+            label.setPosY(1280 - label.getHeight()).setPosX(720 - label.getWidth());
             System.out.println(label.getHeight() * 1.4f);
         }
     }

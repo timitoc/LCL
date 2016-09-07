@@ -1,6 +1,7 @@
 package com.sasluca.lcl.utils.collections;
 
 import com.badlogic.gdx.utils.ObjectMap;
+import com.sasluca.lcl.utils.text.LCLString;
 
 import java.util.Iterator;
 
@@ -20,48 +21,58 @@ import java.util.Iterator;
  * limitations under the License.
  */
 
-public class LCLMap<Key, Value> implements Iterable<ObjectMap.Entry<Key, Value>>
+public class LCLMap<KEY, VALUE> implements Iterable<ObjectMap.Entry<KEY, VALUE>>
 {
-    private ObjectMap<Key, Value> m_ObjectMap;
+    private LCLString m_Erasables;
+    private ObjectMap<KEY, VALUE> m_ObjectMap;
 
     public LCLMap()
     {
+        m_Erasables = new LCLString("");
         m_ObjectMap = new ObjectMap<>();
     }
 
-    public LCLMap<Key, Value> clear()
+    public LCLMap<KEY, VALUE> clear()
     {
         m_ObjectMap.clear();
 
         return this;
     }
 
-    public LCLMap<Key, Value> remove(Key k) { m_ObjectMap.remove(k); return this; }
-    public LCLMap<Key, Value> put(Key k, Value v) { m_ObjectMap.put(k, v); return this; }
-    public LCLMap<Key, Value> replace(Key sender, Value value) { m_ObjectMap.remove(sender); m_ObjectMap.put(sender, value); return this; }
+    public LCLMap<KEY, VALUE> remove(KEY k) { m_ObjectMap.remove(k); return this; }
+
+    public LCLMap<KEY, VALUE> put(KEY k, VALUE v) { m_ObjectMap.put(k, v); return this; }
+    public LCLMap<KEY, VALUE> replace(KEY sender, VALUE value) { m_ObjectMap.remove(sender); m_ObjectMap.put(sender, value); return this; }
+
+    public int getIndexOfKey(KEY key)
+    {
+        for (int i = 0; i < getSize(); i++) for (KEY k : getKeys()) if (key.equals(k)) return i;
+
+        return -1;
+    }
 
     public int getSize() { return m_ObjectMap.size; }
     public boolean isEmpty() { return getSize() == 0; }
-    public boolean containsValue(Value v) { return m_ObjectMap.containsValue(v, false); }
-    public boolean containsKey(Key k) { return m_ObjectMap.containsKey(k); }
-    public Value get(Key key) { return m_ObjectMap.get(key); }
-    public ObjectMap.Keys<Key> getKeys() { return m_ObjectMap.keys(); }
-    public ObjectMap.Values<Value> getValues() { return m_ObjectMap.values(); }
+    public boolean containsValue(VALUE v) { return m_ObjectMap.containsValue(v, false); }
+    public boolean containsKey(KEY k) { return m_ObjectMap.containsKey(k); }
+    public VALUE get(KEY key) { return m_ObjectMap.get(key); }
+    public ObjectMap.Keys<KEY> getKeys() { return m_ObjectMap.keys(); }
+    public ObjectMap.Values<VALUE> getValues() { return m_ObjectMap.values(); }
 
-    public Key getKey(int index)
+    public KEY getKey(int index)
     {
         int ct = 0;
-        for(Key k : m_ObjectMap.keys()) if(ct++ == index) return k;
+        for(KEY k : m_ObjectMap.keys()) if(ct++ == index) return k;
 
         return null;
     }
 
-    public Key getKey(Value value)
+    public KEY getKey(VALUE value)
     {
-        for(Key k : m_ObjectMap.keys()) if(get(k).equals(value)) return k;
+        for(KEY k : m_ObjectMap.keys()) if(get(k).equals(value)) return k;
 
         return null;
     }
 
-    @Override public Iterator<ObjectMap.Entry<Key, Value>> iterator() { return m_ObjectMap.iterator(); }
+    @Override public Iterator<ObjectMap.Entry<KEY, VALUE>> iterator() { return m_ObjectMap.iterator(); }
 }

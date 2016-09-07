@@ -5,6 +5,7 @@ import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.applogic.appsystems.impl.LCLDefaultAppSystem;
 import com.sasluca.lcl.dialogs.IImageGalleryOpener;
 import com.sasluca.lcl.materialdesign.LCLMaterialDesign;
+import com.sasluca.lcl.sandbox.examples.EXFonts;
 
 /**
  * Created by Sas Luca on 09-Jun-16.
@@ -33,7 +34,7 @@ public class Playground extends Game
         LCLMaterialDesign.init();
 
         for(State state : State.values()) m_AppSystem.addState(state);
-        m_AppSystem.addHandler(new TestHandler());
+        m_AppSystem.addHandler(new EXFonts());
         m_AppSystem.changeState(State.TEST1);
 
         setScreen(m_AppSystem);

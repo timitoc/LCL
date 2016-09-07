@@ -1,12 +1,7 @@
 package com.sasluca.lcl.sandbox;
 
 import com.sasluca.lcl.applogic.managers.statemanager.IStateHandler;
-import com.sasluca.lcl.utils.tuples.LCLPair;
-import com.sasluca.lcl.utils.tuples.LCLTuple;
-
-/**
- * Created by Sas Luca on 8/20/2016.
- */
+import com.sasluca.lcl.utils.collections.LCLArray;
 
 public class TestHandler5 implements IStateHandler<Playground.State>
 {
@@ -18,11 +13,20 @@ public class TestHandler5 implements IStateHandler<Playground.State>
 
     @Override public void onChangeState(Playground.State currentState, Playground.State newState)
     {
-        System.out.println(tupleExample().toJson());
-    }
+        //How to solve concurrent modification
+        LCLArray<Integer> array = new LCLArray<>();
 
-    public LCLPair<String, Float> tupleExample()
-    {
-        return (LCLPair<String, Float>) LCLTuple.tuple("Test", 0);
+        array.add(1)
+             .add(2)
+             .add(3)
+             .add(4);
+
+        for (Integer i : array) { array.erase(i); }
+
+        System.out.println(array.isErased(1));
+
+        array.clean();
+
+        System.out.println(array.getSize());
     }
 }

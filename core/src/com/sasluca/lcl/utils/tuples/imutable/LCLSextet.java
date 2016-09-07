@@ -1,4 +1,4 @@
-package com.sasluca.lcl.utils.tuples;
+package com.sasluca.lcl.utils.tuples.imutable;
 
 /*
  * Copyright 2016 Sas Luca
@@ -16,21 +16,21 @@ package com.sasluca.lcl.utils.tuples;
  * limitations under the License.
  */
 
+import com.sasluca.lcl.utils.tuples.LCLTuple;
+
 /**
- * An octet is a {@link LCLTuple tuple} that holds eight values
+ * A sextet is a {@link LCLTuple tuple} that holds six values
  * @param <A> The class of the first value
  * @param <B> The class of the second value
  * @param <C> The class of the third value
  * @param <D> The class of the fourth value
  * @param <E> The class of the fifth value
  * @param <F> The class of the sixth value
- * @param <G> The class of the seventh value
- * @param <H> The class of the eighth value
  */
-public class LCLOctet<A, B, C, D, E, F, G, H> extends LCLTuple
+public class LCLSextet<A, B, C, D, E, F> extends LCLTuple
 {
     /** Object is serializable */
-    private static final long serialVersionUID = -139362142338815695L;
+    private static final long serialVersionUID = 4256455820822265237L;
 
     /** First value of type {@link A}, variable is final since the object is immutable */
     private final A m_Value1;
@@ -50,14 +50,8 @@ public class LCLOctet<A, B, C, D, E, F, G, H> extends LCLTuple
     /** Sixth value of type {@link F}, variable is final since the object is immutable */
     private final F m_Value6;
 
-    /** Seventh value of type {@link G}, variable is final since the object is immutable */
-    private final G m_Value7;
-
-    /** Eighth value of type {@link H}, variable is final since the object is immutable */
-    private final H m_Value8;
-
     /** Default constructor, requires that you give it the values */
-    public LCLOctet(A value1, B value2, C value3, D value4, E value5, F value6, G value7, H value8)
+    public LCLSextet(A value1, B value2, C value3, D value4, E value5, F value6)
     {
         m_Value1 = value1;
         m_Value2 = value2;
@@ -65,8 +59,6 @@ public class LCLOctet<A, B, C, D, E, F, G, H> extends LCLTuple
         m_Value4 = value4;
         m_Value5 = value5;
         m_Value6 = value6;
-        m_Value7 = value7;
-        m_Value8 = value8;
     }
 
     /**
@@ -105,21 +97,9 @@ public class LCLOctet<A, B, C, D, E, F, G, H> extends LCLTuple
      */
     public final <O extends F> O get6()  { return (O) m_Value6;  }
 
-    /**
-     * @param <O> Extends {@link G}, can be use to cast the object if the generics were not specified
-     * @return The {@link #m_Value7 seventh value}
-     */
-    public final <O extends G> O get7()  { return (O) m_Value7;  }
-
-    /**
-     * @param <O> Extends {@link H}, can be use to cast the object if the generics were not specified
-     * @return The {@link #m_Value8 eighth value}
-     */
-    public final <O extends H> O get8()  { return (O) m_Value8;  }
-
-    @Override public <O> O get(int i, boolean startingFromZero)
+    @Override public <O> O get(int i, boolean startFromZero)
     {
-        if(startingFromZero)
+        if (startFromZero)
             switch (i)
             {
                 case 0: return (O) m_Value1;
@@ -128,8 +108,6 @@ public class LCLOctet<A, B, C, D, E, F, G, H> extends LCLTuple
                 case 3: return (O) m_Value4;
                 case 4: return (O) m_Value5;
                 case 5: return (O) m_Value6;
-                case 6: return (O) m_Value7;
-                case 7: return (O) m_Value8;
             }
         else
             switch (i)
@@ -140,12 +118,11 @@ public class LCLOctet<A, B, C, D, E, F, G, H> extends LCLTuple
                 case 4: return (O) m_Value4;
                 case 5: return (O) m_Value5;
                 case 6: return (O) m_Value6;
-                case 7: return (O) m_Value7;
-                case 8: return (O) m_Value8;
             }
+
         return null;
     }
 
-    @Override public final int getSize() { return 8; }
-    @Override public Object[] asArray() { return new Object[]{m_Value1, m_Value2, m_Value3, m_Value4, m_Value5, m_Value6, m_Value7, m_Value8}; }
+    @Override public final int getSize() { return 6; }
+    @Override public Object[] asArray() { return new Object[]{m_Value1, m_Value2, m_Value3, m_Value4, m_Value5, m_Value6}; }
 }

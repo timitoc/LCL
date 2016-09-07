@@ -7,8 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.sasluca.lcl.LCL;
 import com.sasluca.lcl.abstractions.IScalable;
 import com.sasluca.lcl.abstractions.ITransformable;
-import com.sasluca.lcl.graphics.sprite.LCLSprite;
-import com.sasluca.lcl.utils.tuples.LCLPair;
+import com.sasluca.lcl.utils.tuples.imutable.LCLPair;
 import com.sasluca.lcl.utils.tuples.LCLTuple;
 
 import java.util.Random;

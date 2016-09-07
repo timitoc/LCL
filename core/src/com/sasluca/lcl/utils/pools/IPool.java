@@ -32,7 +32,6 @@ public interface IPool<OBJECT> extends IDisposable
     IPool<OBJECT> remove(int remove);
     IPool<OBJECT> free(OBJECT object);
     IPool<OBJECT> remove(OBJECT object);
-    IPool<OBJECT> addObject(OBJECT object);
     IPool<OBJECT> setInstanceFactory(IInstanceFactory<OBJECT> instanceFactory);
 
     int getNumberOfObjectsInUse();

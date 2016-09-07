@@ -1,4 +1,4 @@
-package com.sasluca.lcl.utils.tuples;
+package com.sasluca.lcl.utils.tuples.mutable;
 
 /*
  * Copyright 2016 Sas Luca
@@ -16,40 +16,50 @@ package com.sasluca.lcl.utils.tuples;
  * limitations under the License.
  */
 
+import com.sasluca.lcl.utils.tuples.LCLTuple;
+
 /**
- * A sextet is a {@link LCLTuple tuple} that holds six values
+ * A mutable octet is a {@link LCLTuple tuple} that holds eight values which can be changed
  * @param <A> The class of the first value
  * @param <B> The class of the second value
  * @param <C> The class of the third value
  * @param <D> The class of the fourth value
  * @param <E> The class of the fifth value
  * @param <F> The class of the sixth value
+ * @param <G> The class of the seventh value
+ * @param <H> The class of the eighth value
  */
-public class LCLSextet<A, B, C, D, E, F> extends LCLTuple
+public class LCLMutableOctet<A, B, C, D, E, F, G, H> extends LCLTuple
 {
     /** Object is serializable */
-    private static final long serialVersionUID = -5842712700080181873L;
+    private static final long serialVersionUID = 4850183431743095544L;
 
     /** First value of type {@link A}, variable is final since the object is immutable */
-    private final A m_Value1;
+    private A m_Value1;
 
     /** Second value of type {@link B}, variable is final since the object is immutable */
-    private final B m_Value2;
+    private B m_Value2;
 
     /** Third value of type {@link C}, variable is final since the object is immutable */
-    private final C m_Value3;
+    private C m_Value3;
 
     /** Fourth value of type {@link D}, variable is final since the object is immutable */
-    private final D m_Value4;
+    private D m_Value4;
 
     /** Fifth value of type {@link E}, variable is final since the object is immutable */
-    private final E m_Value5;
+    private E m_Value5;
 
     /** Sixth value of type {@link F}, variable is final since the object is immutable */
-    private final F m_Value6;
+    private F m_Value6;
+
+    /** Seventh value of type {@link G}, variable is final since the object is immutable */
+    private G m_Value7;
+
+    /** Eighth value of type {@link H}, variable is final since the object is immutable */
+    private H m_Value8;
 
     /** Default constructor, requires that you give it the values */
-    public LCLSextet(A value1, B value2, C value3, D value4, E value5, F value6)
+    public LCLMutableOctet(A value1, B value2, C value3, D value4, E value5, F value6, G value7, H value8)
     {
         m_Value1 = value1;
         m_Value2 = value2;
@@ -57,7 +67,18 @@ public class LCLSextet<A, B, C, D, E, F> extends LCLTuple
         m_Value4 = value4;
         m_Value5 = value5;
         m_Value6 = value6;
+        m_Value7 = value7;
+        m_Value8 = value8;
     }
+
+    public final <O extends A> LCLMutableOctet<A, B, C, D, E, F, G, H> set1(O value) { m_Value1 = value; return this; }
+    public final <O extends B> LCLMutableOctet<A, B, C, D, E, F, G, H> set2(O value) { m_Value2 = value; return this; }
+    public final <O extends C> LCLMutableOctet<A, B, C, D, E, F, G, H> set3(O value) { m_Value3 = value; return this; }
+    public final <O extends D> LCLMutableOctet<A, B, C, D, E, F, G, H> set4(O value) { m_Value4 = value; return this; }
+    public final <O extends E> LCLMutableOctet<A, B, C, D, E, F, G, H> set5(O value) { m_Value5 = value; return this; }
+    public final <O extends F> LCLMutableOctet<A, B, C, D, E, F, G, H> set6(O value) { m_Value6 = value; return this; }
+    public final <O extends G> LCLMutableOctet<A, B, C, D, E, F, G, H> set7(O value) { m_Value7 = value; return this; }
+    public final <O extends H> LCLMutableOctet<A, B, C, D, E, F, G, H> set8(O value) { m_Value8 = value; return this; }
 
     /**
      * @param <O> Extends {@link A}, can be use to cast the object if the generics were not specified
@@ -95,9 +116,21 @@ public class LCLSextet<A, B, C, D, E, F> extends LCLTuple
      */
     public final <O extends F> O get6()  { return (O) m_Value6;  }
 
-    @Override public <O> O get(int i, boolean startFromZero)
+    /**
+     * @param <O> Extends {@link G}, can be use to cast the object if the generics were not specified
+     * @return The {@link #m_Value7 seventh value}
+     */
+    public final <O extends G> O get7()  { return (O) m_Value7;  }
+
+    /**
+     * @param <O> Extends {@link H}, can be use to cast the object if the generics were not specified
+     * @return The {@link #m_Value8 eighth value}
+     */
+    public final <O extends H> O get8()  { return (O) m_Value8;  }
+
+    @Override public <O> O get(int i, boolean startingFromZero)
     {
-        if (startFromZero)
+        if(startingFromZero)
             switch (i)
             {
                 case 0: return (O) m_Value1;
@@ -106,6 +139,8 @@ public class LCLSextet<A, B, C, D, E, F> extends LCLTuple
                 case 3: return (O) m_Value4;
                 case 4: return (O) m_Value5;
                 case 5: return (O) m_Value6;
+                case 6: return (O) m_Value7;
+                case 7: return (O) m_Value8;
             }
         else
             switch (i)
@@ -116,11 +151,12 @@ public class LCLSextet<A, B, C, D, E, F> extends LCLTuple
                 case 4: return (O) m_Value4;
                 case 5: return (O) m_Value5;
                 case 6: return (O) m_Value6;
+                case 7: return (O) m_Value7;
+                case 8: return (O) m_Value8;
             }
-
         return null;
     }
 
-    @Override public final int getSize() { return 6; }
-    @Override public Object[] asArray() { return new Object[]{m_Value1, m_Value2, m_Value3, m_Value4, m_Value5, m_Value6}; }
+    @Override public final int getSize() { return 8; }
+    @Override public Object[] asArray() { return new Object[]{m_Value1, m_Value2, m_Value3, m_Value4, m_Value5, m_Value6, m_Value7, m_Value8}; }
 }

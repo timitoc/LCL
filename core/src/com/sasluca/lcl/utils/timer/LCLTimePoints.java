@@ -1,7 +1,7 @@
 package com.sasluca.lcl.utils.timer;
 
 import com.sasluca.lcl.utils.collections.LCLMap;
-import com.sasluca.lcl.utils.tuples.LCLTriplet;
+import com.sasluca.lcl.utils.tuples.imutable.LCLTriplet;
 import com.sasluca.lcl.utils.tuples.LCLTuple;
 
 /*

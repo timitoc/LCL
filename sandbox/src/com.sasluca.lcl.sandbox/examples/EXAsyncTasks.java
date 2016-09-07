@@ -47,7 +47,7 @@ public class EXAsyncTasks implements IStateHandler<Playground.State>
         {
             observer = LCLAsyncTaskExecutor.executeTaskAsync(() -> callURL("http://www.google.com"));
 
-            /** Print the number of threads created by the executor. In the beggining there were no threads but now it created 1. */
+            // Print the number of threads created by the executor. In the beginning there were no threads but now it created 1.
             System.out.println("Task 1 created, number of threads: " + LCLAsyncTaskExecutor.getNumberOfThreads());
         }
 
@@ -56,7 +56,7 @@ public class EXAsyncTasks implements IStateHandler<Playground.State>
             System.out.println("Task 1 currentTaskFinished, number of free threads: " + LCLAsyncTaskExecutor.getNumberOfFreeThreads());
             observer = LCLAsyncTaskExecutor.executeTaskAsync(() -> callURL("http://www.youtube.com"));
 
-            /** Prints the number of threads in use. You can see there is still just one thread in use since it reuses the previously created one. */
+            // Prints the number of threads in use. You can see there is still just one thread in use since it reuses the previously created one.
             System.out.println("Task 2 created, number of threads: " + LCLAsyncTaskExecutor.getNumberOfThreads());
         }
 

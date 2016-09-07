@@ -1,4 +1,4 @@
-package com.sasluca.lcl.utils.tuples;
+package com.sasluca.lcl.utils.tuples.imutable;
 
 /*
  * Copyright 2016 Sas Luca
@@ -16,15 +16,18 @@ package com.sasluca.lcl.utils.tuples;
  * limitations under the License.
  */
 
+import com.sasluca.lcl.utils.tuples.LCLTuple;
+
 /**
- * A pair is a {@link LCLTuple tuple} that holds two values
+ * A triplet is a {@link LCLTuple tuple} that holds three values
  * @param <A> The class of the first value
  * @param <B> The class of the second value
+ * @param <C> The class of the third value
  */
-public class LCLPair<A, B> extends LCLTuple
+public class LCLTriplet<A, B, C> extends LCLTuple
 {
     /** Object is serializable */
-    private static final long serialVersionUID = 4179012021672122954L;
+    private static final long serialVersionUID = -5664870347122545250L;
 
     /** First value of type {@link A}, variable is final since the object is immutable */
     private final A m_Value1;
@@ -32,11 +35,15 @@ public class LCLPair<A, B> extends LCLTuple
     /** Second value of type {@link B}, variable is final since the object is immutable */
     private final B m_Value2;
 
+    /** Third value of type {@link C}, variable is final since the object is immutable */
+    private final C m_Value3;
+
     /** Default constructor, requires that you give it the values */
-    public LCLPair(A value1, B value2)
+    public LCLTriplet(A value1, B value2, C value3)
     {
         m_Value1 = value1;
         m_Value2 = value2;
+        m_Value3 = value3;
     }
 
     /**
@@ -51,31 +58,32 @@ public class LCLPair<A, B> extends LCLTuple
      */
     public final <O extends B> O get2()  { return (O) m_Value2;  }
 
+    /**
+     * @param <O> Extends {@link C}, can be use to cast the object if the generics were not specified
+     * @return The {@link #m_Value3 third value}
+     */
+    public final <O extends C> O get3()  { return (O) m_Value3;  }
+
     @Override public <O> O get(int i, boolean startFromZero)
     {
-        if(startFromZero)
+        if (startFromZero)
             switch (i)
             {
                 case 0: return (O) m_Value1;
                 case 1: return (O) m_Value2;
+                case 2: return (O) m_Value3;
             }
         else
             switch (i)
             {
                 case 1: return (O) m_Value1;
                 case 2: return (O) m_Value2;
+                case 3: return (O) m_Value3;
             }
 
         return null;
     }
 
-    @Override public final int getSize() { return 2; }
-    @Override public Object[] asArray() { return new Object[]{m_Value1, m_Value2}; }
-
-    @Override public boolean equals(Object pair)
-    {
-        if(!(pair instanceof LCLPair)) return false;
-
-        return ((LCLPair) pair).get1().equals(m_Value1) && ((LCLPair) pair).get2().equals(m_Value2);
-    }
+    @Override public final int getSize() { return 3; }
+    @Override public Object[] asArray() { return new Object[]{m_Value1, m_Value2, m_Value3}; }
 }
