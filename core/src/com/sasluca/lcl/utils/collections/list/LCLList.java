@@ -82,17 +82,18 @@ public class LCLList<OBJECT> implements IList<OBJECT>
 
     @Override public LCLList<OBJECT> clean()
     {
-        for (int i = 0; i < m_Erasables.getLength(); i++)
+        private Array<OBJECT> cleaned_m_Array = new Array<>();
+        private LCLString cleaned_m_Erasables = new LCLString("");
+        for (int i = 0; i < m_Array.getLength(); i++)
         {
-            if(m_Erasables.getLength() == 0) break;
-            if (m_Erasables.getCharAt(i) == '1')
+            if (m_Erasables.getCharAt(i) == '0')
             {
-                m_Array.removeIndex(i);
-                m_Erasables.deleteCharAt(i);
-                i--;
+                cleaned_m_Array.add(m_Array.get(i));
+                cleaned_m_Erasables.append('0');
             }
         }
-
+        m_Erasables = cleaned_m_Erasables;
+        m_Array = cleaned_m_Array;
         return this;
     }
 
