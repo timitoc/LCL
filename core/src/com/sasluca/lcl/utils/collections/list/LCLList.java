@@ -35,7 +35,7 @@ public class LCLList<OBJECT> implements IList<OBJECT>
 
     @Override public LCLList<OBJECT> remove(OBJECT object)
     {
-        m_Array.indexOf(object, false);
+        m_Erasables.deleteCharAt(m_Array.indexOf(object, false));
         m_Array.removeValue(object, false);
 
         return this;
